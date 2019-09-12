@@ -16,6 +16,7 @@
 		FF11FBE22329E35A0043C29B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF11FBE12329E35A0043C29B /* Assets.xcassets */; };
 		FF11FBE52329E35A0043C29B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF11FBE32329E35A0043C29B /* LaunchScreen.storyboard */; };
 		FF11FBF02329E35A0043C29B /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBEF2329E35A0043C29B /* ExampleTests.swift */; };
+		FF11FBF92329E50E0043C29B /* RxMusicPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF11FBF92329E50E0043C29B /* RxMusicPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +97,7 @@
 				FF11FBD92329E3560043C29B /* Example */,
 				FF11FBEE2329E35A0043C29B /* ExampleTests */,
 				FF11FBBB2329E2DE0043C29B /* Products */,
+				FF11FBF82329E50E0043C29B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -147,6 +150,13 @@
 				FF11FBF12329E35A0043C29B /* Info.plist */,
 			);
 			path = ExampleTests;
+			sourceTree = "<group>";
+		};
+		FF11FBF82329E50E0043C29B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
