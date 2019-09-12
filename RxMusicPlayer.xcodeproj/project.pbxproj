@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,12 +12,22 @@
 		FF11FBC92329E2DE0043C29B /* RxMusicPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBC82329E2DE0043C29B /* RxMusicPlayerTests.swift */; };
 		FF11FBCB2329E2DE0043C29B /* RxMusicPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FF11FBDB2329E3560043C29B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBDA2329E3560043C29B /* AppDelegate.swift */; };
-		FF11FBDD2329E3560043C29B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBDC2329E3560043C29B /* ViewController.swift */; };
 		FF11FBE02329E3560043C29B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF11FBDE2329E3560043C29B /* Main.storyboard */; };
 		FF11FBE22329E35A0043C29B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF11FBE12329E35A0043C29B /* Assets.xcassets */; };
 		FF11FBE52329E35A0043C29B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF11FBE32329E35A0043C29B /* LaunchScreen.storyboard */; };
 		FF11FBF02329E35A0043C29B /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBEF2329E35A0043C29B /* ExampleTests.swift */; };
 		FF11FBF92329E50E0043C29B /* RxMusicPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; };
+		FF11FBFD2329EE770043C29B /* RxMusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBFC2329EE770043C29B /* RxMusicPlayer.swift */; };
+		FF11FBFF2329F3010043C29B /* RxMusicPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBFE2329F3010043C29B /* RxMusicPlayerItem.swift */; };
+		FF11FC032329F81F0043C29B /* RxMusicPlayerItem+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC022329F81F0043C29B /* RxMusicPlayerItem+Rx.swift */; };
+		FF11FC062329F8660043C29B /* RxAudioVisual.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FC042329F8660043C29B /* RxAudioVisual.framework */; };
+		FF11FC072329F8660043C29B /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FC052329F8660043C29B /* RxSwift.framework */; };
+		FF11FC09232A23FF0043C29B /* AVAsynchronousKeyValueLoading+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC08232A23FF0043C29B /* AVAsynchronousKeyValueLoading+Rx.swift */; };
+		FF11FC0B232A270D0043C29B /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FC0A232A270D0043C29B /* MediaPlayer.framework */; };
+		FF11FC11232A2A5E0043C29B /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC10232A2A5E0043C29B /* TableViewController.swift */; };
+		FF11FC14232A315B0043C29B /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FC052329F8660043C29B /* RxSwift.framework */; };
+		FF11FC16232A391F0043C29B /* RxMusicPlayerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */; };
+		FFC91AF7232A4C1100B3E89A /* RxMusicPlayer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +59,6 @@
 		FF11FBCA2329E2DE0043C29B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FF11FBD82329E3560043C29B /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF11FBDA2329E3560043C29B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FF11FBDC2329E3560043C29B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FF11FBDF2329E3560043C29B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FF11FBE12329E35A0043C29B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FF11FBE42329E35A0043C29B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -57,6 +66,16 @@
 		FF11FBEB2329E35A0043C29B /* ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF11FBEF2329E35A0043C29B /* ExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTests.swift; sourceTree = "<group>"; };
 		FF11FBF12329E35A0043C29B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FF11FBFC2329EE770043C29B /* RxMusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxMusicPlayer.swift; sourceTree = "<group>"; };
+		FF11FBFE2329F3010043C29B /* RxMusicPlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxMusicPlayerItem.swift; sourceTree = "<group>"; };
+		FF11FC022329F81F0043C29B /* RxMusicPlayerItem+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxMusicPlayerItem+Rx.swift"; sourceTree = "<group>"; };
+		FF11FC042329F8660043C29B /* RxAudioVisual.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxAudioVisual.framework; path = Carthage/Build/iOS/RxAudioVisual.framework; sourceTree = "<group>"; };
+		FF11FC052329F8660043C29B /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
+		FF11FC08232A23FF0043C29B /* AVAsynchronousKeyValueLoading+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVAsynchronousKeyValueLoading+Rx.swift"; sourceTree = "<group>"; };
+		FF11FC0A232A270D0043C29B /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		FF11FC10232A2A5E0043C29B /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxMusicPlayerError.swift; sourceTree = "<group>"; };
+		FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxMusicPlayer+Rx.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +83,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF11FC062329F8660043C29B /* RxAudioVisual.framework in Frameworks */,
+				FF11FC072329F8660043C29B /* RxSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +100,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF11FC14232A315B0043C29B /* RxSwift.framework in Frameworks */,
+				FF11FC0B232A270D0043C29B /* MediaPlayer.framework in Frameworks */,
 				FF11FBF92329E50E0043C29B /* RxMusicPlayer.framework in Frameworks */,
 				26BC08410487D678000C1FD8 /* Pods_Example.framework in Frameworks */,
 			);
@@ -131,6 +154,12 @@
 			isa = PBXGroup;
 			children = (
 				FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */,
+				FF11FBFC2329EE770043C29B /* RxMusicPlayer.swift */,
+				FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */,
+				FF11FBFE2329F3010043C29B /* RxMusicPlayerItem.swift */,
+				FF11FC022329F81F0043C29B /* RxMusicPlayerItem+Rx.swift */,
+				FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */,
+				FF11FC08232A23FF0043C29B /* AVAsynchronousKeyValueLoading+Rx.swift */,
 				FF11FBBE2329E2DE0043C29B /* Info.plist */,
 			);
 			path = RxMusicPlayer;
@@ -149,7 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				FF11FBDA2329E3560043C29B /* AppDelegate.swift */,
-				FF11FBDC2329E3560043C29B /* ViewController.swift */,
+				FF11FC10232A2A5E0043C29B /* TableViewController.swift */,
 				FF11FBDE2329E3560043C29B /* Main.storyboard */,
 				FF11FBE12329E35A0043C29B /* Assets.xcassets */,
 				FF11FBE32329E35A0043C29B /* LaunchScreen.storyboard */,
@@ -170,6 +199,9 @@
 		FF11FBF82329E50E0043C29B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FF11FC0A232A270D0043C29B /* MediaPlayer.framework */,
+				FF11FC042329F8660043C29B /* RxAudioVisual.framework */,
+				FF11FC052329F8660043C29B /* RxSwift.framework */,
 				4B9F36DF15A393FC092613E9 /* Pods_Example.framework */,
 			);
 			name = Frameworks;
@@ -198,6 +230,7 @@
 				FF11FBB72329E2DE0043C29B /* Frameworks */,
 				FF11FBB82329E2DE0043C29B /* Resources */,
 				FF11FBFB2329E8070043C29B /* Lint */,
+				FF11FC12232A2C5E0043C29B /* Copy Frameworks(Carthage) */,
 			);
 			buildRules = (
 			);
@@ -235,6 +268,7 @@
 				FF11FBD52329E3560043C29B /* Frameworks */,
 				FF11FBD62329E3560043C29B /* Resources */,
 				FF11FBFA2329E7D00043C29B /* Lint */,
+				FF11FC13232A312D0043C29B /* Copy Frameworks(Carthage) */,
 			);
 			buildRules = (
 			);
@@ -275,6 +309,7 @@
 				TargetAttributes = {
 					FF11FBB92329E2DE0043C29B = {
 						CreatedOnToolsVersion = 10.2;
+						LastSwiftMigration = 1020;
 					};
 					FF11FBC22329E2DE0043C29B = {
 						CreatedOnToolsVersion = 10.2;
@@ -402,6 +437,48 @@
 			shellPath = /bin/sh;
 			shellScript = "set -exo pipefail\n\nPODS_ROOT=./Pods\n\nif [ -z \"$CI\" ]; then\n${PODS_ROOT}/SwiftLint/swiftlint autocorrect\n${PODS_ROOT}/SwiftLint/swiftlint\n\n${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat RxMusicPlayer\nelse\n${PODS_ROOT}/SwiftLint/swiftlint --strict\n${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat RxMusicPlayer --dryrun | tee /dev/stderr | grep 'swiftformat completed. 0'\nfi\n";
 		};
+		FF11FC12232A2C5E0043C29B /* Copy Frameworks(Carthage) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/input.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "Copy Frameworks(Carthage)";
+			outputFileListPaths = (
+				"$(SRCROOT)/output.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+		FF11FC13232A312D0043C29B /* Copy Frameworks(Carthage) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RxCocoa.framework",
+			);
+			name = "Copy Frameworks(Carthage)";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxSwift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxCocoa.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -409,6 +486,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFC91AF7232A4C1100B3E89A /* RxMusicPlayer+Rx.swift in Sources */,
+				FF11FBFD2329EE770043C29B /* RxMusicPlayer.swift in Sources */,
+				FF11FC16232A391F0043C29B /* RxMusicPlayerError.swift in Sources */,
+				FF11FC09232A23FF0043C29B /* AVAsynchronousKeyValueLoading+Rx.swift in Sources */,
+				FF11FC032329F81F0043C29B /* RxMusicPlayerItem+Rx.swift in Sources */,
+				FF11FBFF2329F3010043C29B /* RxMusicPlayerItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,7 +507,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF11FBDD2329E3560043C29B /* ViewController.swift in Sources */,
+				FF11FC11232A2A5E0043C29B /* TableViewController.swift in Sources */,
 				FF11FBDB2329E3560043C29B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -524,7 +607,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -582,7 +665,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -597,12 +680,17 @@
 		FF11FBCF2329E2DE0043C29B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = RxMusicPlayer/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -613,6 +701,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.yoheimuta.RxMusicPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -621,12 +710,17 @@
 		FF11FBD02329E2DE0043C29B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = RxMusicPlayer/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -645,6 +739,7 @@
 		FF11FBD22329E2DE0043C29B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = RxMusicPlayerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -662,6 +757,7 @@
 		FF11FBD32329E2DE0043C29B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = RxMusicPlayerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -682,6 +778,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -700,6 +800,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
