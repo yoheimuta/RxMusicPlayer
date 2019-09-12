@@ -1,3 +1,8 @@
+setup:bootstrap install-pod
+
+bootstrap:
+	carthage bootstrap --platform iOS --cache-builds
+
 update-pod:install-gem
 	bundle exec pod repo update
 	bundle exec pod install

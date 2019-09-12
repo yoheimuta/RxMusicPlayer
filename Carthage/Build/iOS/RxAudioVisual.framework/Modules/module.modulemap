@@ -1,0 +1,11 @@
+framework module RxAudioVisual {
+  umbrella header "RxAudioVisual.h"
+
+  export *
+  module * { export * }
+}
+
+module RxAudioVisual.Swift {
+    header "RxAudioVisual-Swift.h"
+    requires objc
+}
