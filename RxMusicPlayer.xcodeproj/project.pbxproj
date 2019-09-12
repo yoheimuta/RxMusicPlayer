@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26BC08410487D678000C1FD8 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9F36DF15A393FC092613E9 /* Pods_Example.framework */; };
 		FF11FBC42329E2DE0043C29B /* RxMusicPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; };
 		FF11FBC92329E2DE0043C29B /* RxMusicPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBC82329E2DE0043C29B /* RxMusicPlayerTests.swift */; };
 		FF11FBCB2329E2DE0043C29B /* RxMusicPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -37,6 +38,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29F14102611888BD7A78FEDB /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
+		4B9F36DF15A393FC092613E9 /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2967B6D05CEF133682298D0 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxMusicPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RxMusicPlayer.h; sourceTree = "<group>"; };
 		FF11FBBE2329E2DE0043C29B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -76,6 +80,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF11FBF92329E50E0043C29B /* RxMusicPlayer.framework in Frameworks */,
+				26BC08410487D678000C1FD8 /* Pods_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +94,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1528B0E698024AB876C414FA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				29F14102611888BD7A78FEDB /* Pods-Example.debug.xcconfig */,
+				A2967B6D05CEF133682298D0 /* Pods-Example.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		FF11FBB02329E2DE0043C29B = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +112,7 @@
 				FF11FBEE2329E35A0043C29B /* ExampleTests */,
 				FF11FBBB2329E2DE0043C29B /* Products */,
 				FF11FBF82329E50E0043C29B /* Frameworks */,
+				1528B0E698024AB876C414FA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -155,6 +170,7 @@
 		FF11FBF82329E50E0043C29B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4B9F36DF15A393FC092613E9 /* Pods_Example.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -181,6 +197,7 @@
 				FF11FBB62329E2DE0043C29B /* Sources */,
 				FF11FBB72329E2DE0043C29B /* Frameworks */,
 				FF11FBB82329E2DE0043C29B /* Resources */,
+				FF11FBFB2329E8070043C29B /* Lint */,
 			);
 			buildRules = (
 			);
@@ -213,9 +230,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FF11FBF62329E35A0043C29B /* Build configuration list for PBXNativeTarget "Example" */;
 			buildPhases = (
+				60FD28EAFF759771B731A19C /* [CP] Check Pods Manifest.lock */,
 				FF11FBD42329E3560043C29B /* Sources */,
 				FF11FBD52329E3560043C29B /* Frameworks */,
 				FF11FBD62329E3560043C29B /* Resources */,
+				FF11FBFA2329E7D00043C29B /* Lint */,
 			);
 			buildRules = (
 			);
@@ -323,6 +342,67 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		60FD28EAFF759771B731A19C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Example-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FF11FBFA2329E7D00043C29B /* Lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Lint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -eo pipefail\n\nif [ -z \"$CI\" ]; then\n${PODS_ROOT}/SwiftLint/swiftlint autocorrect\n${PODS_ROOT}/SwiftLint/swiftlint\n\n${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat Example\nelse\n${PODS_ROOT}/SwiftLint/swiftlint --strict\n${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat Example --dryrun | tee /dev/stderr | grep 'swiftformat completed. 0'\nfi\n";
+		};
+		FF11FBFB2329E8070043C29B /* Lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Lint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -exo pipefail\n\nPODS_ROOT=./Pods\n\nif [ -z \"$CI\" ]; then\n${PODS_ROOT}/SwiftLint/swiftlint autocorrect\n${PODS_ROOT}/SwiftLint/swiftlint\n\n${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat RxMusicPlayer\nelse\n${PODS_ROOT}/SwiftLint/swiftlint --strict\n${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat RxMusicPlayer --dryrun | tee /dev/stderr | grep 'swiftformat completed. 0'\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FF11FBB62329E2DE0043C29B /* Sources */ = {
@@ -598,6 +678,7 @@
 		};
 		FF11FBF22329E35A0043C29B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 29F14102611888BD7A78FEDB /* Pods-Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -615,6 +696,7 @@
 		};
 		FF11FBF32329E35A0043C29B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A2967B6D05CEF133682298D0 /* Pods-Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
