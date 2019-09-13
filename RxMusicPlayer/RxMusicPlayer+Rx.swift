@@ -12,7 +12,4 @@ import RxSwift
 extension RxMusicPlayer: ReactiveCompatible {}
 
 extension Reactive where Base: RxMusicPlayer {
-    public var status: Driver<RxMusicPlayer.Status> {
-        return base.statusRelay.asDriver()
-    }
 }

@@ -94,6 +94,11 @@
                             <outlet property="delegate" destination="NqR-FC-uVH" id="8ef-SN-iMD"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="nextButton" destination="S5f-It-JAk" id="G6h-Qe-b5b"/>
+                        <outlet property="playButton" destination="fWW-Kg-ZwK" id="pJh-ea-KRB"/>
+                        <outlet property="prevButton" destination="WSW-QU-Vgu" id="6vl-q6-OXl"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QBl-ba-owP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -8,6 +8,7 @@
 
 import Foundation
 
-enum RxMusicPlayerError: Error {
+public enum RxMusicPlayerError: Error {
+    // The processing is aborted.
     case abort
 }

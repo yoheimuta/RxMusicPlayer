@@ -24,9 +24,18 @@ open class RxMusicPlayer {
         case playing
         case paused
         case loading
+        case failed(err: Error)
     }
 
-    let statusRelay = BehaviorRelay<Status>(value: .ready)
+    /**
+     Player Command.
+     */
+    public enum Command {
+        case play
+        case playAt(index: Int)
+        case next
+        case previous
+    }
 
     private let scheduler = ConcurrentDispatchQueueScheduler(
         queue: DispatchQueue(label: "com.github.yoheimuta.RxMusicPlayer.RxMusicPlayer",
@@ -35,6 +44,7 @@ open class RxMusicPlayer {
     private var player: AVPlayer?
     private var queuedItems: [RxMusicPlayerItem]
     private var playIndex = 0
+    private var status = Status.ready
 
     /**
      Create an instance with a list of items without loading their assets.
@@ -43,28 +53,39 @@ open class RxMusicPlayer {
 
      - returns: RxMusicPlayer instance
      */
-    public required init?(items: [RxMusicPlayerItem] = [RxMusicPlayerItem]()) {
+    public required init(items: [RxMusicPlayerItem] = [RxMusicPlayerItem]()) {
         queuedItems = items
     }
 
     /**
-     Starts item playback.
+     Run a commmand.
      */
-    public func play() -> Observable<Status> {
+    public func run(cmd: Command) -> Driver<Status> {
+        return { () -> Observable<RxMusicPlayer.Status> in
+            switch cmd {
+            case .play:
+                return play()
+            case let .playAt(index: index):
+                return play(atIndex: index)
+            case .next:
+                return playNext()
+            case .previous:
+                return playPrevious()
+            }
+        }()
+            .asDriver(onErrorRecover: { e in .just(Status.failed(err: e)) })
+            .do(onNext: { [weak self] in self?.status = $0 })
+    }
+
+    private func play() -> Observable<Status> {
         return play(atIndex: playIndex)
     }
 
-    /**
-     Plays the item indicated by the passed index
-
-     - parameter index: index of the item to be played
-     */
-    public func play(atIndex index: Int) -> Observable<Status> {
+    private func play(atIndex index: Int) -> Observable<Status> {
         playIndex = index
 
         player?.pause()
         return queuedItems[playIndex].loadPlayerItem()
-            .observeOn(scheduler)
             .asObservable()
             .flatMap({ [weak self] item -> Observable<Status> in
                 guard let weakSelf = self else {
@@ -82,21 +103,14 @@ open class RxMusicPlayer {
                         default: return .loading
                         }
                     }
-                    .do(onNext: { self?.statusRelay.accept($0) })
             })
     }
 
-    /**
-     Plays the next item in the queue.
-     */
-    public func playNext() -> Observable<Status> {
+    private func playNext() -> Observable<Status> {
         return play(atIndex: playIndex + 1)
     }
 
-    /**
-     Plays the previous item in the queue
-     */
-    public func playPrevious() -> Observable<Status> {
+    private func playPrevious() -> Observable<Status> {
         return play(atIndex: playIndex - 1)
     }
 }
