@@ -9,6 +9,6 @@
 import Foundation
 
 public enum RxMusicPlayerError: Error {
-    // The processing is aborted.
-    case abort
+    case notFoundWeakReference
+    case invalidCommand(cmd: RxMusicPlayer.Command)
 }

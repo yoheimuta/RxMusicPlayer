@@ -22,31 +22,53 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let item = RxMusicPlayerItem(url: URL(string:
-                "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3")!)
-        let player = RxMusicPlayer(items: [item])
+        // 1) Create a player
+        let items = [
+            "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3",
+            "https://ccrma.stanford.edu/~jos/mp3/oboe-bassoon.mp3",
+            "https://ccrma.stanford.edu/~jos/mp3/shakuhachi.mp3",
+            "https://ccrma.stanford.edu/~jos/mp3/trumpet.mp3",
+        ]
+        .map({ RxMusicPlayerItem(url: URL(string: $0)!) })
+        let player = RxMusicPlayer(items: items)
 
+        // 2) Control views
+        player.rx.canSendCommand(cmd: RxMusicPlayer.Command.play)
+            .do(onNext: { [weak self] canPlay in
+                self?.playButton.setTitle(canPlay ? "Play" : "Pause", for: .normal)
+            })
+            .drive()
+            .disposed(by: disposeBag)
+
+        player.rx.canSendCommand(cmd: RxMusicPlayer.Command.next)
+            .drive(nextButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+
+        player.rx.canSendCommand(cmd: RxMusicPlayer.Command.previous)
+            .drive(prevButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+
+        // 3) Process the user's input
         Driver.merge(
-            playButton.rx.tap.asDriver().map { RxMusicPlayer.Command.play },
+            playButton.rx.tap.asDriver().map { [weak self] in
+                if self?.playButton.currentTitle == "Play" {
+                    return RxMusicPlayer.Command.play
+                }
+                return RxMusicPlayer.Command.pause
+            },
             nextButton.rx.tap.asDriver().map { RxMusicPlayer.Command.next },
             prevButton.rx.tap.asDriver().map { RxMusicPlayer.Command.previous }
         )
+        .debug()
         .flatMapLatest({ cmd in
             player.run(cmd: cmd)
         })
-        .debug()
         .do(onNext: { status in
             switch status {
-            case .ready:
-                print("ready to playback")
-            case .loading:
-                print("loading now")
-            case .playing:
-                print("playing now")
-            case .paused:
-                print("pausing now")
-            case let .failed(err):
-                print("error=\(err)")
+            case let .failed(err, cmd):
+                print("error=\(err), cmd=\(cmd)")
+            default:
+                break
             }
         })
         .drive()

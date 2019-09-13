@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -27,19 +28,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="610.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="84" translatesAutoresizingMaskIntoConstraints="NO" id="Cqi-CS-rBj">
-                                                    <rect key="frame" x="56" y="441.5" width="302.5" height="30.5"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Cqi-CS-rBj">
+                                                    <rect key="frame" x="132" y="441.5" width="150.5" height="30.5"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WSW-QU-Vgu">
                                                             <rect key="frame" x="0.0" y="0.5" width="59" height="30"/>
                                                             <state key="normal" title="Previous"/>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fWW-Kg-ZwK">
-                                                            <rect key="frame" x="143" y="0.5" width="30" height="30"/>
+                                                            <rect key="frame" x="67" y="0.5" width="30" height="30"/>
                                                             <state key="normal" title="Play"/>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5f-It-JAk">
-                                                            <rect key="frame" x="270.5" y="0.5" width="32" height="30"/>
+                                                            <rect key="frame" x="118.5" y="0.5" width="32" height="30"/>
                                                             <state key="normal" title="Next"/>
                                                         </button>
                                                     </subviews>
