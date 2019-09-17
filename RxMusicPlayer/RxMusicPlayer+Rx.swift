@@ -11,7 +11,7 @@ import RxSwift
 
 extension Reactive where Base: RxMusicPlayer {
     /**
-     Predicate about whether or not sending the given command
+     Predicate about whether or not sending the given command.
      */
     public func canSendCommand(cmd: RxMusicPlayer.Command) -> Driver<Bool> {
         switch cmd {
@@ -24,6 +24,14 @@ extension Reactive where Base: RxMusicPlayer {
         case .pause:
             return canPause()
         }
+    }
+
+    /**
+     Get the current item's title.
+     */
+    public func currentItemTitle() -> Driver<String?> {
+        return currentItemMeta()
+            .map { $0.title }
     }
 
     private func canPlay() -> Driver<Bool> {
@@ -63,5 +71,21 @@ extension Reactive where Base: RxMusicPlayer {
     private func canPrevious() -> Driver<Bool> {
         return base.playIndexRelay.asDriver()
             .map { 0 < $0 }
+    }
+
+    private func currentItem() -> Driver<RxMusicPlayerItem?> {
+        return base.playIndexRelay.asDriver()
+            .map { [weak base] index in
+                guard let items = base?.queuedItems else { return nil }
+                return index < items.count ? items[index] : nil
+            }
+    }
+
+    private func currentItemMeta() -> Driver<RxMusicPlayerItem.Meta> {
+        return currentItem()
+            .flatMap { Driver.from(optional: $0) }
+            .flatMapLatest { item -> Driver<RxMusicPlayerItem.Meta> in
+                item.rx.meta()
+            }
     }
 }

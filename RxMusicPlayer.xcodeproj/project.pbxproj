@@ -28,6 +28,8 @@
 		FF11FC14232A315B0043C29B /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FC052329F8660043C29B /* RxSwift.framework */; };
 		FF11FC16232A391F0043C29B /* RxMusicPlayerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */; };
 		FFC91AF7232A4C1100B3E89A /* RxMusicPlayer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */; };
+		FFC91B25232B92E200B3E89A /* RxMusicPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FFC91B2C232B9A5A00B3E89A /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC91B2B232B9A5A00B3E89A /* Utility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,7 +47,28 @@
 			remoteGlobalIDString = FF11FBD72329E3560043C29B;
 			remoteInfo = Example;
 		};
+		FFC91B26232B92E200B3E89A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF11FBB12329E2DE0043C29B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FF11FBB92329E2DE0043C29B;
+			remoteInfo = RxMusicPlayer;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FFC91B28232B92E300B3E89A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FFC91B25232B92E200B3E89A /* RxMusicPlayer.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		29F14102611888BD7A78FEDB /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -76,6 +99,7 @@
 		FF11FC10232A2A5E0043C29B /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxMusicPlayerError.swift; sourceTree = "<group>"; };
 		FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxMusicPlayer+Rx.swift"; sourceTree = "<group>"; };
+		FFC91B2B232B9A5A00B3E89A /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +203,7 @@
 			children = (
 				FF11FBDA2329E3560043C29B /* AppDelegate.swift */,
 				FF11FC10232A2A5E0043C29B /* TableViewController.swift */,
+				FFC91B2B232B9A5A00B3E89A /* Utility.swift */,
 				FF11FBDE2329E3560043C29B /* Main.storyboard */,
 				FF11FBE12329E35A0043C29B /* Assets.xcassets */,
 				FF11FBE32329E35A0043C29B /* LaunchScreen.storyboard */,
@@ -269,10 +294,12 @@
 				FF11FBD62329E3560043C29B /* Resources */,
 				FF11FBFA2329E7D00043C29B /* Lint */,
 				FF11FC13232A312D0043C29B /* Copy Frameworks(Carthage) */,
+				FFC91B28232B92E300B3E89A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FFC91B27232B92E200B3E89A /* PBXTargetDependency */,
 			);
 			name = Example;
 			productName = Example;
@@ -463,17 +490,15 @@
 			files = (
 			);
 			inputFileListPaths = (
+				"$(SRCROOT)/input.xcfilelist",
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RxCocoa.framework",
 			);
 			name = "Copy Frameworks(Carthage)";
 			outputFileListPaths = (
+				"$(SRCROOT)/output.xcfilelist",
 			);
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxSwift.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxCocoa.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -509,6 +534,7 @@
 			files = (
 				FF11FC11232A2A5E0043C29B /* TableViewController.swift in Sources */,
 				FF11FBDB2329E3560043C29B /* AppDelegate.swift in Sources */,
+				FFC91B2C232B9A5A00B3E89A /* Utility.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +558,11 @@
 			isa = PBXTargetDependency;
 			target = FF11FBD72329E3560043C29B /* Example */;
 			targetProxy = FF11FBEC2329E35A0043C29B /* PBXContainerItemProxy */;
+		};
+		FFC91B27232B92E200B3E89A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FF11FBB92329E2DE0043C29B /* RxMusicPlayer */;
+			targetProxy = FFC91B26232B92E200B3E89A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -681,9 +712,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = NUGP6A3A8X;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -711,9 +743,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = NUGP6A3A8X;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -776,8 +809,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 29F14102611888BD7A78FEDB /* Pods-Example.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NUGP6A3A8X;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -789,6 +825,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.yoheimuta.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -798,8 +835,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A2967B6D05CEF133682298D0 /* Pods-Example.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NUGP6A3A8X;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -811,6 +851,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.yoheimuta.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

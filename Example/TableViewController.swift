@@ -16,6 +16,7 @@ class TableViewController: UITableViewController {
     @IBOutlet private var playButton: UIButton!
     @IBOutlet private var nextButton: UIButton!
     @IBOutlet private var prevButton: UIButton!
+    @IBOutlet private var titleLabel: UILabel!
 
     private let disposeBag = DisposeBag()
 
@@ -48,8 +49,13 @@ class TableViewController: UITableViewController {
             .drive(prevButton.rx.isEnabled)
             .disposed(by: disposeBag)
 
+        player.rx.currentItemTitle()
+            .map { $0 ?? "No Title" }
+            .drive(titleLabel.rx.text)
+            .disposed(by: disposeBag)
+
         // 3) Process the user's input
-        Driver.merge(
+        let cmd = Driver.merge(
             playButton.rx.tap.asDriver().map { [weak self] in
                 if self?.playButton.currentTitle == "Play" {
                     return RxMusicPlayer.Command.play
@@ -60,18 +66,28 @@ class TableViewController: UITableViewController {
             prevButton.rx.tap.asDriver().map { RxMusicPlayer.Command.previous }
         )
         .debug()
-        .flatMapLatest({ cmd in
-            player.run(cmd: cmd)
-        })
-        .do(onNext: { status in
-            switch status {
-            case let .failed(err, cmd):
-                print("error=\(err), cmd=\(cmd)")
-            default:
-                break
+
+        player.loop(cmd: cmd)
+            .debug()
+            .flatMap { [weak self] status -> Driver<()> in
+                guard let weakSelf = self else { return .just(()) }
+
+                switch status {
+                case let RxMusicPlayer.Status.failed(err: err):
+                    return Utility.promptOKAlertFor(src: weakSelf,
+                                                    title: "Error",
+                                                    message: err.localizedDescription)
+
+                case let RxMusicPlayer.Status.critical(err: err):
+                    return Utility.promptOKAlertFor(src: weakSelf,
+                                                    title: "Critical Error",
+                                                    message: err.localizedDescription)
+                default:
+                    print(status)
+                }
+                return .just(())
             }
-        })
-        .drive()
-        .disposed(by: disposeBag)
+            .drive()
+            .disposed(by: disposeBag)
     }
 }

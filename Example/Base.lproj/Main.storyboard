@@ -99,6 +99,7 @@
                         <outlet property="nextButton" destination="S5f-It-JAk" id="G6h-Qe-b5b"/>
                         <outlet property="playButton" destination="fWW-Kg-ZwK" id="pJh-ea-KRB"/>
                         <outlet property="prevButton" destination="WSW-QU-Vgu" id="6vl-q6-OXl"/>
+                        <outlet property="titleLabel" destination="3M2-qt-bFd" id="j98-cQ-NtN"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QBl-ba-owP" userLabel="First Responder" sceneMemberID="firstResponder"/>

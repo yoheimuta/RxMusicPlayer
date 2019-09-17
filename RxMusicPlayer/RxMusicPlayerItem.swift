@@ -9,18 +9,21 @@
 import AVFoundation
 import Foundation
 import RxAudioVisual
+import RxCocoa
 import RxSwift
 
-open class RxMusicPlayerItem {
+open class RxMusicPlayerItem: NSObject {
     /**
      Metadata for player item.
      */
     public struct Meta {
-        public private(set) var duration: Double?
+        public fileprivate(set) var duration: CMTime?
         public private(set) var title: String?
         public private(set) var album: String?
         public private(set) var artist: String?
         public private(set) var artwork: UIImage?
+
+        let didAllSetRelay = BehaviorRelay<Bool>(value: false)
 
         fileprivate mutating func set(metaItem item: AVMetadataItem) {
             guard let commonKey = item.commonKey else { return }
@@ -64,24 +67,42 @@ open class RxMusicPlayerItem {
      */
     public required init(url: Foundation.URL) {
         self.url = url
+        super.init()
     }
 
     func loadPlayerItem() -> Single<RxMusicPlayerItem?> {
+        if meta.didAllSetRelay.value {
+            playerItem = AVPlayerItem(asset: playerItem!.asset)
+            return .just(self)
+        }
+
         let asset = AVAsset(url: url)
         playerItem = AVPlayerItem(asset: asset)
 
         return Observable.combineLatest(
-            asset.commonMetadata
-                .map { m in
-                    m.rx.loadAsync(for: AVMetadataKeySpace.common.rawValue)
-                        .map { _ in m }
-                        .asObservable()
+            Observable.combineLatest(
+                asset.commonMetadata
+                    .map { m in
+                        m.rx.loadAsync(for: AVMetadataKeySpace.common.rawValue)
+                            .map { _ in m }
+                            .asObservable()
+                    }
+            )
+            .map { [weak self] ms in
+                for m in ms {
+                    self?.meta.set(metaItem: m)
+                }
+                return
+            },
+            asset.rx.duration
+                .asObservable()
+                .map { [weak self] duration in
+                    self?.meta.duration = duration
+                    return
                 }
         )
-        .map { [weak self] ms in
-            for m in ms {
-                self?.meta.set(metaItem: m)
-            }
+        .map { [weak self] _ in
+            self?.meta.didAllSetRelay.accept(true)
             return self
         }
         .asSingle()
