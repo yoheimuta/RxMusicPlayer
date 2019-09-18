@@ -9,12 +9,12 @@
 import AVFoundation
 
 extension CMTime {
-    var displayTime: String? {
+    public var displayTime: String? {
         guard let sec = seconds?.rounded().toInt() else { return nil }
         return String(format: "%d:%02d", sec / 60, sec % 60)
     }
 
-    private var seconds: Double? {
+    public var seconds: Double? {
         let time = CMTimeGetSeconds(self)
         guard time.isNaN == false else { return nil }
         return time

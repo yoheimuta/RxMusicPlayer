@@ -65,6 +65,19 @@ class TableViewController: UITableViewController {
             .drive(seekDurationLabel.rx.text)
             .disposed(by: disposeBag)
 
+        player.rx.currentItemDuration()
+            .map { Float($0?.seconds ?? 0) }
+            .do(onNext: { [weak self] in
+                self?.seekBar.maximumValue = $0
+            })
+            .drive()
+            .disposed(by: disposeBag)
+
+        player.rx.currentItemTime()
+            .map { Float($0?.seconds ?? 0) }
+            .drive(seekBar.rx.value)
+            .disposed(by: disposeBag)
+
         // 3) Process the user's input
         let cmd = Driver.merge(
             playButton.rx.tap.asDriver().map { [weak self] in
