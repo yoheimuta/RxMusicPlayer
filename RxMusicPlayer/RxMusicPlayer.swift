@@ -50,6 +50,7 @@ open class RxMusicPlayer: NSObject {
         case previous
         case pause
         case stop
+        case seek(seconds: Int)
 
         public static func == (lhs: Command, rhs: Command) -> Bool {
             switch (lhs, rhs) {
@@ -61,6 +62,8 @@ open class RxMusicPlayer: NSObject {
                 return true
             case let (.playAt(lindex), .playAt(index: rindex)):
                 return lindex == rindex
+            case let (.seek(lseconds), .seek(rseconds)):
+                return lseconds == rseconds
             default:
                 return false
             }
@@ -197,6 +200,8 @@ open class RxMusicPlayer: NSObject {
                     return weakSelf.pause()
                 case .stop:
                     return weakSelf.stop()
+                case let .seek(seconds: sec):
+                    return weakSelf.seek(toSecond: sec)
                 }
             }
             .catchError { [weak self] err in
@@ -240,7 +245,26 @@ open class RxMusicPlayer: NSObject {
     }
 
     private func playPrevious() -> Observable<()> {
+        if 1 < (player?.currentTime().seconds ?? 0) {
+            return seek(toSecond: 0)
+        }
         return play(atIndex: playIndex - 1)
+    }
+
+    private func replayCurrentItem() -> Observable<()> {
+        return seek(toSecond: 0, shouldPlay: true)
+    }
+
+    private func seek(toSecond second: Int,
+                      shouldPlay: Bool = false) -> Observable<()> {
+        guard let player = player else { return .just(()) }
+
+        player.seek(to: CMTimeMake(value: Int64(second), timescale: 1))
+        if shouldPlay && status != .playing {
+            player.play()
+            status = .playing
+        }
+        return .just(())
     }
 
     private func pause() -> Observable<()> {

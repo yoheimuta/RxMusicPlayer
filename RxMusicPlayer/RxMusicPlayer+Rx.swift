@@ -27,6 +27,8 @@ extension Reactive where Base: RxMusicPlayer {
             return canPause()
         case .stop:
             return .just(true)
+        case .seek:
+            return canSeek()
         }
     }
 
@@ -51,7 +53,29 @@ extension Reactive where Base: RxMusicPlayer {
      */
     public func currentItemDurationDisplay() -> Driver<String?> {
         return currentItemDuration()
-            .map { $0?.displayTime ?? "0:00" }
+            .map { $0?.displayTime ?? "--:--" }
+    }
+
+    /**
+     Get the current item's rest duration.
+     */
+    public func currentItemRestDuration() -> Driver<CMTime?> {
+        return Driver.combineLatest(
+            currentItemDuration(),
+            currentItemTime()
+        ) { duration, currentTime in
+            guard let ltime = duration,
+                let rtime = currentTime else { return nil }
+            return CMTimeSubtract(ltime, rtime)
+        }
+    }
+
+    /**
+     Get the current item's rest duration formatting like "0:20".
+     */
+    public func currentItemRestDurationDisplay() -> Driver<String?> {
+        return currentItemRestDuration()
+            .map { $0?.displayTime ?? "--:--" }
     }
 
     /**
@@ -75,7 +99,7 @@ extension Reactive where Base: RxMusicPlayer {
      */
     public func currentItemTimeDisplay() -> Driver<String?> {
         return currentItemTime()
-            .map { $0?.displayTime ?? "0:00" }
+            .map { $0?.displayTime ?? "--:--" }
     }
 
     private func canPlay() -> Driver<Bool> {
@@ -114,7 +138,19 @@ extension Reactive where Base: RxMusicPlayer {
 
     private func canPrevious() -> Driver<Bool> {
         return base.playIndexRelay.asDriver()
-            .map { 0 < $0 }
+            .flatMapLatest { [weak base] index in
+                if 0 < index {
+                    return .just(true)
+                }
+                guard let weakBase = base else { return .just(false) }
+                return weakBase.rx.currentItemTime()
+                    .map { 1 < ($0?.seconds ?? 0) }
+            }
+    }
+
+    private func canSeek() -> Driver<Bool> {
+        return base.playerRelay.asDriver()
+            .map { $0 != nil }
     }
 
     private func currentItem() -> Driver<RxMusicPlayerItem?> {

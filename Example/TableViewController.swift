@@ -37,19 +37,23 @@ class TableViewController: UITableViewController {
         let player = RxMusicPlayer(items: items)
 
         // 2) Control views
-        player.rx.canSendCommand(cmd: RxMusicPlayer.Command.play)
+        player.rx.canSendCommand(cmd: .play)
             .do(onNext: { [weak self] canPlay in
                 self?.playButton.setTitle(canPlay ? "Play" : "Pause", for: .normal)
             })
             .drive()
             .disposed(by: disposeBag)
 
-        player.rx.canSendCommand(cmd: RxMusicPlayer.Command.next)
+        player.rx.canSendCommand(cmd: .next)
             .drive(nextButton.rx.isEnabled)
             .disposed(by: disposeBag)
 
-        player.rx.canSendCommand(cmd: RxMusicPlayer.Command.previous)
+        player.rx.canSendCommand(cmd: .previous)
             .drive(prevButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+
+        player.rx.canSendCommand(cmd: .seek(seconds: 0))
+            .drive(seekBar.rx.isUserInteractionEnabled)
             .disposed(by: disposeBag)
 
         player.rx.currentItemTitle()
@@ -57,7 +61,11 @@ class TableViewController: UITableViewController {
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
 
-        player.rx.currentItemDurationDisplay()
+        player.rx.currentItemRestDurationDisplay()
+            .map {
+                guard let rest = $0 else { return "--:--" }
+                return "-\(rest)"
+            }
             .drive(durationLabel.rx.text)
             .disposed(by: disposeBag)
 
@@ -73,9 +81,24 @@ class TableViewController: UITableViewController {
             .drive()
             .disposed(by: disposeBag)
 
+        let seekValuePass = BehaviorRelay<Bool>(value: true)
         player.rx.currentItemTime()
-            .map { Float($0?.seconds ?? 0) }
+            .withLatestFrom(seekValuePass.asDriver()) { ($0, $1) }
+            .filter { $0.1 }
+            .map { Float($0.0?.seconds ?? 0) }
             .drive(seekBar.rx.value)
+            .disposed(by: disposeBag)
+        seekBar.rx.controlEvent(.touchDown)
+            .do(onNext: {
+                seekValuePass.accept(false)
+            })
+            .subscribe()
+            .disposed(by: disposeBag)
+        seekBar.rx.controlEvent(.touchUpInside)
+            .do(onNext: {
+                seekValuePass.accept(true)
+            })
+            .subscribe()
             .disposed(by: disposeBag)
 
         // 3) Process the user's input
@@ -87,7 +110,12 @@ class TableViewController: UITableViewController {
                 return RxMusicPlayer.Command.pause
             },
             nextButton.rx.tap.asDriver().map { RxMusicPlayer.Command.next },
-            prevButton.rx.tap.asDriver().map { RxMusicPlayer.Command.previous }
+            prevButton.rx.tap.asDriver().map { RxMusicPlayer.Command.previous },
+            seekBar.rx.controlEvent(.valueChanged).asDriver()
+                .map { [weak self] _ in
+                    RxMusicPlayer.Command.seek(seconds: Int(self?.seekBar.value ?? 0))
+                }
+                .distinctUntilChanged()
         )
         .debug()
 
@@ -100,11 +128,13 @@ class TableViewController: UITableViewController {
 
                 switch status {
                 case let RxMusicPlayer.Status.failed(err: err):
+                    print(err)
                     return Utility.promptOKAlertFor(src: weakSelf,
                                                     title: "Error",
                                                     message: err.localizedDescription)
 
                 case let RxMusicPlayer.Status.critical(err: err):
+                    print(err)
                     return Utility.promptOKAlertFor(src: weakSelf,
                                                     title: "Critical Error",
                                                     message: err.localizedDescription)
