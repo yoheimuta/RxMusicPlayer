@@ -17,6 +17,9 @@ class TableViewController: UITableViewController {
     @IBOutlet private var nextButton: UIButton!
     @IBOutlet private var prevButton: UIButton!
     @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var seekBar: UISlider!
+    @IBOutlet private var seekDurationLabel: UILabel!
+    @IBOutlet private var durationLabel: UILabel!
 
     private let disposeBag = DisposeBag()
 
@@ -54,6 +57,14 @@ class TableViewController: UITableViewController {
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
 
+        player.rx.currentItemDurationDisplay()
+            .drive(durationLabel.rx.text)
+            .disposed(by: disposeBag)
+
+        player.rx.currentItemTimeDisplay()
+            .drive(seekDurationLabel.rx.text)
+            .disposed(by: disposeBag)
+
         // 3) Process the user's input
         let cmd = Driver.merge(
             playButton.rx.tap.asDriver().map { [weak self] in
@@ -68,7 +79,9 @@ class TableViewController: UITableViewController {
         .debug()
 
         player.loop(cmd: cmd)
-            .debug()
+            .do(onNext: { status in
+                UIApplication.shared.isNetworkActivityIndicatorVisible = status == .loading
+            })
             .flatMap { [weak self] status -> Driver<()> in
                 guard let weakSelf = self else { return .just(()) }
 

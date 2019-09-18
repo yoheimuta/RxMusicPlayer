@@ -27,6 +27,9 @@
 		FF11FC11232A2A5E0043C29B /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC10232A2A5E0043C29B /* TableViewController.swift */; };
 		FF11FC14232A315B0043C29B /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FC052329F8660043C29B /* RxSwift.framework */; };
 		FF11FC16232A391F0043C29B /* RxMusicPlayerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */; };
+		FF1EBBBC2331C9210049C1C6 /* Double+Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBBB2331C9210049C1C6 /* Double+Int.swift */; };
+		FF1EBBBE2331DECD0049C1C6 /* AVPlayer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBBD2331DECD0049C1C6 /* AVPlayer+Rx.swift */; };
+		FF6769C82330E59500906FF6 /* CMTime+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6769C62330E3D100906FF6 /* CMTime+String.swift */; };
 		FFC91AF7232A4C1100B3E89A /* RxMusicPlayer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */; };
 		FFC91B25232B92E200B3E89A /* RxMusicPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FFC91B2C232B9A5A00B3E89A /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC91B2B232B9A5A00B3E89A /* Utility.swift */; };
@@ -98,6 +101,9 @@
 		FF11FC0A232A270D0043C29B /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		FF11FC10232A2A5E0043C29B /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxMusicPlayerError.swift; sourceTree = "<group>"; };
+		FF1EBBBB2331C9210049C1C6 /* Double+Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Int.swift"; sourceTree = "<group>"; };
+		FF1EBBBD2331DECD0049C1C6 /* AVPlayer+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Rx.swift"; sourceTree = "<group>"; };
+		FF6769C62330E3D100906FF6 /* CMTime+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CMTime+String.swift"; sourceTree = "<group>"; };
 		FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxMusicPlayer+Rx.swift"; sourceTree = "<group>"; };
 		FFC91B2B232B9A5A00B3E89A /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -183,7 +189,10 @@
 				FF11FBFE2329F3010043C29B /* RxMusicPlayerItem.swift */,
 				FF11FC022329F81F0043C29B /* RxMusicPlayerItem+Rx.swift */,
 				FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */,
+				FF1EBBBD2331DECD0049C1C6 /* AVPlayer+Rx.swift */,
 				FF11FC08232A23FF0043C29B /* AVAsynchronousKeyValueLoading+Rx.swift */,
+				FF6769C62330E3D100906FF6 /* CMTime+String.swift */,
+				FF1EBBBB2331C9210049C1C6 /* Double+Int.swift */,
 				FF11FBBE2329E2DE0043C29B /* Info.plist */,
 			);
 			path = RxMusicPlayer;
@@ -515,8 +524,11 @@
 				FF11FBFD2329EE770043C29B /* RxMusicPlayer.swift in Sources */,
 				FF11FC16232A391F0043C29B /* RxMusicPlayerError.swift in Sources */,
 				FF11FC09232A23FF0043C29B /* AVAsynchronousKeyValueLoading+Rx.swift in Sources */,
+				FF1EBBBC2331C9210049C1C6 /* Double+Int.swift in Sources */,
 				FF11FC032329F81F0043C29B /* RxMusicPlayerItem+Rx.swift in Sources */,
 				FF11FBFF2329F3010043C29B /* RxMusicPlayerItem.swift in Sources */,
+				FF6769C82330E59500906FF6 /* CMTime+String.swift in Sources */,
+				FF1EBBBE2331DECD0049C1C6 /* AVPlayer+Rx.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

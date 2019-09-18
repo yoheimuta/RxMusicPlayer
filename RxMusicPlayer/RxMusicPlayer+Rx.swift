@@ -6,6 +6,8 @@
 //  Copyright © 2019 YOSHIMUTA YOHEI. All rights reserved.
 //
 
+import AVFoundation
+import RxAudioVisual
 import RxCocoa
 import RxSwift
 
@@ -23,6 +25,8 @@ extension Reactive where Base: RxMusicPlayer {
             return canPrevious()
         case .pause:
             return canPause()
+        case .stop:
+            return .just(true)
         }
     }
 
@@ -32,6 +36,46 @@ extension Reactive where Base: RxMusicPlayer {
     public func currentItemTitle() -> Driver<String?> {
         return currentItemMeta()
             .map { $0.title }
+    }
+
+    /**
+     Get the current item's duration.
+     */
+    public func currentItemDuration() -> Driver<CMTime?> {
+        return currentItemMeta()
+            .map { $0.duration }
+    }
+
+    /**
+     Get the current item's duration formatting like "0:20".
+     */
+    public func currentItemDurationDisplay() -> Driver<String?> {
+        return currentItemDuration()
+            .map { $0?.displayTime ?? "0:00" }
+    }
+
+    /**
+     Get the current item's curret time.
+     */
+    public func currentItemTime() -> Driver<CMTime?> {
+        return base.playerRelay.asDriver()
+            .flatMapLatest { player in
+                guard let weakPlayer = player else {
+                    return .just(nil)
+                }
+                return weakPlayer.rx.periodicTimeObserver(interval:
+                    CMTimeMakeWithSeconds(0.05, preferredTimescale: Int32(NSEC_PER_SEC)))
+                    .map { t -> CMTime? in t }
+                    .asDriver(onErrorJustReturn: nil)
+            }
+    }
+
+    /**
+     Get the current item's curret time formatting like "0:20".
+     */
+    public func currentItemTimeDisplay() -> Driver<String?> {
+        return currentItemTime()
+            .map { $0?.displayTime ?? "0:00" }
     }
 
     private func canPlay() -> Driver<Bool> {

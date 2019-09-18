@@ -79,32 +79,38 @@ open class RxMusicPlayerItem: NSObject {
         let asset = AVAsset(url: url)
         playerItem = AVPlayerItem(asset: asset)
 
-        return Observable.combineLatest(
-            Observable.combineLatest(
-                asset.commonMetadata
-                    .map { m in
-                        m.rx.loadAsync(for: AVMetadataKeySpace.common.rawValue)
-                            .map { _ in m }
-                            .asObservable()
+        return Single.create { single in
+            let load = Observable.combineLatest(
+                Observable.combineLatest(
+                    asset.commonMetadata
+                        .map { m in
+                            m.rx.loadAsync(for: AVMetadataKeySpace.common.rawValue)
+                                .map { _ in m }
+                                .asObservable()
+                        }
+                )
+                .map { [weak self] ms in
+                    for m in ms {
+                        self?.meta.set(metaItem: m)
+                    }
+                    return
+                },
+                asset.rx.duration
+                    .asObservable()
+                    .map { [weak self] duration in
+                        self?.meta.duration = duration
+                        return
                     }
             )
-            .map { [weak self] ms in
-                for m in ms {
-                    self?.meta.set(metaItem: m)
-                }
-                return
-            },
-            asset.rx.duration
-                .asObservable()
-                .map { [weak self] duration in
-                    self?.meta.duration = duration
-                    return
-                }
-        )
-        .map { [weak self] _ in
-            self?.meta.didAllSetRelay.accept(true)
-            return self
+            .map { [weak self] _ in
+                self?.meta.didAllSetRelay.accept(true)
+                single(.success(self))
+            }
+            .subscribe()
+
+            return Disposables.create {
+                load.dispose()
+            }
         }
-        .asSingle()
     }
 }

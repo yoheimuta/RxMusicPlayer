@@ -6,12 +6,16 @@
 //  Copyright © 2019 YOSHIMUTA YOHEI. All rights reserved.
 //
 
+import AVFoundation
 import Foundation
 
 public enum RxMusicPlayerError: Error, Equatable {
-    case internalError
+    case internalError(String)
     case notFoundWeakReference
     case invalidCommand(cmd: RxMusicPlayer.Command)
+    case playerItemFailed(err: Error)
+    case playerItemError(log: AVPlayerItemErrorLog)
+    case failedToPlayToEndTime(String)
 
     public static func == (lhs: RxMusicPlayerError, rhs: RxMusicPlayerError) -> Bool {
         switch (lhs, rhs) {

@@ -49,13 +49,15 @@ open class RxMusicPlayer: NSObject {
         case next
         case previous
         case pause
+        case stop
 
         public static func == (lhs: Command, rhs: Command) -> Bool {
             switch (lhs, rhs) {
             case (.play, .play),
                  (.next, .next),
                  (.previous, .previous),
-                 (.pause, .pause):
+                 (.pause, .pause),
+                 (.stop, .stop):
                 return true
             case let (.playAt(lindex), .playAt(index: rindex)):
                 return lindex == rindex
@@ -65,28 +67,42 @@ open class RxMusicPlayer: NSObject {
         }
     }
 
-    public var playIndex: Int {
-        return playIndexRelay.value
+    public private(set) var playIndex: Int {
+        set {
+            playIndexRelay.accept(newValue)
+        }
+        get {
+            return playIndexRelay.value
+        }
     }
 
-    public var queuedItems: [RxMusicPlayerItem] {
-        return queuedItemsRelay.value
+    public private(set) var queuedItems: [RxMusicPlayerItem] {
+        set {
+            queuedItemsRelay.accept(newValue)
+        }
+        get {
+            return queuedItemsRelay.value
+        }
     }
 
-    public var status: Status {
-        return statusRelay.value
+    public private(set) var status: Status {
+        set {
+            statusRelay.accept(newValue)
+        }
+        get {
+            return statusRelay.value
+        }
     }
 
     let playIndexRelay = BehaviorRelay<Int>(value: 0)
     let queuedItemsRelay = BehaviorRelay<[RxMusicPlayerItem]>(value: [])
     let statusRelay = BehaviorRelay<Status>(value: .ready)
+    let playerRelay = BehaviorRelay<AVPlayer?>(value: nil)
 
     private let scheduler = ConcurrentDispatchQueueScheduler(
-        queue: DispatchQueue(label: "com.github.yoheimuta.RxMusicPlayer.RxMusicPlayer",
-                             qos: .background)
+        queue: DispatchQueue.global(qos: .background)
     )
-    private let playerRelay = BehaviorRelay<AVPlayer?>(value: nil)
-    private var player: AVPlayer? {
+    public private(set) var player: AVPlayer? {
         set {
             playerRelay.accept(newValue)
         }
@@ -111,36 +127,112 @@ open class RxMusicPlayer: NSObject {
      Run loop.
      */
     public func loop(cmd: Driver<Command>) -> Driver<Status> {
-        return Driver.combineLatest(
-            statusRelay.asDriver(),
-            playerRelay.asDriver()
-                .flatMapLatest { p -> Driver<()> in
-                    guard let weakPlayer = p else {
-                        return .just(())
-                    }
-                    return weakPlayer.rx.status
-                        .map { [weak self] st in
-                            switch st {
-                            case .failed: self?.statusRelay.accept(.critical(err: weakPlayer.error!))
-                            default:
-                                break
-                            }
-                        }
-                        .asDriver(onErrorJustReturn: ())
+        let autoCmd = PublishRelay<Command>()
+
+        let status = statusRelay
+            .asObservable()
+
+        let playerStatus = playerRelay
+            .flatMapLatest { p -> Observable<()> in
+                guard let weakPlayer = p else {
+                    return .just(())
                 }
-                .distinctUntilChanged { true },
-            cmd
-                .flatMapLatest(runCommand)
-                .distinctUntilChanged { true }
+                return weakPlayer.rx.status
+                    .map { [weak self] st in
+                        switch st {
+                        case .failed:
+                            self?.status = .critical(err: weakPlayer.error!)
+                            autoCmd.accept(.stop)
+                        default:
+                            break
+                        }
+                    }
+            }
+            .subscribe()
+
+        let playerItemStatus = playerRelay
+            .flatMapLatest { p -> Observable<()> in
+                guard let weakItem = p?.currentItem else {
+                    return .just(())
+                }
+                return weakItem.rx.status
+                    .map { [weak self] st in
+                        switch st {
+                        case .readyToPlay: self?.status = .playing
+                        case .failed: self?.status = .failed(err: weakItem.error!)
+                        default: self?.status = .loading
+                        }
+                    }
+            }
+            .subscribe()
+
+        let newErrorLogEntry = NotificationCenter.default.rx
+            .notification(.AVPlayerItemNewErrorLogEntry)
+            .do(onNext: { [weak self] notification in
+                guard let object = notification.object,
+                    let playerItem = object as? AVPlayerItem else {
+                    return
+                }
+                guard let errorLog: AVPlayerItemErrorLog = playerItem.errorLog() else {
+                    return
+                }
+                self?.status = .failed(err: RxMusicPlayerError.playerItemError(log: errorLog))
+            })
+            .subscribe()
+
+        let failedToPlayToEndTime = NotificationCenter.default.rx
+            .notification(.AVPlayerItemFailedToPlayToEndTime)
+            .do(onNext: { [weak self] notification in
+                guard let val = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as? String
+                else {
+                    self?.status = .failed(err: RxMusicPlayerError.internalError(
+                        "not found AVPlayerItemFailedToPlayToEndTimeErrorKey"))
+                    return
+                }
+                self?.status = .failed(err: RxMusicPlayerError.failedToPlayToEndTime(val))
+            })
+            .subscribe()
+
+        let endTime = NotificationCenter.default.rx
+            .notification(.AVPlayerItemDidPlayToEndTime)
+            .withLatestFrom(rx.canSendCommand(cmd: .next))
+            .do(onNext: { isEnabled in
+                if isEnabled {
+                    autoCmd.accept(.next)
+                } else {
+                    autoCmd.accept(.stop)
+                }
+            })
+            .subscribe()
+
+        let cmdRunner = Observable.merge(
+            cmd.asObservable(),
+            autoCmd.asObservable()
         )
-        .map { $0.0 }
-        .distinctUntilChanged()
+        .flatMapLatest(runCommand)
+        .subscribe()
+
+        return Observable.create { observer in
+            let statusDisposable = status
+                .distinctUntilChanged()
+                .subscribe(observer)
+
+            return Disposables.create {
+                statusDisposable.dispose()
+                playerStatus.dispose()
+                playerItemStatus.dispose()
+                newErrorLogEntry.dispose()
+                failedToPlayToEndTime.dispose()
+                endTime.dispose()
+                cmdRunner.dispose()
+            }
+        }
+        .asDriver(onErrorJustReturn: statusRelay.value)
     }
 
-    private func runCommand(cmd: Command) -> Driver<()> {
-        return { () -> Observable<Bool> in
-            rx.canSendCommand(cmd: cmd).asObservable().take(1)
-        }()
+    private func runCommand(cmd: Command) -> Observable<()> {
+        return rx.canSendCommand(cmd: cmd).asObservable().take(1)
+            .observeOn(scheduler)
             .flatMapLatest { [weak self] isEnabled -> Observable<()> in
                 guard let weakSelf = self else {
                     return .error(RxMusicPlayerError.notFoundWeakReference)
@@ -159,13 +251,14 @@ open class RxMusicPlayer: NSObject {
                     return weakSelf.playPrevious()
                 case .pause:
                     return weakSelf.pause()
+                case .stop:
+                    return weakSelf.stop()
                 }
             }
             .catchError { [weak self] err in
-                self?.statusRelay.accept(.failed(err: err))
+                self?.status = .failed(err: err)
                 return .just(())
             }
-            .asDriver(onErrorJustReturn: ())
     }
 
     private func play() -> Observable<()> {
@@ -179,8 +272,8 @@ open class RxMusicPlayer: NSObject {
 
         player?.pause()
 
-        playIndexRelay.accept(index)
-        statusRelay.accept(.loading)
+        playIndex = index
+        status = .loading
 
         return queuedItems[playIndex].loadPlayerItem()
             .asObservable()
@@ -188,21 +281,12 @@ open class RxMusicPlayer: NSObject {
                 guard let weakSelf = self, let weakItem = item else {
                     return .error(RxMusicPlayerError.notFoundWeakReference)
                 }
+                weakSelf.player = nil
+
                 let player = AVPlayer(playerItem: weakItem.playerItem)
                 weakSelf.player = player
                 weakSelf.player!.automaticallyWaitsToMinimizeStalling = false
                 weakSelf.player!.play()
-                return weakItem.playerItem!.rx.status
-                    .map { [weak self] st in
-                        switch st {
-                        case .readyToPlay: self?.statusRelay.accept(.playing)
-                        case .failed: throw weakItem.playerItem!.error!
-                        default: break
-                        }
-                    }
-            }
-            .flatMapLatest { [weak self] _ -> Observable<()> in
-                guard let weakSelf = self else { return .empty() }
                 return weakSelf.preload(index: index)
             }
     }
@@ -217,13 +301,21 @@ open class RxMusicPlayer: NSObject {
 
     private func pause() -> Observable<()> {
         player?.pause()
-        statusRelay.accept(.paused)
+        status = .paused
         return .just(())
     }
 
     private func resume() -> Observable<()> {
         player?.play()
-        statusRelay.accept(.playing)
+        status = .playing
+        return .just(())
+    }
+
+    private func stop() -> Observable<()> {
+        player?.pause()
+        player = nil
+
+        status = .ready
         return .just(())
     }
 
