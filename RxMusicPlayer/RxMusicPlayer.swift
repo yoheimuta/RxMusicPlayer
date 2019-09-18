@@ -111,6 +111,8 @@ open class RxMusicPlayer: NSObject {
         }
     }
 
+    private let autoCmdRelay = PublishRelay<Command>()
+
     /**
      Create an instance with a list of items without loading their assets.
 
@@ -127,87 +129,29 @@ open class RxMusicPlayer: NSObject {
      Run loop.
      */
     public func loop(cmd: Driver<Command>) -> Driver<Status> {
-        let autoCmd = PublishRelay<Command>()
-
         let status = statusRelay
             .asObservable()
 
         let playerStatus = playerRelay
-            .flatMapLatest { p -> Observable<()> in
-                guard let weakPlayer = p else {
-                    return .just(())
-                }
-                return weakPlayer.rx.status
-                    .map { [weak self] st in
-                        switch st {
-                        case .failed:
-                            self?.status = .critical(err: weakPlayer.error!)
-                            autoCmd.accept(.stop)
-                        default:
-                            break
-                        }
-                    }
-            }
+            .flatMapLatest(watchPlayerStatus)
             .subscribe()
 
         let playerItemStatus = playerRelay
-            .flatMapLatest { p -> Observable<()> in
-                guard let weakItem = p?.currentItem else {
-                    return .just(())
-                }
-                return weakItem.rx.status
-                    .map { [weak self] st in
-                        switch st {
-                        case .readyToPlay: self?.status = .playing
-                        case .failed: self?.status = .failed(err: weakItem.error!)
-                        default: self?.status = .loading
-                        }
-                    }
-            }
+            .flatMapLatest(watchPlayerItemStatus)
             .subscribe()
 
-        let newErrorLogEntry = NotificationCenter.default.rx
-            .notification(.AVPlayerItemNewErrorLogEntry)
-            .do(onNext: { [weak self] notification in
-                guard let object = notification.object,
-                    let playerItem = object as? AVPlayerItem else {
-                    return
-                }
-                guard let errorLog: AVPlayerItemErrorLog = playerItem.errorLog() else {
-                    return
-                }
-                self?.status = .failed(err: RxMusicPlayerError.playerItemError(log: errorLog))
-            })
+        let newErrorLogEntry = watchNewErrorLogEntry()
             .subscribe()
 
-        let failedToPlayToEndTime = NotificationCenter.default.rx
-            .notification(.AVPlayerItemFailedToPlayToEndTime)
-            .do(onNext: { [weak self] notification in
-                guard let val = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as? String
-                else {
-                    self?.status = .failed(err: RxMusicPlayerError.internalError(
-                        "not found AVPlayerItemFailedToPlayToEndTimeErrorKey"))
-                    return
-                }
-                self?.status = .failed(err: RxMusicPlayerError.failedToPlayToEndTime(val))
-            })
+        let failedToPlayToEndTime = watchFailedToPlayToEndTime()
             .subscribe()
 
-        let endTime = NotificationCenter.default.rx
-            .notification(.AVPlayerItemDidPlayToEndTime)
-            .withLatestFrom(rx.canSendCommand(cmd: .next))
-            .do(onNext: { isEnabled in
-                if isEnabled {
-                    autoCmd.accept(.next)
-                } else {
-                    autoCmd.accept(.stop)
-                }
-            })
+        let endTime = watchEndTime()
             .subscribe()
 
         let cmdRunner = Observable.merge(
             cmd.asObservable(),
-            autoCmd.asObservable()
+            autoCmdRelay.asObservable()
         )
         .flatMapLatest(runCommand)
         .subscribe()
@@ -331,5 +275,77 @@ open class RxMusicPlayer: NSObject {
         return Observable.combineLatest(
             items.map { $0.loadPlayerItem().asObservable() }
         ).map { _ in }
+    }
+
+    private func watchPlayerStatus(player: AVPlayer?) -> Observable<()> {
+        guard let weakPlayer = player else {
+            return .just(())
+        }
+        return weakPlayer.rx.status
+            .map { [weak self] st in
+                switch st {
+                case .failed:
+                    self?.status = .critical(err: weakPlayer.error!)
+                    self?.autoCmdRelay.accept(.stop)
+                default:
+                    break
+                }
+            }
+    }
+
+    private func watchPlayerItemStatus(player: AVPlayer?) -> Observable<()> {
+        guard let weakItem = player?.currentItem else {
+            return .just(())
+        }
+        return weakItem.rx.status
+            .map { [weak self] st in
+                switch st {
+                case .readyToPlay: self?.status = .playing
+                case .failed: self?.status = .failed(err: weakItem.error!)
+                default: self?.status = .loading
+                }
+            }
+    }
+
+    private func watchNewErrorLogEntry() -> Observable<()> {
+        return NotificationCenter.default.rx
+            .notification(.AVPlayerItemNewErrorLogEntry)
+            .map { [weak self] notification in
+                guard let object = notification.object,
+                    let playerItem = object as? AVPlayerItem else {
+                    return
+                }
+                guard let errorLog: AVPlayerItemErrorLog = playerItem.errorLog() else {
+                    return
+                }
+                self?.status = .failed(err: RxMusicPlayerError.playerItemError(log: errorLog))
+            }
+    }
+
+    private func watchFailedToPlayToEndTime() -> Observable<()> {
+        return NotificationCenter.default.rx
+            .notification(.AVPlayerItemFailedToPlayToEndTime)
+            .map { [weak self] notification in
+                guard let val = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as? String
+                else {
+                    self?.status = .failed(err: RxMusicPlayerError.internalError(
+                        "not found AVPlayerItemFailedToPlayToEndTimeErrorKey"))
+                    return
+                }
+                self?.status = .failed(err: RxMusicPlayerError.failedToPlayToEndTime(val))
+            }
+    }
+
+    private func watchEndTime() -> Observable<()> {
+        return NotificationCenter.default.rx
+            .notification(.AVPlayerItemDidPlayToEndTime)
+            .withLatestFrom(rx.canSendCommand(cmd: .next))
+            .map { [weak self] isEnabled in
+                if isEnabled {
+                    self?.autoCmdRelay.accept(.next)
+                } else {
+                    self?.autoCmdRelay.accept(.stop)
+                }
+            }
     }
 }
