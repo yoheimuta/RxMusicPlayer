@@ -136,10 +136,21 @@ open class RxMusicPlayer: NSObject {
 
      - returns: RxMusicPlayer instance
      */
-    public required init(items: [RxMusicPlayerItem] = [RxMusicPlayerItem](),
-                         config: ExternalConfig = ExternalConfig.default) {
+    public required init?(items: [RxMusicPlayerItem] = [RxMusicPlayerItem](),
+                          config: ExternalConfig = ExternalConfig.default) {
         queuedItemsRelay.accept(items)
         self.config = config
+
+        do {
+            let audioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(AVAudioSession.Category.playback)
+            try audioSession.setMode(AVAudioSession.Mode.default)
+            try audioSession.setActive(true)
+        } catch {
+            print("[RxMusicPlayer - init?() Error] \(error)")
+            return nil
+        }
+
         super.init()
     }
 
@@ -444,40 +455,43 @@ open class RxMusicPlayer: NSObject {
     }
 
     private func updateNowPlayingInfo() -> Observable<()> {
-        return rx.currentItemMeta()
-            .withLatestFrom(rx.currentItem())
-            .flatMap { Driver.from(optional: $0) }
-            .map { [weak self] item in
-                let title = item.meta.title ?? ""
-                let duration = item.meta.duration?.seconds ?? 0
-                let elapsed = item.playerItem?.currentTime().seconds ?? 0
-                let queueCount = self?.queuedItems.count ?? 0
-                let queueIndex = self?.playIndex ?? 0
+        return Driver.combineLatest(
+            rx.currentItemMeta(),
+            rx.currentItemDuration(),
+            rx.currentItemTime()
+        ) { [weak self] meta, duration, currentTime in
+            let title = meta.title ?? ""
+            let duration = duration?.seconds ?? 0
+            let elapsed = currentTime?.seconds ?? 0
+            let queueCount = self?.queuedItems.count ?? 0
+            let queueIndex = self?.playIndex ?? 0
 
-                var nowPlayingInfo: [String: Any] = [
-                    MPMediaItemPropertyTitle: title,
-                    MPMediaItemPropertyPlaybackDuration: duration,
-                    MPNowPlayingInfoPropertyElapsedPlaybackTime: elapsed,
-                    MPNowPlayingInfoPropertyPlaybackQueueCount: queueCount,
-                    MPNowPlayingInfoPropertyPlaybackQueueIndex: queueIndex
-                ]
+            var nowPlayingInfo: [String: Any] = [
+                MPMediaItemPropertyTitle: title,
+                MPMediaItemPropertyPlaybackDuration: duration,
+                MPNowPlayingInfoPropertyElapsedPlaybackTime: elapsed,
+                MPNowPlayingInfoPropertyPlaybackQueueCount: queueCount,
+                MPNowPlayingInfoPropertyPlaybackQueueIndex: queueIndex
+            ]
 
-                if let artist = item.meta.artist {
-                    nowPlayingInfo[MPMediaItemPropertyArtist] = artist
-                }
-
-                if let album = item.meta.album {
-                    nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = album
-                }
-
-                if let img = item.meta.artwork {
-                    nowPlayingInfo[MPMediaItemPropertyArtwork] =
-                        MPMediaItemArtwork(boundsSize: img.size,
-                                           requestHandler: { _ in img })
-                }
-
-                MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            if let artist = meta.artist {
+                nowPlayingInfo[MPMediaItemPropertyArtist] = artist
             }
-            .asObservable()
+
+            if let album = meta.album {
+                nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = album
+            }
+
+            if let img = meta.artwork {
+                nowPlayingInfo[MPMediaItemPropertyArtwork] =
+                    MPMediaItemArtwork(boundsSize: img.size,
+                                       requestHandler: { _ in img })
+            }
+            return nowPlayingInfo
+        }
+        .map {
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = $0
+        }
+        .asObservable()
     }
 }

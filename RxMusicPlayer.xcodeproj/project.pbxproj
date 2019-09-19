@@ -361,6 +361,11 @@
 					};
 					FF11FBD72329E3560043C29B = {
 						CreatedOnToolsVersion = 10.2;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					FF11FBEA2329E35A0043C29B = {
 						CreatedOnToolsVersion = 10.2;
