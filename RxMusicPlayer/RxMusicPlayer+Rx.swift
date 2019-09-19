@@ -152,6 +152,28 @@ extension Reactive where Base: RxMusicPlayer {
             .map { $0?.currentItem }
     }
 
+    /**
+     Get the current item.
+     */
+    public func currentItem() -> Driver<RxMusicPlayerItem?> {
+        return base.playIndexRelay.asDriver()
+            .map { [weak base] index in
+                guard let items = base?.queuedItems else { return nil }
+                return index < items.count ? items[index] : nil
+            }
+    }
+
+    /**
+     Get the current item' meta information.
+     */
+    public func currentItemMeta() -> Driver<RxMusicPlayerItem.Meta> {
+        return currentItem()
+            .flatMap { Driver.from(optional: $0) }
+            .flatMapLatest { item -> Driver<RxMusicPlayerItem.Meta> in
+                item.rx.meta()
+            }
+    }
+
     private func canPlay() -> Driver<Bool> {
         return base.statusRelay.asDriver()
             .map { status in
@@ -212,21 +234,5 @@ extension Reactive where Base: RxMusicPlayer {
                 .paused
             ] as [RxMusicPlayer.Status]).contains(status)
         }
-    }
-
-    private func currentItem() -> Driver<RxMusicPlayerItem?> {
-        return base.playIndexRelay.asDriver()
-            .map { [weak base] index in
-                guard let items = base?.queuedItems else { return nil }
-                return index < items.count ? items[index] : nil
-            }
-    }
-
-    private func currentItemMeta() -> Driver<RxMusicPlayerItem.Meta> {
-        return currentItem()
-            .flatMap { Driver.from(optional: $0) }
-            .flatMapLatest { item -> Driver<RxMusicPlayerItem.Meta> in
-                item.rx.meta()
-            }
     }
 }

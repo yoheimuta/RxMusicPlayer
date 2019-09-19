@@ -8,7 +8,7 @@
 // swiftlint:disable file_length
 
 import AVFoundation
-import Foundation
+import MediaPlayer
 import RxAudioVisual
 import RxCocoa
 import RxSwift
@@ -126,6 +126,7 @@ open class RxMusicPlayer: NSObject {
     }
 
     private let autoCmdRelay = PublishRelay<Command>()
+    private let remoteCmdRelay = PublishRelay<Command>()
     private let config: ExternalConfig
 
     /**
@@ -169,9 +170,13 @@ open class RxMusicPlayer: NSObject {
         let stall = watchPlaybackStall()
             .subscribe()
 
+        let nowPlaying = updateNowPlayingInfo()
+            .subscribe()
+
         let cmdRunner = Observable.merge(
             cmd.asObservable(),
-            autoCmdRelay.asObservable()
+            autoCmdRelay.asObservable(),
+            remoteCmdRelay.asObservable()
         )
         .flatMapLatest(runCommand)
         .subscribe()
@@ -189,10 +194,39 @@ open class RxMusicPlayer: NSObject {
                 failedToPlayToEndTime.dispose()
                 endTime.dispose()
                 stall.dispose()
+                nowPlaying.dispose()
                 cmdRunner.dispose()
             }
         }
         .asDriver(onErrorJustReturn: statusRelay.value)
+    }
+
+    /**
+     Receive remote control.
+     */
+    public func remoteControlReceived(with event: UIEvent?) {
+        if event?.type != .remoteControl {
+            return
+        }
+
+        switch event!.subtype {
+        case .remoteControlPlay:
+            remoteCmdRelay.accept(.play)
+        case .remoteControlPause:
+            remoteCmdRelay.accept(.pause)
+        case .remoteControlNextTrack:
+            remoteCmdRelay.accept(.next)
+        case .remoteControlPreviousTrack:
+            remoteCmdRelay.accept(.previous)
+        case .remoteControlTogglePlayPause:
+            if status == .playing {
+                remoteCmdRelay.accept(.pause)
+            } else {
+                remoteCmdRelay.accept(.play)
+            }
+        default:
+            break
+        }
     }
 
     private func runCommand(cmd: Command) -> Observable<()> {
@@ -407,5 +441,43 @@ open class RxMusicPlayer: NSObject {
                     }
                 }
             }
+    }
+
+    private func updateNowPlayingInfo() -> Observable<()> {
+        return rx.currentItemMeta()
+            .withLatestFrom(rx.currentItem())
+            .flatMap { Driver.from(optional: $0) }
+            .map { [weak self] item in
+                let title = item.meta.title ?? ""
+                let duration = item.meta.duration?.seconds ?? 0
+                let elapsed = item.playerItem?.currentTime().seconds ?? 0
+                let queueCount = self?.queuedItems.count ?? 0
+                let queueIndex = self?.playIndex ?? 0
+
+                var nowPlayingInfo: [String: Any] = [
+                    MPMediaItemPropertyTitle: title,
+                    MPMediaItemPropertyPlaybackDuration: duration,
+                    MPNowPlayingInfoPropertyElapsedPlaybackTime: elapsed,
+                    MPNowPlayingInfoPropertyPlaybackQueueCount: queueCount,
+                    MPNowPlayingInfoPropertyPlaybackQueueIndex: queueIndex
+                ]
+
+                if let artist = item.meta.artist {
+                    nowPlayingInfo[MPMediaItemPropertyArtist] = artist
+                }
+
+                if let album = item.meta.album {
+                    nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = album
+                }
+
+                if let img = item.meta.artwork {
+                    nowPlayingInfo[MPMediaItemPropertyArtwork] =
+                        MPMediaItemArtwork(boundsSize: img.size,
+                                           requestHandler: { _ in img })
+                }
+
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+            }
+            .asObservable()
     }
 }

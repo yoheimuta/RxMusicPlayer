@@ -21,10 +21,13 @@ class TableViewController: UITableViewController {
     @IBOutlet private var seekDurationLabel: UILabel!
     @IBOutlet private var durationLabel: UILabel!
 
+    private var player: RxMusicPlayer!
     private let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        UIApplication.shared.beginReceivingRemoteControlEvents()
 
         // 1) Create a player
         let items = [
@@ -34,7 +37,7 @@ class TableViewController: UITableViewController {
             "https://ccrma.stanford.edu/~jos/mp3/trumpet.mp3",
         ]
         .map({ RxMusicPlayerItem(url: URL(string: $0)!) })
-        let player = RxMusicPlayer(items: items)
+        player = RxMusicPlayer(items: items)
 
         // 2) Control views
         player.rx.canSendCommand(cmd: .play)
@@ -149,5 +152,9 @@ class TableViewController: UITableViewController {
             }
             .drive()
             .disposed(by: disposeBag)
+    }
+
+    override func remoteControlReceived(with event: UIEvent?) {
+        player.remoteControlReceived(with: event)
     }
 }
