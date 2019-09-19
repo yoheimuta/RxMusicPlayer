@@ -45,7 +45,7 @@
                                                         </button>
                                                     </subviews>
                                                 </stackView>
-                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="VTP-kG-hfM">
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="VTP-kG-hfM" customClass="ProgressSlider" customModule="Example" customModuleProvider="target">
                                                     <rect key="frame" x="28" y="355" width="358" height="31"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="tT6-2W-x23"/>

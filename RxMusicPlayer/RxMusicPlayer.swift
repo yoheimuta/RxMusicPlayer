@@ -70,6 +70,16 @@ open class RxMusicPlayer: NSObject {
         }
     }
 
+    /**
+     Player ExternalConfig.
+     */
+    public struct ExternalConfig {
+        var automaticallyWaitsToMinimizeStalling = true
+
+        /// default is a default configuration.
+        public static let `default` = ExternalConfig()
+    }
+
     public private(set) var playIndex: Int {
         set {
             playIndexRelay.accept(newValue)
@@ -115,6 +125,7 @@ open class RxMusicPlayer: NSObject {
     }
 
     private let autoCmdRelay = PublishRelay<Command>()
+    private let config: ExternalConfig
 
     /**
      Create an instance with a list of items without loading their assets.
@@ -123,8 +134,10 @@ open class RxMusicPlayer: NSObject {
 
      - returns: RxMusicPlayer instance
      */
-    public required init(items: [RxMusicPlayerItem] = [RxMusicPlayerItem]()) {
+    public required init(items: [RxMusicPlayerItem] = [RxMusicPlayerItem](),
+                         config: ExternalConfig = ExternalConfig.default) {
         queuedItemsRelay.accept(items)
+        self.config = config
         super.init()
     }
 
@@ -234,7 +247,8 @@ open class RxMusicPlayer: NSObject {
 
                 let player = AVPlayer(playerItem: weakItem.playerItem)
                 weakSelf.player = player
-                weakSelf.player!.automaticallyWaitsToMinimizeStalling = false
+                weakSelf.player!.automaticallyWaitsToMinimizeStalling =
+                    weakSelf.config.automaticallyWaitsToMinimizeStalling
                 weakSelf.player!.play()
                 return weakSelf.preload(index: index)
             }

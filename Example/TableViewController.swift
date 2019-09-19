@@ -17,7 +17,7 @@ class TableViewController: UITableViewController {
     @IBOutlet private var nextButton: UIButton!
     @IBOutlet private var prevButton: UIButton!
     @IBOutlet private var titleLabel: UILabel!
-    @IBOutlet private var seekBar: UISlider!
+    @IBOutlet private var seekBar: ProgressSlider!
     @IBOutlet private var seekDurationLabel: UILabel!
     @IBOutlet private var durationLabel: UILabel!
 
@@ -99,6 +99,10 @@ class TableViewController: UITableViewController {
                 seekValuePass.accept(true)
             })
             .subscribe()
+            .disposed(by: disposeBag)
+
+        player.rx.currentItemLoadedProgressRate()
+            .drive(seekBar.rx.playableProgress)
             .disposed(by: disposeBag)
 
         // 3) Process the user's input

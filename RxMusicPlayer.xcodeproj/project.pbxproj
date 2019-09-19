@@ -29,6 +29,8 @@
 		FF11FC16232A391F0043C29B /* RxMusicPlayerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */; };
 		FF1EBBBC2331C9210049C1C6 /* Double+Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBBB2331C9210049C1C6 /* Double+Int.swift */; };
 		FF1EBBBE2331DECD0049C1C6 /* AVPlayer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBBD2331DECD0049C1C6 /* AVPlayer+Rx.swift */; };
+		FF1EBBC0233220CC0049C1C6 /* ProgressSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBBF233220CC0049C1C6 /* ProgressSlider.swift */; };
+		FF1EBBC2233228460049C1C6 /* ProgressSlider+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBC1233228460049C1C6 /* ProgressSlider+Rx.swift */; };
 		FF6769C82330E59500906FF6 /* CMTime+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6769C62330E3D100906FF6 /* CMTime+String.swift */; };
 		FFC91AF7232A4C1100B3E89A /* RxMusicPlayer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */; };
 		FFC91B25232B92E200B3E89A /* RxMusicPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -103,6 +105,8 @@
 		FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxMusicPlayerError.swift; sourceTree = "<group>"; };
 		FF1EBBBB2331C9210049C1C6 /* Double+Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Int.swift"; sourceTree = "<group>"; };
 		FF1EBBBD2331DECD0049C1C6 /* AVPlayer+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Rx.swift"; sourceTree = "<group>"; };
+		FF1EBBBF233220CC0049C1C6 /* ProgressSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressSlider.swift; sourceTree = "<group>"; };
+		FF1EBBC1233228460049C1C6 /* ProgressSlider+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProgressSlider+Rx.swift"; sourceTree = "<group>"; };
 		FF6769C62330E3D100906FF6 /* CMTime+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CMTime+String.swift"; sourceTree = "<group>"; };
 		FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxMusicPlayer+Rx.swift"; sourceTree = "<group>"; };
 		FFC91B2B232B9A5A00B3E89A /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -212,6 +216,8 @@
 			children = (
 				FF11FBDA2329E3560043C29B /* AppDelegate.swift */,
 				FF11FC10232A2A5E0043C29B /* TableViewController.swift */,
+				FF1EBBBF233220CC0049C1C6 /* ProgressSlider.swift */,
+				FF1EBBC1233228460049C1C6 /* ProgressSlider+Rx.swift */,
 				FFC91B2B232B9A5A00B3E89A /* Utility.swift */,
 				FF11FBDE2329E3560043C29B /* Main.storyboard */,
 				FF11FBE12329E35A0043C29B /* Assets.xcassets */,
@@ -545,8 +551,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF11FC11232A2A5E0043C29B /* TableViewController.swift in Sources */,
+				FF1EBBC2233228460049C1C6 /* ProgressSlider+Rx.swift in Sources */,
 				FF11FBDB2329E3560043C29B /* AppDelegate.swift in Sources */,
 				FFC91B2C232B9A5A00B3E89A /* Utility.swift in Sources */,
+				FF1EBBC0233220CC0049C1C6 /* ProgressSlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -102,6 +102,36 @@ extension Reactive where Base: RxMusicPlayer {
             .map { $0?.displayTime ?? "--:--" }
     }
 
+    /**
+     Get the current item's progress rate(0.0 ~ 1.0).
+     */
+    public func currentItemLoadedProgressRate() -> Driver<Float?> {
+        return Driver.combineLatest(
+            currentItemDuration(),
+            currentItemLoadedTimeRange()
+        ) { maybeDuration, maybeRange in
+            guard let duration = maybeDuration?.seconds,
+                let end = maybeRange?.end.seconds else {
+                return nil
+            }
+            return Float(end / duration)
+        }
+    }
+
+    /**
+     Get the current item's loaded time range.
+     */
+    public func currentItemLoadedTimeRange() -> Driver<CMTimeRange?> {
+        return currentPlayerItem()
+            .flatMap { Driver.from(optional: $0) }
+            .asObservable()
+            .flatMapLatest { item in
+                item.rx.loadedTimeRanges
+                    .map { $0.last as? CMTimeRange }
+            }
+            .asDriver(onErrorJustReturn: nil)
+    }
+
     private func canPlay() -> Driver<Bool> {
         return base.statusRelay.asDriver()
             .map { status in
@@ -167,5 +197,10 @@ extension Reactive where Base: RxMusicPlayer {
             .flatMapLatest { item -> Driver<RxMusicPlayerItem.Meta> in
                 item.rx.meta()
             }
+    }
+
+    private func currentPlayerItem() -> Driver<AVPlayerItem?> {
+        return base.playerRelay.asDriver()
+            .map { $0?.currentItem }
     }
 }
