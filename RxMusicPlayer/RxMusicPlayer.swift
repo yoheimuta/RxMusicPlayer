@@ -5,6 +5,7 @@
 //  Created by YOSHIMUTA YOHEI on 2019/09/12.
 //  Copyright © 2019 YOSHIMUTA YOHEI. All rights reserved.
 //
+// swiftlint:disable file_length
 
 import AVFoundation
 import Foundation
@@ -74,7 +75,7 @@ open class RxMusicPlayer: NSObject {
      Player ExternalConfig.
      */
     public struct ExternalConfig {
-        var automaticallyWaitsToMinimizeStalling = true
+        var automaticallyWaitsToMinimizeStalling = false
 
         /// default is a default configuration.
         public static let `default` = ExternalConfig()
@@ -165,6 +166,9 @@ open class RxMusicPlayer: NSObject {
         let endTime = watchEndTime()
             .subscribe()
 
+        let stall = watchPlaybackStall()
+            .subscribe()
+
         let cmdRunner = Observable.merge(
             cmd.asObservable(),
             autoCmdRelay.asObservable()
@@ -184,6 +188,7 @@ open class RxMusicPlayer: NSObject {
                 newErrorLogEntry.dispose()
                 failedToPlayToEndTime.dispose()
                 endTime.dispose()
+                stall.dispose()
                 cmdRunner.dispose()
             }
         }
@@ -274,6 +279,7 @@ open class RxMusicPlayer: NSObject {
         guard let player = player else { return .just(()) }
 
         player.seek(to: CMTimeMake(value: Int64(second), timescale: 1))
+
         if shouldPlay && status != .playing {
             player.play()
             status = .playing
@@ -366,8 +372,9 @@ open class RxMusicPlayer: NSObject {
             .map { [weak self] notification in
                 guard let val = notification.userInfo?["AVPlayerItemFailedToPlayToEndTimeErrorKey"] as? String
                 else {
+                    let info = String(describing: notification.userInfo)
                     self?.status = .failed(err: RxMusicPlayerError.internalError(
-                        "not found AVPlayerItemFailedToPlayToEndTimeErrorKey"))
+                        "not found AVPlayerItemFailedToPlayToEndTimeErrorKey in \(info)"))
                     return
                 }
                 self?.status = .failed(err: RxMusicPlayerError.failedToPlayToEndTime(val))
@@ -383,6 +390,21 @@ open class RxMusicPlayer: NSObject {
                     self?.autoCmdRelay.accept(.next)
                 } else {
                     self?.autoCmdRelay.accept(.stop)
+                }
+            }
+    }
+
+    private func watchPlaybackStall() -> Observable<()> {
+        return NotificationCenter.default.rx
+            .notification(.AVPlayerItemPlaybackStalled)
+            .map { [weak self] _ in
+                if self?.status == .some(.playing) {
+                    self?.player?.pause()
+                    if #available(iOS 10.0, *) {
+                        self?.player?.playImmediately(atRate: 1.0)
+                    } else {
+                        self?.player?.play()
+                    }
                 }
             }
     }

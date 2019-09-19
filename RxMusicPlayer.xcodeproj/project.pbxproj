@@ -31,6 +31,7 @@
 		FF1EBBBE2331DECD0049C1C6 /* AVPlayer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBBD2331DECD0049C1C6 /* AVPlayer+Rx.swift */; };
 		FF1EBBC0233220CC0049C1C6 /* ProgressSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBBF233220CC0049C1C6 /* ProgressSlider.swift */; };
 		FF1EBBC2233228460049C1C6 /* ProgressSlider+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBC1233228460049C1C6 /* ProgressSlider+Rx.swift */; };
+		FF1EBBC4233352AD0049C1C6 /* Observable+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBC3233352AD0049C1C6 /* Observable+Rx.swift */; };
 		FF6769C82330E59500906FF6 /* CMTime+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6769C62330E3D100906FF6 /* CMTime+String.swift */; };
 		FFC91AF7232A4C1100B3E89A /* RxMusicPlayer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */; };
 		FFC91B25232B92E200B3E89A /* RxMusicPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -107,6 +108,7 @@
 		FF1EBBBD2331DECD0049C1C6 /* AVPlayer+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Rx.swift"; sourceTree = "<group>"; };
 		FF1EBBBF233220CC0049C1C6 /* ProgressSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressSlider.swift; sourceTree = "<group>"; };
 		FF1EBBC1233228460049C1C6 /* ProgressSlider+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProgressSlider+Rx.swift"; sourceTree = "<group>"; };
+		FF1EBBC3233352AD0049C1C6 /* Observable+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Rx.swift"; sourceTree = "<group>"; };
 		FF6769C62330E3D100906FF6 /* CMTime+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CMTime+String.swift"; sourceTree = "<group>"; };
 		FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxMusicPlayer+Rx.swift"; sourceTree = "<group>"; };
 		FFC91B2B232B9A5A00B3E89A /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */,
 				FF1EBBBD2331DECD0049C1C6 /* AVPlayer+Rx.swift */,
 				FF11FC08232A23FF0043C29B /* AVAsynchronousKeyValueLoading+Rx.swift */,
+				FF1EBBC3233352AD0049C1C6 /* Observable+Rx.swift */,
 				FF6769C62330E3D100906FF6 /* CMTime+String.swift */,
 				FF1EBBBB2331C9210049C1C6 /* Double+Int.swift */,
 				FF11FBBE2329E2DE0043C29B /* Info.plist */,
@@ -528,6 +531,7 @@
 			files = (
 				FFC91AF7232A4C1100B3E89A /* RxMusicPlayer+Rx.swift in Sources */,
 				FF11FBFD2329EE770043C29B /* RxMusicPlayer.swift in Sources */,
+				FF1EBBC4233352AD0049C1C6 /* Observable+Rx.swift in Sources */,
 				FF11FC16232A391F0043C29B /* RxMusicPlayerError.swift in Sources */,
 				FF11FC09232A23FF0043C29B /* AVAsynchronousKeyValueLoading+Rx.swift in Sources */,
 				FF1EBBBC2331C9210049C1C6 /* Double+Int.swift in Sources */,

@@ -132,6 +132,26 @@ extension Reactive where Base: RxMusicPlayer {
             .asDriver(onErrorJustReturn: nil)
     }
 
+    /**
+     Get the current time control status.
+     */
+    @available(iOS 10.0, *)
+    public func timeControlStatus() -> Observable<AVPlayer.TimeControlStatus> {
+        return base.playerRelay.asObservable()
+            .flatMap { Observable.from(optional: $0) }
+            .flatMapFirst { player in
+                player.rx.timeControlStatus
+            }
+    }
+
+    /**
+     Get the current player item.
+     */
+    public func currentPlayerItem() -> Driver<AVPlayerItem?> {
+        return base.playerRelay.asDriver()
+            .map { $0?.currentItem }
+    }
+
     private func canPlay() -> Driver<Bool> {
         return base.statusRelay.asDriver()
             .map { status in
@@ -179,8 +199,19 @@ extension Reactive where Base: RxMusicPlayer {
     }
 
     private func canSeek() -> Driver<Bool> {
-        return base.playerRelay.asDriver()
-            .map { $0 != nil }
+        return Driver.combineLatest(
+            base.playerRelay.asDriver(),
+            base.statusRelay.asDriver()
+        ) { player, status in
+            if player == nil {
+                return false
+            }
+            return ([
+                .ready,
+                .playing,
+                .paused
+            ] as [RxMusicPlayer.Status]).contains(status)
+        }
     }
 
     private func currentItem() -> Driver<RxMusicPlayerItem?> {
@@ -197,10 +228,5 @@ extension Reactive where Base: RxMusicPlayer {
             .flatMapLatest { item -> Driver<RxMusicPlayerItem.Meta> in
                 item.rx.meta()
             }
-    }
-
-    private func currentPlayerItem() -> Driver<AVPlayerItem?> {
-        return base.playerRelay.asDriver()
-            .map { $0?.currentItem }
     }
 }
