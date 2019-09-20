@@ -123,7 +123,7 @@ class TableViewController: UITableViewController {
         )
         .debug()
 
-        player.loop(cmd: cmd)
+        player.run(cmd: cmd)
             .do(onNext: { status in
                 UIApplication.shared.isNetworkActivityIndicatorVisible = status == .loading
             })

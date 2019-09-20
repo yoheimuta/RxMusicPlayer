@@ -77,7 +77,6 @@ open class RxMusicPlayerItem: NSObject {
         }
 
         let asset = AVAsset(url: url)
-        playerItem = AVPlayerItem(asset: asset)
 
         return Single.create { single in
             let load = Observable.combineLatest(
@@ -104,6 +103,7 @@ open class RxMusicPlayerItem: NSObject {
             )
             .map { [weak self] _ in
                 self?.meta.didAllSetRelay.accept(true)
+                self?.playerItem = AVPlayerItem(asset: asset)
                 single(.success(self))
             }
             .subscribe()

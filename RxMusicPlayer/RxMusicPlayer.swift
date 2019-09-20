@@ -154,10 +154,19 @@ open class RxMusicPlayer: NSObject {
         super.init()
     }
 
+    deinit {
+        do {
+            let audioSession = AVAudioSession.sharedInstance()
+            try audioSession.setActive(false)
+        } catch {
+            print("[RxMusicPlayer - deinit() Error] \(error)")
+        }
+    }
+
     /**
-     Run loop.
+     Run.
      */
-    public func loop(cmd: Driver<Command>) -> Driver<Status> {
+    public func run(cmd: Driver<Command>) -> Driver<Status> {
         let status = statusRelay
             .asObservable()
 
@@ -179,6 +188,12 @@ open class RxMusicPlayer: NSObject {
             .subscribe()
 
         let stall = watchPlaybackStall()
+            .subscribe()
+
+        let interruption = watchSessionInterruption()
+            .subscribe()
+
+        let routeChange = watchRouteChange()
             .subscribe()
 
         let nowPlaying = updateNowPlayingInfo()
@@ -208,6 +223,8 @@ open class RxMusicPlayer: NSObject {
                 failedToPlayToEndTime.dispose()
                 endTime.dispose()
                 stall.dispose()
+                interruption.dispose()
+                routeChange.dispose()
                 nowPlaying.dispose()
                 remoteControl.dispose()
                 cmdRunner.dispose()
@@ -498,6 +515,58 @@ open class RxMusicPlayer: NSObject {
                     } else {
                         self?.player?.play()
                     }
+                }
+            }
+    }
+
+    private func watchSessionInterruption() -> Observable<()> {
+        return NotificationCenter.default.rx
+            .notification(AVAudioSession.interruptionNotification)
+            .map { [weak self] notification -> Command? in
+                guard let userInfo = notification.userInfo,
+                    let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+                    let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+                    return nil
+                }
+
+                if type == .began {
+                    self?.status = .paused
+                } else if type == .ended {
+                    if let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt {
+                        let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+                        if options.contains(.shouldResume) {
+                            return .play
+                        }
+                    }
+                }
+                return nil
+            }
+            .flatMap { Observable.from(optional: $0) }
+            .flatMapLatest { [weak self] cmd -> Observable<()> in
+                guard let weakSelf = self else { return .just(()) }
+                return weakSelf.rx.canSendCommand(cmd: cmd)
+                    .asObservable()
+                    .take(1)
+                    .filter { $0 }
+                    .map { [weak self] _ in
+                        self?.autoCmdRelay.accept(cmd)
+                    }
+            }
+    }
+
+    private func watchRouteChange() -> Observable<()> {
+        return NotificationCenter.default.rx
+            .notification(AVAudioSession.routeChangeNotification)
+            .map { [weak self] notification in
+                guard let userInfo = notification.userInfo,
+                    let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
+                    let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue) else {
+                    return
+                }
+                switch reason {
+                case .oldDeviceUnavailable:
+                    self?.status = .paused
+                default: ()
                 }
             }
     }
