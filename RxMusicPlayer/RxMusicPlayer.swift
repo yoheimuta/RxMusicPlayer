@@ -145,22 +145,12 @@ open class RxMusicPlayer: NSObject {
             let audioSession = AVAudioSession.sharedInstance()
             try audioSession.setCategory(AVAudioSession.Category.playback)
             try audioSession.setMode(AVAudioSession.Mode.default)
-            try audioSession.setActive(true)
         } catch {
             print("[RxMusicPlayer - init?() Error] \(error)")
             return nil
         }
 
         super.init()
-    }
-
-    deinit {
-        do {
-            let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setActive(false)
-        } catch {
-            print("[RxMusicPlayer - deinit() Error] \(error)")
-        }
     }
 
     /**
@@ -454,7 +444,10 @@ open class RxMusicPlayer: NSObject {
         return weakItem.rx.status
             .map { [weak self] st in
                 switch st {
-                case .readyToPlay: self?.status = .playing
+                case .readyToPlay:
+                    if self?.status != .paused {
+                        self?.status = .playing
+                    }
                 case .failed: self?.status = .failed(err: weakItem.error!)
                 default: self?.status = .loading
                 }
