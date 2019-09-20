@@ -184,6 +184,9 @@ open class RxMusicPlayer: NSObject {
         let nowPlaying = updateNowPlayingInfo()
             .subscribe()
 
+        let remoteControl = registerRemoteControl()
+            .subscribe()
+
         let cmdRunner = Observable.merge(
             cmd.asObservable(),
             autoCmdRelay.asObservable(),
@@ -206,37 +209,82 @@ open class RxMusicPlayer: NSObject {
                 endTime.dispose()
                 stall.dispose()
                 nowPlaying.dispose()
+                remoteControl.dispose()
                 cmdRunner.dispose()
             }
         }
         .asDriver(onErrorJustReturn: statusRelay.value)
     }
 
-    /**
-     Receive remote control.
-     */
-    public func remoteControlReceived(with event: UIEvent?) {
-        if event?.type != .remoteControl {
-            return
+    private func registerRemoteControl() -> Observable<()> {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.playCommand.addTarget { [weak self] _ in
+            self?.remoteCmdRelay.accept(.play)
+            return .success
+        }
+        commandCenter.pauseCommand.addTarget { [weak self] _ in
+            self?.remoteCmdRelay.accept(.pause)
+            return .success
+        }
+        commandCenter.nextTrackCommand.addTarget { [weak self] _ in
+            self?.remoteCmdRelay.accept(.next)
+            return .success
+        }
+        commandCenter.previousTrackCommand.addTarget { [weak self] _ in
+            self?.remoteCmdRelay.accept(.previous)
+            return .success
+        }
+        commandCenter.togglePlayPauseCommand.addTarget { [weak self] _ in
+            if self?.status == .some(.playing) {
+                self?.remoteCmdRelay.accept(.pause)
+            } else {
+                self?.remoteCmdRelay.accept(.play)
+            }
+            return .success
+        }
+        commandCenter.changePlaybackPositionCommand.addTarget { [weak self] ev in
+            guard let event = ev as? MPChangePlaybackPositionCommandEvent else {
+                return .commandFailed
+            }
+            self?.remoteCmdRelay.accept(.seek(seconds: Int(event.positionTime)))
+            return .success
         }
 
-        switch event!.subtype {
-        case .remoteControlPlay:
-            remoteCmdRelay.accept(.play)
-        case .remoteControlPause:
-            remoteCmdRelay.accept(.pause)
-        case .remoteControlNextTrack:
-            remoteCmdRelay.accept(.next)
-        case .remoteControlPreviousTrack:
-            remoteCmdRelay.accept(.previous)
-        case .remoteControlTogglePlayPause:
-            if status == .playing {
-                remoteCmdRelay.accept(.pause)
-            } else {
-                remoteCmdRelay.accept(.play)
+        return Observable.create { [weak self] _ in
+            guard let weakSelf = self else { return Disposables.create() }
+            let disablePlay = weakSelf.rx.canSendCommand(cmd: .play)
+                .do(onNext: {
+                    commandCenter.playCommand.isEnabled = $0
+                })
+                .drive()
+            let disablePause = weakSelf.rx.canSendCommand(cmd: .pause)
+                .do(onNext: {
+                    commandCenter.pauseCommand.isEnabled = $0
+                })
+                .drive()
+            let disableNext = weakSelf.rx.canSendCommand(cmd: .next)
+                .do(onNext: {
+                    commandCenter.nextTrackCommand.isEnabled = $0
+                })
+                .drive()
+            let disablePrevious = weakSelf.rx.canSendCommand(cmd: .previous)
+                .do(onNext: {
+                    commandCenter.previousTrackCommand.isEnabled = $0
+                })
+                .drive()
+            let disableSeek = weakSelf.rx.canSendCommand(cmd: .seek(seconds: 0))
+                .do(onNext: {
+                    commandCenter.changePlaybackPositionCommand.isEnabled = $0
+                })
+                .drive()
+
+            return Disposables.create {
+                disablePlay.dispose()
+                disablePause.dispose()
+                disableNext.dispose()
+                disablePrevious.dispose()
+                disableSeek.dispose()
             }
-        default:
-            break
         }
     }
 
