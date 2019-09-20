@@ -174,6 +174,20 @@ extension Reactive where Base: RxMusicPlayer {
             }
     }
 
+    /**
+     Get the shuffle mode.
+     */
+    public func shuffleMode() -> Driver<RxMusicPlayer.ShuffleMode> {
+        return base.shuffleModeRelay.asDriver()
+    }
+
+    /**
+     Get the repeat mode.
+     */
+    public func repeatMode() -> Driver<RxMusicPlayer.RepeatMode> {
+        return base.repeatModeRelay.asDriver()
+    }
+
     private func canPlay() -> Driver<Bool> {
         return base.statusRelay.asDriver()
             .map { status in

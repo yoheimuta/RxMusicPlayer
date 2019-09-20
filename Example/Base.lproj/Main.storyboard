@@ -29,19 +29,27 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Cqi-CS-rBj">
-                                                    <rect key="frame" x="132" y="442" width="150.5" height="30"/>
+                                                    <rect key="frame" x="57.5" y="442" width="299.5" height="30"/>
                                                     <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j6W-Sz-c6A">
+                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="30"/>
+                                                            <state key="normal" title="Shuffle"/>
+                                                        </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WSW-QU-Vgu">
-                                                            <rect key="frame" x="0.0" y="0.0" width="59" height="30"/>
+                                                            <rect key="frame" x="58" y="0.0" width="59" height="30"/>
                                                             <state key="normal" title="Previous"/>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fWW-Kg-ZwK">
-                                                            <rect key="frame" x="67" y="0.0" width="30" height="30"/>
+                                                            <rect key="frame" x="135" y="0.0" width="30" height="30"/>
                                                             <state key="normal" title="Play"/>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5f-It-JAk">
-                                                            <rect key="frame" x="118.5" y="0.0" width="32" height="30"/>
+                                                            <rect key="frame" x="196.5" y="0.0" width="32" height="30"/>
                                                             <state key="normal" title="Next"/>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZ2-nI-xzi">
+                                                            <rect key="frame" x="250.5" y="0.0" width="49" height="30"/>
+                                                            <state key="normal" title="Repeat"/>
                                                         </button>
                                                     </subviews>
                                                 </stackView>
@@ -126,8 +134,10 @@
                         <outlet property="nextButton" destination="S5f-It-JAk" id="G6h-Qe-b5b"/>
                         <outlet property="playButton" destination="fWW-Kg-ZwK" id="pJh-ea-KRB"/>
                         <outlet property="prevButton" destination="WSW-QU-Vgu" id="6vl-q6-OXl"/>
+                        <outlet property="repeatButton" destination="dZ2-nI-xzi" id="EJh-XG-UcB"/>
                         <outlet property="seekBar" destination="VTP-kG-hfM" id="DfY-Gg-LxV"/>
                         <outlet property="seekDurationLabel" destination="WwD-QM-0eD" id="DK1-xc-7BJ"/>
+                        <outlet property="shuffleButton" destination="j6W-Sz-c6A" id="04s-in-jB5"/>
                         <outlet property="titleLabel" destination="3M2-qt-bFd" id="j98-cQ-NtN"/>
                     </connections>
                 </tableViewController>

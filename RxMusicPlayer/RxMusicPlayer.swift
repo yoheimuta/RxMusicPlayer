@@ -51,7 +51,7 @@ open class RxMusicPlayer: NSObject {
         case previous
         case pause
         case stop
-        case seek(seconds: Int)
+        case seek(seconds: Int, shouldPlay: Bool)
 
         public static func == (lhs: Command, rhs: Command) -> Bool {
             switch (lhs, rhs) {
@@ -69,6 +69,23 @@ open class RxMusicPlayer: NSObject {
                 return false
             }
         }
+    }
+
+    /**
+     Player shuffle mode.
+     */
+    public enum ShuffleMode: Equatable {
+        case off
+        case songs
+    }
+
+    /**
+     Player repeat mode.
+     */
+    public enum RepeatMode: Equatable {
+        case none
+        case one
+        case all
     }
 
     /**
@@ -108,10 +125,30 @@ open class RxMusicPlayer: NSObject {
         }
     }
 
+    public var shuffleMode: ShuffleMode {
+        set {
+            shuffleModeRelay.accept(newValue)
+        }
+        get {
+            return shuffleModeRelay.value
+        }
+    }
+
+    public var repeatMode: RepeatMode {
+        set {
+            repeatModeRelay.accept(newValue)
+        }
+        get {
+            return repeatModeRelay.value
+        }
+    }
+
     let playIndexRelay = BehaviorRelay<Int>(value: 0)
     let queuedItemsRelay = BehaviorRelay<[RxMusicPlayerItem]>(value: [])
     let statusRelay = BehaviorRelay<Status>(value: .ready)
     let playerRelay = BehaviorRelay<AVPlayer?>(value: nil)
+    let shuffleModeRelay = BehaviorRelay<ShuffleMode>(value: .off)
+    let repeatModeRelay = BehaviorRelay<RepeatMode>(value: .none)
 
     private let scheduler = ConcurrentDispatchQueueScheduler(
         queue: DispatchQueue.global(qos: .background)
@@ -128,6 +165,7 @@ open class RxMusicPlayer: NSObject {
     private let autoCmdRelay = PublishRelay<Command>()
     private let remoteCmdRelay = PublishRelay<Command>()
     private let config: ExternalConfig
+    private var masterQueuedItems: [RxMusicPlayerItem]!
 
     /**
      Create an instance with a list of items without loading their assets.
@@ -139,6 +177,7 @@ open class RxMusicPlayer: NSObject {
     public required init?(items: [RxMusicPlayerItem] = [RxMusicPlayerItem](),
                           config: ExternalConfig = ExternalConfig.default) {
         queuedItemsRelay.accept(items)
+        masterQueuedItems = items
         self.config = config
 
         do {
@@ -154,7 +193,7 @@ open class RxMusicPlayer: NSObject {
     }
 
     /**
-     Run.
+     Run each command.
      */
     public func run(cmd: Driver<Command>) -> Driver<Status> {
         let status = statusRelay
@@ -192,6 +231,9 @@ open class RxMusicPlayer: NSObject {
         let remoteControl = registerRemoteControl()
             .subscribe()
 
+        let shuffle = shuffleItems()
+            .subscribe()
+
         let cmdRunner = Observable.merge(
             cmd.asObservable(),
             autoCmdRelay.asObservable(),
@@ -217,6 +259,7 @@ open class RxMusicPlayer: NSObject {
                 routeChange.dispose()
                 nowPlaying.dispose()
                 remoteControl.dispose()
+                shuffle.dispose()
                 cmdRunner.dispose()
             }
         }
@@ -253,7 +296,7 @@ open class RxMusicPlayer: NSObject {
             guard let event = ev as? MPChangePlaybackPositionCommandEvent else {
                 return .commandFailed
             }
-            self?.remoteCmdRelay.accept(.seek(seconds: Int(event.positionTime)))
+            self?.remoteCmdRelay.accept(.seek(seconds: Int(event.positionTime), shouldPlay: false))
             return .success
         }
 
@@ -279,7 +322,7 @@ open class RxMusicPlayer: NSObject {
                     commandCenter.previousTrackCommand.isEnabled = $0
                 })
                 .drive()
-            let disableSeek = weakSelf.rx.canSendCommand(cmd: .seek(seconds: 0))
+            let disableSeek = weakSelf.rx.canSendCommand(cmd: .seek(seconds: 0, shouldPlay: false))
                 .do(onNext: {
                     commandCenter.changePlaybackPositionCommand.isEnabled = $0
                 })
@@ -318,8 +361,8 @@ open class RxMusicPlayer: NSObject {
                     return weakSelf.pause()
                 case .stop:
                     return weakSelf.stop()
-                case let .seek(seconds: sec):
-                    return weakSelf.seek(toSecond: sec)
+                case let .seek(seconds: sec, shouldPlay: play):
+                    return weakSelf.seek(toSecond: sec, shouldPlay: play)
                 }
             }
             .catchError { [weak self] err in
@@ -370,19 +413,17 @@ open class RxMusicPlayer: NSObject {
         return play(atIndex: playIndex - 1)
     }
 
-    private func replayCurrentItem() -> Observable<()> {
-        return seek(toSecond: 0, shouldPlay: true)
-    }
-
     private func seek(toSecond second: Int,
                       shouldPlay: Bool = false) -> Observable<()> {
         guard let player = player else { return .just(()) }
 
         player.seek(to: CMTimeMake(value: Int64(second), timescale: 1))
 
-        if shouldPlay && status != .playing {
+        if shouldPlay {
             player.play()
-            status = .playing
+            if status != .playing {
+                status = .playing
+            }
         }
         return .just(())
     }
@@ -487,13 +528,31 @@ open class RxMusicPlayer: NSObject {
     private func watchEndTime() -> Observable<()> {
         return NotificationCenter.default.rx
             .notification(.AVPlayerItemDidPlayToEndTime)
-            .withLatestFrom(rx.canSendCommand(cmd: .next))
-            .map { [weak self] isEnabled in
-                if isEnabled {
-                    self?.autoCmdRelay.accept(.next)
-                } else {
-                    self?.autoCmdRelay.accept(.stop)
+            .map { [weak self] _ -> Command in
+                guard let weakSelf = self else { return .stop }
+                switch weakSelf.repeatMode {
+                case .none: return .next
+                case .one: return .seek(seconds: 0, shouldPlay: true)
+                case .all:
+                    if weakSelf.playIndex == weakSelf.queuedItems.count - 1 {
+                        weakSelf.status = .paused
+                        return .playAt(index: 0)
+                    }
+                    return .next
                 }
+            }
+            .flatMapLatest { [weak self] cmd -> Observable<()> in
+                guard let weakSelf = self else { return .just(()) }
+                return weakSelf.rx.canSendCommand(cmd: cmd)
+                    .asObservable()
+                    .take(1)
+                    .map { [weak self] isEnabled in
+                        if isEnabled {
+                            self?.autoCmdRelay.accept(cmd)
+                        } else {
+                            self?.autoCmdRelay.accept(.stop)
+                        }
+                    }
             }
     }
 
@@ -603,5 +662,21 @@ open class RxMusicPlayer: NSObject {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = $0
         }
         .asObservable()
+    }
+
+    private func shuffleItems() -> Observable<()> {
+        return shuffleModeRelay.asDriver()
+            .map { [weak self] mode in
+                guard let weakSelf = self,
+                    let master = weakSelf.masterQueuedItems else { return }
+
+                switch mode {
+                case .off:
+                    weakSelf.queuedItems = master
+                case .songs:
+                    weakSelf.queuedItems = master.shuffledAround(index: weakSelf.playIndex)
+                }
+            }
+            .asObservable()
     }
 }

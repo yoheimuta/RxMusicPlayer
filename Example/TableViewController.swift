@@ -20,9 +20,12 @@ class TableViewController: UITableViewController {
     @IBOutlet private var seekBar: ProgressSlider!
     @IBOutlet private var seekDurationLabel: UILabel!
     @IBOutlet private var durationLabel: UILabel!
+    @IBOutlet private var shuffleButton: UIButton!
+    @IBOutlet private var repeatButton: UIButton!
 
     private let disposeBag = DisposeBag()
 
+    // swiftlint:disable cyclomatic_complexity
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -52,7 +55,7 @@ class TableViewController: UITableViewController {
             .drive(prevButton.rx.isEnabled)
             .disposed(by: disposeBag)
 
-        player.rx.canSendCommand(cmd: .seek(seconds: 0))
+        player.rx.canSendCommand(cmd: .seek(seconds: 0, shouldPlay: false))
             .drive(seekBar.rx.isUserInteractionEnabled)
             .disposed(by: disposeBag)
 
@@ -105,6 +108,26 @@ class TableViewController: UITableViewController {
             .drive(seekBar.rx.playableProgress)
             .disposed(by: disposeBag)
 
+        player.rx.shuffleMode()
+            .do(onNext: { [weak self] mode in
+                self?.shuffleButton.setTitle(mode == .off ? "Shuffle" : "No Shuffle", for: .normal)
+            })
+            .drive()
+            .disposed(by: disposeBag)
+
+        player.rx.repeatMode()
+            .do(onNext: { [weak self] mode in
+                var title = ""
+                switch mode {
+                case .none: title = "Repeat"
+                case .one: title = "Repeat(All)"
+                case .all: title = "No Repeat"
+                }
+                self?.repeatButton.setTitle(title, for: .normal)
+            })
+            .drive()
+            .disposed(by: disposeBag)
+
         // 3) Process the user's input
         let cmd = Driver.merge(
             playButton.rx.tap.asDriver().map { [weak self] in
@@ -117,7 +140,8 @@ class TableViewController: UITableViewController {
             prevButton.rx.tap.asDriver().map { RxMusicPlayer.Command.previous },
             seekBar.rx.controlEvent(.valueChanged).asDriver()
                 .map { [weak self] _ in
-                    RxMusicPlayer.Command.seek(seconds: Int(self?.seekBar.value ?? 0))
+                    RxMusicPlayer.Command.seek(seconds: Int(self?.seekBar.value ?? 0),
+                                               shouldPlay: false)
                 }
                 .distinctUntilChanged()
         )
@@ -148,6 +172,25 @@ class TableViewController: UITableViewController {
                 return .just(())
             }
             .drive()
+            .disposed(by: disposeBag)
+
+        shuffleButton.rx.tap.asDriver()
+            .drive(onNext: {
+                switch player.shuffleMode {
+                case .off: player.shuffleMode = .songs
+                case .songs: player.shuffleMode = .off
+                }
+            })
+            .disposed(by: disposeBag)
+
+        repeatButton.rx.tap.asDriver()
+            .drive(onNext: {
+                switch player.repeatMode {
+                case .none: player.repeatMode = .one
+                case .one: player.repeatMode = .all
+                case .all: player.repeatMode = .none
+                }
+            })
             .disposed(by: disposeBag)
     }
 }
