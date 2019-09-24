@@ -18,6 +18,7 @@ open class RxMusicPlayerItem: NSObject {
      */
     public struct Meta {
         public fileprivate(set) var duration: CMTime?
+        public fileprivate(set) var lyrics: String?
         public private(set) var title: String?
         public private(set) var album: String?
         public private(set) var artist: String?
@@ -99,7 +100,13 @@ open class RxMusicPlayerItem: NSObject {
                     .map { [weak self] duration in
                         self?.meta.duration = duration
                         return
+                    },
+                asset.rx.loadAsync(for: "lyrics")
+                    .map { [weak self] _ in
+                        self?.meta.lyrics = asset.lyrics
+                        return
                     }
+                    .asObservable()
             )
             .map { [weak self] _ in
                 self?.meta.didAllSetRelay.accept(true)

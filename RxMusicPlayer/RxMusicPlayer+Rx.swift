@@ -49,6 +49,30 @@ extension Reactive where Base: RxMusicPlayer {
     }
 
     /**
+     Get the current item's album.
+     */
+    public func currentItemAlbum() -> Driver<String?> {
+        return currentItemMeta()
+            .map { $0.album }
+    }
+
+    /**
+     Get the current item's artist.
+     */
+    public func currentItemArtist() -> Driver<String?> {
+        return currentItemMeta()
+            .map { $0.artist }
+    }
+
+    /**
+     Get the current item's lyrics.
+     */
+    public func currentItemLyrics() -> Driver<String?> {
+        return currentItemMeta()
+            .map { $0.lyrics }
+    }
+
+    /**
      Get the current item's duration.
      */
     public func currentItemDuration() -> Driver<CMTime?> {

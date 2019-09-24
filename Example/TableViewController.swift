@@ -18,6 +18,7 @@ class TableViewController: UITableViewController {
     @IBOutlet private var prevButton: UIButton!
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var artImageView: UIImageView!
+    @IBOutlet private var lyricsLabel: UILabel!
     @IBOutlet private var seekBar: ProgressSlider!
     @IBOutlet private var seekDurationLabel: UILabel!
     @IBOutlet private var durationLabel: UILabel!
@@ -32,7 +33,7 @@ class TableViewController: UITableViewController {
 
         // 1) Create a player
         let items = [
-            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_1473200.mp3",
+            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_1473200_1.mp3",
             "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_2160166.mp3",
             "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_4690995.mp3",
             "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_9179181.mp3",
@@ -61,12 +62,19 @@ class TableViewController: UITableViewController {
             .disposed(by: disposeBag)
 
         player.rx.currentItemTitle()
-            .map { $0 ?? "No Title" }
             .drive(titleLabel.rx.text)
             .disposed(by: disposeBag)
 
         player.rx.currentItemArtwork()
             .drive(artImageView.rx.image)
+            .disposed(by: disposeBag)
+
+        player.rx.currentItemLyrics()
+            .distinctUntilChanged()
+            .do(onNext: { [weak self] _ in
+                self?.tableView.reloadData()
+            })
+            .drive(lyricsLabel.rx.text)
             .disposed(by: disposeBag)
 
         player.rx.currentItemRestDurationDisplay()
