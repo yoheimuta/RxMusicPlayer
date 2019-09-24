@@ -128,6 +128,15 @@ class TableViewController: UITableViewController {
             .drive()
             .disposed(by: disposeBag)
 
+        player.rx.playerIndex()
+            .do(onNext: { index in
+                if index == player.queuedItems.count - 1 {
+                    player.append(items: items)
+                }
+            })
+            .drive()
+            .disposed(by: disposeBag)
+
         // 3) Process the user's input
         let cmd = Driver.merge(
             playButton.rx.tap.asDriver().map { [weak self] in

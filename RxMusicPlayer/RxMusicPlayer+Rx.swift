@@ -156,7 +156,7 @@ extension Reactive where Base: RxMusicPlayer {
      Get the current item.
      */
     public func currentItem() -> Driver<RxMusicPlayerItem?> {
-        return base.playIndexRelay.asDriver()
+        return playerIndex()
             .map { [weak base] index in
                 guard let items = base?.queuedItems else { return nil }
                 return index < items.count ? items[index] : nil
@@ -188,6 +188,13 @@ extension Reactive where Base: RxMusicPlayer {
         return base.repeatModeRelay.asDriver()
     }
 
+    /**
+     Get the player index.
+     */
+    public func playerIndex() -> Driver<Int> {
+        return base.playIndexRelay.asDriver()
+    }
+
     private func canPlay() -> Driver<Bool> {
         return base.statusRelay.asDriver()
             .map { status in
@@ -214,7 +221,7 @@ extension Reactive where Base: RxMusicPlayer {
 
     private func canNext() -> Driver<Bool> {
         return Driver.combineLatest(
-            base.playIndexRelay.asDriver(),
+            playerIndex(),
             base.queuedItemsRelay.asDriver()
         )
         .map({ index, items in
@@ -223,7 +230,7 @@ extension Reactive where Base: RxMusicPlayer {
     }
 
     private func canPrevious() -> Driver<Bool> {
-        return base.playIndexRelay.asDriver()
+        return playerIndex()
             .flatMapLatest { [weak base] index in
                 if 0 < index {
                     return .just(true)

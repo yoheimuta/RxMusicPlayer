@@ -266,6 +266,22 @@ open class RxMusicPlayer: NSObject {
         .asDriver(onErrorJustReturn: statusRelay.value)
     }
 
+    /**
+     Append items.
+     */
+    public func append(items: [RxMusicPlayerItem]) {
+        masterQueuedItems.append(contentsOf: items)
+
+        switch shuffleMode {
+        case .off:
+            queuedItems = masterQueuedItems
+        case .songs:
+            var queue = queuedItemsRelay.value
+            queue.append(contentsOf: items.shuffled())
+            queuedItems = queue
+        }
+    }
+
     private func registerRemoteControl() -> Observable<()> {
         let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.playCommand.addTarget { [weak self] _ in
