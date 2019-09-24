@@ -14,8 +14,6 @@ import RxCocoa
 import RxSwift
 
 /// RxMusicPlayer is a wrapper of avplayer to make it easy for audio playbacks.
-///
-/// RxMusicPlayer is thread safe.
 open class RxMusicPlayer: NSObject {
     /**
      Player Status.
@@ -92,7 +90,11 @@ open class RxMusicPlayer: NSObject {
      Player ExternalConfig.
      */
     public struct ExternalConfig {
-        var automaticallyWaitsToMinimizeStalling = false
+        let automaticallyWaitsToMinimizeStalling: Bool
+
+        public init(automaticallyWaitsToMinimizeStalling: Bool = false) {
+            self.automaticallyWaitsToMinimizeStalling = automaticallyWaitsToMinimizeStalling
+        }
 
         /// default is a default configuration.
         public static let `default` = ExternalConfig()
@@ -164,6 +166,7 @@ open class RxMusicPlayer: NSObject {
 
     private let autoCmdRelay = PublishRelay<Command>()
     private let remoteCmdRelay = PublishRelay<Command>()
+    private let forceUpdateNowPlayingInfo = PublishRelay<()>()
     private let config: ExternalConfig
     private var masterQueuedItems: [RxMusicPlayerItem]!
 
@@ -392,16 +395,13 @@ open class RxMusicPlayer: NSObject {
     }
 
     private func play(atIndex index: Int) -> Observable<()> {
-        if playIndex == index && status == .paused {
+        if player != nil && playIndex == index && status == .paused {
             return resume()
         }
-
         player?.pause()
 
-        playIndex = index
         status = .loading
-
-        return queuedItems[playIndex].loadPlayerItem()
+        return queuedItems[index].loadPlayerItem()
             .asObservable()
             .flatMapLatest { [weak self] item -> Observable<()> in
                 guard let weakSelf = self, let weakItem = item else {
@@ -414,6 +414,7 @@ open class RxMusicPlayer: NSObject {
                 weakSelf.player!.automaticallyWaitsToMinimizeStalling =
                     weakSelf.config.automaticallyWaitsToMinimizeStalling
                 weakSelf.player!.play()
+                weakSelf.playIndex = index
                 return weakSelf.preload(index: index)
             }
     }
@@ -425,6 +426,16 @@ open class RxMusicPlayer: NSObject {
     private func playPrevious() -> Observable<()> {
         if 1 < (player?.currentTime().seconds ?? 0) {
             return seek(toSecond: 0)
+                .flatMapLatest { [weak self] _ -> Driver<CMTime?> in
+                    guard let weakSelf = self else { return .just(nil) }
+                    return weakSelf.rx.currentItemTime()
+                }
+                .asObservable()
+                .filter { ($0?.seconds ?? 0) <= 1 }
+                .map { [weak self] _ in
+                    self?.forceUpdateNowPlayingInfo.accept(())
+                }
+                .take(1)
         }
         return play(atIndex: playIndex - 1)
     }
@@ -640,23 +651,25 @@ open class RxMusicPlayer: NSObject {
     }
 
     private func updateNowPlayingInfo() -> Observable<()> {
-        return Driver.combineLatest(
-            rx.currentItemMeta(),
-            rx.currentItemDuration(),
-            rx.currentItemTime()
-        ) { [weak self] meta, duration, currentTime in
+        return Observable.combineLatest(
+            statusRelay.asObservable(),
+            rx.currentItemMeta().asObservable(),
+            forceUpdateNowPlayingInfo.asObservable().startWith(())
+        ) { [weak self] st, meta, _ in
             let title = meta.title ?? ""
-            let duration = duration?.seconds ?? 0
-            let elapsed = currentTime?.seconds ?? 0
+            let duration = meta.duration?.seconds ?? 0
+            let elapsed = self?.player?.currentTime().seconds ?? 0
             let queueCount = self?.queuedItems.count ?? 0
             let queueIndex = self?.playIndex ?? 0
+            let playbackRate = st == .paused ? 0 : 1
 
             var nowPlayingInfo: [String: Any] = [
                 MPMediaItemPropertyTitle: title,
                 MPMediaItemPropertyPlaybackDuration: duration,
                 MPNowPlayingInfoPropertyElapsedPlaybackTime: elapsed,
                 MPNowPlayingInfoPropertyPlaybackQueueCount: queueCount,
-                MPNowPlayingInfoPropertyPlaybackQueueIndex: queueIndex
+                MPNowPlayingInfoPropertyPlaybackQueueIndex: queueIndex,
+                MPNowPlayingInfoPropertyPlaybackRate: playbackRate
             ]
 
             if let artist = meta.artist {
@@ -677,7 +690,6 @@ open class RxMusicPlayer: NSObject {
         .map {
             MPNowPlayingInfoCenter.default().nowPlayingInfo = $0
         }
-        .asObservable()
     }
 
     private func shuffleItems() -> Observable<()> {
