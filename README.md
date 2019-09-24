@@ -12,6 +12,7 @@ RxMusicPlayer is a wrapper of avplayer backed by RxSwift to make it easy for aud
 - Remote command control integration with MPRemoteCommandCenter.
 - Interruption handling with AVAudioSession.interruptionNotification.
 - Route change handling with AVAudioSession.routeChangeNotification.
+- Including a fully working example project.
 
 ## Runtime Requirements
 
@@ -23,7 +24,7 @@ For details, refer to the [Example project](https://github.com/yoheimuta/RxMusic
 
 ### Example
 
-![example](doc/example_top.jpg)
+<img src="doc/example.gif" alt="example" width="300"/>
 
 You can implement your audio player with the custom frontend without any delegates, like below.
 
