@@ -23,7 +23,7 @@ For details, refer to the [Example project](https://github.com/yoheimuta/RxMusic
 
 ### Example
 
-![example](doc/example_top.jpg)
+<img src="doc/example.gif" alt="example" width="300"/>
 
 You can implement your audio player with the custom frontend without any delegates, like below.
 
