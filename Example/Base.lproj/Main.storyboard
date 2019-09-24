@@ -130,6 +130,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="artImageView" destination="5Xb-Lk-qHg" id="Mys-Mv-HRR"/>
                         <outlet property="durationLabel" destination="rLZ-Eo-WcN" id="CnT-fu-CPm"/>
                         <outlet property="nextButton" destination="S5f-It-JAk" id="G6h-Qe-b5b"/>
                         <outlet property="playButton" destination="fWW-Kg-ZwK" id="pJh-ea-KRB"/>

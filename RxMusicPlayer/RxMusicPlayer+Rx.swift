@@ -41,6 +41,14 @@ extension Reactive where Base: RxMusicPlayer {
     }
 
     /**
+     Get the current item's artwork.
+     */
+    public func currentItemArtwork() -> Driver<UIImage?> {
+        return currentItemMeta()
+            .map { $0.artwork }
+    }
+
+    /**
      Get the current item's duration.
      */
     public func currentItemDuration() -> Driver<CMTime?> {

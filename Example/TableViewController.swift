@@ -17,6 +17,7 @@ class TableViewController: UITableViewController {
     @IBOutlet private var nextButton: UIButton!
     @IBOutlet private var prevButton: UIButton!
     @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var artImageView: UIImageView!
     @IBOutlet private var seekBar: ProgressSlider!
     @IBOutlet private var seekDurationLabel: UILabel!
     @IBOutlet private var durationLabel: UILabel!
@@ -31,10 +32,10 @@ class TableViewController: UITableViewController {
 
         // 1) Create a player
         let items = [
-            "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3",
-            "https://ccrma.stanford.edu/~jos/mp3/oboe-bassoon.mp3",
-            "https://ccrma.stanford.edu/~jos/mp3/shakuhachi.mp3",
-            "https://ccrma.stanford.edu/~jos/mp3/trumpet.mp3",
+            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_1473200.mp3",
+            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_2160166.mp3",
+            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_4690995.mp3",
+            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_9179181.mp3",
         ]
         .map({ RxMusicPlayerItem(url: URL(string: $0)!) })
         let player = RxMusicPlayer(items: items)!
@@ -62,6 +63,10 @@ class TableViewController: UITableViewController {
         player.rx.currentItemTitle()
             .map { $0 ?? "No Title" }
             .drive(titleLabel.rx.text)
+            .disposed(by: disposeBag)
+
+        player.rx.currentItemArtwork()
+            .drive(artImageView.rx.image)
             .disposed(by: disposeBag)
 
         player.rx.currentItemRestDurationDisplay()
@@ -131,7 +136,8 @@ class TableViewController: UITableViewController {
         player.rx.playerIndex()
             .do(onNext: { index in
                 if index == player.queuedItems.count - 1 {
-                    player.append(items: items)
+                    // You can remove the comment-out below to confirm the append().
+                    // player.append(items: items)
                 }
             })
             .drive()
