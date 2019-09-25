@@ -2,6 +2,8 @@
 
 [![Build Status](https://app.bitrise.io/app/24b27b1bde763767/status.svg?token=i0LQTpCPw6Sm_mObo3YqTw&branch=master)](https://app.bitrise.io/app/24b27b1bde763767)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Version](https://img.shields.io/cocoapods/v/RxMusicPlayer.svg?style=flat)](http://cocoapods.org/pods/RxMusicPlayer)
+[![License](https://img.shields.io/cocoapods/l/RxMusicPlayer.svg?style=flat)](http://cocoapods.org/pods/RxMusicPlayer)
 
 RxMusicPlayer is a wrapper of avplayer backed by RxSwift to make it easy for audio playbacks.
 
@@ -27,6 +29,12 @@ RxMusicPlayer is a wrapper of avplayer backed by RxSwift to make it easy for aud
 
 ```
 github "yoheimuta/RxMusicPlayer"
+```
+
+### CocoaPods
+
+```
+pod "RxMusicPlayer"
 ```
 
 ## Usage
