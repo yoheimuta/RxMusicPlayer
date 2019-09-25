@@ -284,7 +284,7 @@ extension Reactive where Base: RxMusicPlayer {
             return ([
                 .ready,
                 .playing,
-                .paused,
+                .paused
             ] as [RxMusicPlayer.Status]).contains(status)
         }
     }
