@@ -669,7 +669,7 @@ open class RxMusicPlayer: NSObject {
                 MPNowPlayingInfoPropertyElapsedPlaybackTime: elapsed,
                 MPNowPlayingInfoPropertyPlaybackQueueCount: queueCount,
                 MPNowPlayingInfoPropertyPlaybackQueueIndex: queueIndex,
-                MPNowPlayingInfoPropertyPlaybackRate: playbackRate
+                MPNowPlayingInfoPropertyPlaybackRate: playbackRate,
             ]
 
             if let artist = meta.artist {
