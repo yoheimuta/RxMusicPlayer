@@ -241,6 +241,18 @@ class TableViewController: UITableViewController {
 }
 ```
 
+## Contributing
+
+- Fork it
+- Create your feature branch: git checkout -b your-new-feature
+- Commit changes: git commit -m 'Add your feature'
+- Push to the branch: git push origin your-new-feature
+- Submit a pull request
+
+## License
+
+The MIT License (MIT)
+
 ## Acknowledgement
 
 Thank you to the following projects and creators.
