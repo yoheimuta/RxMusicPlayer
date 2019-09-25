@@ -170,6 +170,10 @@ class TableViewController: UITableViewController {
         )
         .debug()
 
+        // You can remove the comment-out below to confirm changing the current index of music items.
+        // Default is 0.
+        // player.playIndex = 1
+
         player.run(cmd: cmd)
             .do(onNext: { status in
                 UIApplication.shared.isNetworkActivityIndicatorVisible = status == .loading

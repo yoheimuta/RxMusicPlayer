@@ -99,7 +99,11 @@ open class RxMusicPlayer: NSObject {
         public static let `default` = ExternalConfig()
     }
 
-    public private(set) var playIndex: Int {
+    /**
+     The current play index.
+     Starts from 0.
+     */
+    public var playIndex: Int {
         set {
             playIndexRelay.accept(newValue)
         }
