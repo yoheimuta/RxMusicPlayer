@@ -1,4 +1,6 @@
-# RxMusicPlayer-ios
+# RxMusicPlayer
+
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 RxMusicPlayer is a wrapper of avplayer backed by RxSwift to make it easy for audio playbacks.
 
@@ -18,9 +20,17 @@ RxMusicPlayer is a wrapper of avplayer backed by RxSwift to make it easy for aud
 
 - iOS 10.0 or later
 
+## Installation
+
+### Carthage
+
+```
+github "yoheimuta/RxMusicPlayer"
+```
+
 ## Usage
 
-For details, refer to the [Example project](https://github.com/yoheimuta/RxMusicPlayer-ios/tree/master/Example).
+For details, refer to the [Example project](https://github.com/yoheimuta/RxMusicPlayer/tree/master/Example).
 
 ### Example
 
