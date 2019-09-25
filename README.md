@@ -1,5 +1,6 @@
 # RxMusicPlayer
 
+[![Build Status](https://app.bitrise.io/app/24b27b1bde763767/status.svg?token=i0LQTpCPw6Sm_mObo3YqTw&branch=master)](https://app.bitrise.io/app/24b27b1bde763767)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 RxMusicPlayer is a wrapper of avplayer backed by RxSwift to make it easy for audio playbacks.
