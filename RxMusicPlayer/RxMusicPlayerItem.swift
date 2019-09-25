@@ -8,7 +8,6 @@
 
 import AVFoundation
 import Foundation
-import RxAudioVisual
 import RxCocoa
 import RxSwift
 

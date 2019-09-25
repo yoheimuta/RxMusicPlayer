@@ -7,7 +7,6 @@
 //
 
 import AVFoundation
-import RxAudioVisual
 import RxCocoa
 import RxSwift
 
@@ -172,7 +171,7 @@ extension Reactive where Base: RxMusicPlayer {
         return base.playerRelay.asObservable()
             .flatMap { Observable.from(optional: $0) }
             .flatMapFirst { player in
-                player.rx.timeControlStatus
+                player.rx.avPlayertimeControlStatus
             }
     }
 

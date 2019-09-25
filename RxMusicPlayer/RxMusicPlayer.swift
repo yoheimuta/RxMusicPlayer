@@ -9,7 +9,6 @@
 
 import AVFoundation
 import MediaPlayer
-import RxAudioVisual
 import RxCocoa
 import RxSwift
 

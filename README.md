@@ -270,6 +270,8 @@ Thank you to the following projects and creators.
 
 - Jukebox: https://github.com/teodorpatras/Jukebox
   - I inspired by this library for the interface and some implementation.
+- RxAudioVisual: https://github.com/keitaoouchi/RxAudioVisual
+  - I referred to some implementation instead of depending on it due to adaptation to the latest Swift compiler.
 - Smith, J.O. Physical Audio Signal Processing: https://ccrma.stanford.edu/~jos/waveguide/Sound_Examples.html
   - This project is using these as sample mp3 files.
 - file-examples.com: https://file-examples.com/index.php/sample-audio-files/sample-mp3-download/
