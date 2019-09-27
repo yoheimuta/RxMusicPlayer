@@ -168,6 +168,7 @@ class TableViewController: UITableViewController {
                 }
                 .distinctUntilChanged()
         )
+        .startWith(.prefetch)
         .debug()
 
         // You can remove the comment-out below to confirm changing the current index of music items.
