@@ -28,6 +28,8 @@ extension Reactive where Base: RxMusicPlayer {
             return .just(true)
         case .seek:
             return canSeek()
+        case .prefetch:
+            return canPrefetch()
         }
     }
 
@@ -95,8 +97,8 @@ extension Reactive where Base: RxMusicPlayer {
             currentItemDuration(),
             currentItemTime()
         ) { duration, currentTime in
-            guard let ltime = duration,
-                let rtime = currentTime else { return nil }
+            guard let ltime = duration else { return nil }
+            guard let rtime = currentTime else { return ltime }
             return CMTimeSubtract(ltime, rtime)
         }
     }
@@ -130,7 +132,7 @@ extension Reactive where Base: RxMusicPlayer {
      */
     public func currentItemTimeDisplay() -> Driver<String?> {
         return currentItemTime()
-            .map { $0?.displayTime ?? "--:--" }
+            .map { $0?.displayTime ?? "00:00" }
     }
 
     /**
@@ -286,5 +288,17 @@ extension Reactive where Base: RxMusicPlayer {
                 .paused,
             ] as [RxMusicPlayer.Status]).contains(status)
         }
+    }
+
+    private func canPrefetch() -> Driver<Bool> {
+        return base.statusRelay.asDriver()
+            .map { status in
+                switch status {
+                case .loading, .playing:
+                    return false
+                default:
+                    return true
+                }
+            }
     }
 }

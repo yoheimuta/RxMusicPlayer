@@ -34,6 +34,7 @@ open class RxMusicPlayer: NSObject {
         case playing
         case paused
         case loading
+        case readyToPlay
         case failed(err: Error)
         case critical(err: Error)
     }
@@ -49,6 +50,8 @@ open class RxMusicPlayer: NSObject {
         case pause
         case stop
         case seek(seconds: Int, shouldPlay: Bool)
+        /// fetch the metadata of the item with the current index without playing.
+        case prefetch
 
         public static func == (lhs: Command, rhs: Command) -> Bool {
             switch (lhs, rhs) {
@@ -56,7 +59,8 @@ open class RxMusicPlayer: NSObject {
                  (.next, .next),
                  (.previous, .previous),
                  (.pause, .pause),
-                 (.stop, .stop):
+                 (.stop, .stop),
+                 (.prefetch, .prefetch):
                 return true
             case let (.playAt(lindex), .playAt(index: rindex)):
                 return lindex == rindex
@@ -385,6 +389,8 @@ open class RxMusicPlayer: NSObject {
                     return weakSelf.stop()
                 case let .seek(seconds: sec, shouldPlay: play):
                     return weakSelf.seek(toSecond: sec, shouldPlay: play)
+                case .prefetch:
+                    return weakSelf.prefetch()
                 }
             }
             .catchError { [weak self] err in
@@ -476,6 +482,14 @@ open class RxMusicPlayer: NSObject {
 
         status = .ready
         return .just(())
+    }
+
+    private func prefetch() -> Observable<()> {
+        return queuedItems[playIndex].loadPlayerItem()
+            .map { [weak self] _ in
+                self?.status = .readyToPlay
+            }
+            .asObservable()
     }
 
     private func preload(index: Int) -> Observable<()> {
