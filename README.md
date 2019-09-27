@@ -11,7 +11,7 @@ RxMusicPlayer is a wrapper of avplayer backed by RxSwift to make it easy for aud
 
 - Following [the Audio Guidelines for User-Controlled Playback and Recording Apps](https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioGuidelinesByAppType/AudioGuidelinesByAppType.html#//apple_ref/doc/uid/TP40007875-CH11-SW1).
 - Support for streaming both remote and local audio files.
-- Functions to `play`, `pause`, `stop`, `play next`, `play previous`, `repeat mode(repeat, repeat all)`, `shuffle mode` and `seek to a certain second`.
+- Functions to `play`, `pause`, `stop`, `play next`, `play previous`, `prefetch metadata`, `repeat mode(repeat, repeat all)`, `shuffle mode` and `seek to a certain second`.
 - Loading metadata, including `title`, `album`, `artist`, `artwork`, `duration`, and `lyrics`.
 - Background mode integration with MPNowPlayingInfoCenter.
 - Remote command control integration with MPRemoteCommandCenter.
