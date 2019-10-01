@@ -112,7 +112,9 @@ open class RxMusicPlayerItem: NSObject {
                 self?.playerItem = AVPlayerItem(asset: asset)
                 single(.success(self))
             }
-            .subscribe()
+            .subscribe(onError: { err in
+                single(.error(RxMusicPlayerError.playerItemMetadataFailed(err: err)))
+            })
 
             return Disposables.create {
                 load.dispose()

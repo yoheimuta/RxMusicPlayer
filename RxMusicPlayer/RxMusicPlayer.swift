@@ -35,7 +35,9 @@ open class RxMusicPlayer: NSObject {
         case paused
         case loading
         case readyToPlay
+        // Indicates a temporary error. Retries may be effective.
         case failed(err: Error)
+        // Indicates a critical error. When it occurs, the player is enforced to stop.
         case critical(err: Error)
     }
 
@@ -503,7 +505,9 @@ open class RxMusicPlayer: NSObject {
 
         return Observable.combineLatest(
             items.map { $0.loadPlayerItem().asObservable() }
-        ).map { _ in }
+        )
+        .map { _ in }
+        .catchErrorJustReturn(())
     }
 
     private func watchPlayerStatus(player: AVPlayer?) -> Observable<()> {
@@ -533,7 +537,9 @@ open class RxMusicPlayer: NSObject {
                     if self?.status != .paused {
                         self?.status = .playing
                     }
-                case .failed: self?.status = .failed(err: weakItem.error!)
+                case .failed:
+                    self?.status = .failed(err:
+                        RxMusicPlayerError.playerItemFailed(err: weakItem.error!))
                 default: self?.status = .loading
                 }
             }
