@@ -40,6 +40,7 @@ pod "RxMusicPlayer"
 ## Usage
 
 For details, refer to the [Example project](https://github.com/yoheimuta/RxMusicPlayer/tree/master/Example).
+Plus, see also **Users** section below.
 
 ### Example
 
@@ -259,6 +260,11 @@ class TableViewController: UITableViewController {
     }
 }
 ```
+
+## Users
+
+- AMMusicPlayerController
+  - https://github.com/yoheimuta/AMMusicPlayerController
 
 ## Contributing
 
