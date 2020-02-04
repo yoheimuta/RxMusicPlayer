@@ -19,6 +19,7 @@ DerivedData
 # Carthage
 #
 /Carthage/Checkouts
+/Carthage/Build
 
 # bundler
 #
