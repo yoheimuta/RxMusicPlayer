@@ -289,6 +289,7 @@ You can create it like the following steps.
 - Add some changes under the Example directory to reproduce the bug
 - Commit changes: git commit -m 'Add a reproducible feature'
 - Push to the branch: git push origin your-bug-name
+- (Optional) Submit a pull request
 - Share it in your issue
 
 NOTE: If you can't prepare any reproducible code, you have to explain the detail precisely and clearly so that I can reproduce the problem.
