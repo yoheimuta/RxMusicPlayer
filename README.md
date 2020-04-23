@@ -281,6 +281,7 @@ While any bug reports are helpful, it's sometimes unable to pinpoint the cause w
 In particular, since RxMusicPlayer depends on RxSwift that is prone to your application program mistakes, it's more essential to decouple the problem.
 
 Therefore, I highly recommend that you submit an issue with that project.
+
 You can create it like the following steps.
 
 - Fork it
