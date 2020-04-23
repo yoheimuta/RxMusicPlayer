@@ -274,6 +274,24 @@ class TableViewController: UITableViewController {
 - Push to the branch: git push origin your-new-feature
 - Submit a pull request
 
+## Bug Report
+
+While any bug reports are helpful, it's sometimes unable to pinpoint the cause without a reproducible project.
+
+In particular, since RxMusicPlayer depends on RxSwift that is prone to your application program mistakes, it's more essential to decouple the problem.
+
+Therefore, I highly recommend that you submit an issue with that project.
+You can create it like the following steps.
+
+- Fork it
+- Create your feature branch: git checkout -b your-bug-name
+- Add some changes under the Example directory to reproduce the bug
+- Commit changes: git commit -m 'Add a reproducible feature'
+- Push to the branch: git push origin your-bug-name
+- Share it in your issue
+
+NOTE: If you can't prepare any reproducible code, you have to explain the detail precisely and clearly so that I can reproduce the problem.
+
 ## License
 
 The MIT License (MIT)
