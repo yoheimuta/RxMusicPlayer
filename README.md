@@ -292,7 +292,9 @@ You can create it like the following steps.
 - (Optional) Submit a pull request
 - Share it in your issue
 
-NOTE: If you can't prepare any reproducible code, you have to explain the detail precisely and clearly so that I can reproduce the problem.
+The code should not be intertwined but concise, straightforward, and naive.
+
+NOTE: If you can't prepare any reproducible code, you have to elaborate the detail precisely and clearly so that I can reproduce the problem. 
 
 ## License
 
