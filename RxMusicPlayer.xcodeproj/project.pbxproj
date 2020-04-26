@@ -37,7 +37,7 @@
 		FF6769C82330E59500906FF6 /* CMTime+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6769C62330E3D100906FF6 /* CMTime+String.swift */; };
 		FFC91AF7232A4C1100B3E89A /* RxMusicPlayer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */; };
 		FFC91B25232B92E200B3E89A /* RxMusicPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FFC91B2C232B9A5A00B3E89A /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC91B2B232B9A5A00B3E89A /* Utility.swift */; };
+		FFC91B2C232B9A5A00B3E89A /* Wireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC91B2B232B9A5A00B3E89A /* Wireframe.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,7 +115,7 @@
 		FF6080082334C4ED0007A123 /* Array+Basic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Basic.swift"; sourceTree = "<group>"; };
 		FF6769C62330E3D100906FF6 /* CMTime+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CMTime+String.swift"; sourceTree = "<group>"; };
 		FFC91AF6232A4C1100B3E89A /* RxMusicPlayer+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxMusicPlayer+Rx.swift"; sourceTree = "<group>"; };
-		FFC91B2B232B9A5A00B3E89A /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		FFC91B2B232B9A5A00B3E89A /* Wireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wireframe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,7 +227,7 @@
 				FF11FC10232A2A5E0043C29B /* TableViewController.swift */,
 				FF1EBBBF233220CC0049C1C6 /* ProgressSlider.swift */,
 				FF1EBBC1233228460049C1C6 /* ProgressSlider+Rx.swift */,
-				FFC91B2B232B9A5A00B3E89A /* Utility.swift */,
+				FFC91B2B232B9A5A00B3E89A /* Wireframe.swift */,
 				FF11FBDE2329E3560043C29B /* Main.storyboard */,
 				FF11FBE12329E35A0043C29B /* Assets.xcassets */,
 				FF11FBE32329E35A0043C29B /* LaunchScreen.storyboard */,
@@ -354,7 +354,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "YOSHIMUTA YOHEI";
 				TargetAttributes = {
 					FF11FBB92329E2DE0043C29B = {
@@ -570,7 +570,7 @@
 				FF11FC11232A2A5E0043C29B /* TableViewController.swift in Sources */,
 				FF1EBBC2233228460049C1C6 /* ProgressSlider+Rx.swift in Sources */,
 				FF11FBDB2329E3560043C29B /* AppDelegate.swift in Sources */,
-				FFC91B2C232B9A5A00B3E89A /* Utility.swift in Sources */,
+				FFC91B2C232B9A5A00B3E89A /* Wireframe.swift in Sources */,
 				FF1EBBC0233220CC0049C1C6 /* ProgressSlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -749,7 +749,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = NUGP6A3A8X;
@@ -780,7 +780,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = NUGP6A3A8X;
