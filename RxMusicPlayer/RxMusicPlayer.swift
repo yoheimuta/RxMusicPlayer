@@ -693,9 +693,10 @@ open class RxMusicPlayer: NSObject {
         return Observable.combineLatest(
             statusRelay.asObservable(),
             rx.currentItemMeta().asObservable(),
+            rx.currentItemTime().asObservable(),
             forceUpdateNowPlayingInfo.asObservable().startWith(()),
             desiredPlaybackRateRelay.asObservable()
-        ) { [weak self] st, meta, _, rate in
+        ) { [weak self] st, meta, _, _, rate in
             let title = meta.title ?? ""
             let duration = meta.duration?.seconds ?? 0
             let elapsed = self?.player?.currentTime().seconds ?? 0
