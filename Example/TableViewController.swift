@@ -24,6 +24,7 @@ class TableViewController: UITableViewController {
     @IBOutlet private var durationLabel: UILabel!
     @IBOutlet private var shuffleButton: UIButton!
     @IBOutlet private var repeatButton: UIButton!
+    @IBOutlet private var rateButton: UIButton!
 
     private let disposeBag = DisposeBag()
 
@@ -185,15 +186,15 @@ class TableViewController: UITableViewController {
                 switch status {
                 case let RxMusicPlayer.Status.failed(err: err):
                     print(err)
-                    return Utility.promptOKAlertFor(src: weakSelf,
-                                                    title: "Error",
-                                                    message: err.localizedDescription)
+                    return Wireframe.promptOKAlertFor(src: weakSelf,
+                                                      title: "Error",
+                                                      message: err.localizedDescription)
 
                 case let RxMusicPlayer.Status.critical(err: err):
                     print(err)
-                    return Utility.promptOKAlertFor(src: weakSelf,
-                                                    title: "Critical Error",
-                                                    message: err.localizedDescription)
+                    return Wireframe.promptOKAlertFor(src: weakSelf,
+                                                      title: "Critical Error",
+                                                      message: err.localizedDescription)
                 default:
                     print(status)
                 }
@@ -219,6 +220,25 @@ class TableViewController: UITableViewController {
                 case .all: player.repeatMode = .none
                 }
             })
+            .disposed(by: disposeBag)
+
+        rateButton.rx.tap.asDriver()
+            .flatMapLatest { [weak self] _ -> Driver<()> in
+                guard let weakSelf = self else { return .just(()) }
+
+                return Wireframe.promptSimpleActionSheetFor(src: weakSelf,
+                                                            cancelAction: "Close",
+                                                            actions: PlaybackRateAction.allCases
+                                                                .map { $0.rawValue })
+                    .do(onNext: { [weak self] action in
+                        if let rate = PlaybackRateAction(rawValue: action)?.toFloat {
+                            player.desiredPlaybackRate = rate
+                            self?.rateButton.setTitle(action, for: .normal)
+                        }
+                    })
+                    .map { _ in }
+            }
+            .drive()
             .disposed(by: disposeBag)
     }
 }

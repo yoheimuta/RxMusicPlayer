@@ -154,12 +154,26 @@ open class RxMusicPlayer: NSObject {
         }
     }
 
+    /**
+     The desired playback rate.
+     Default is 1.0, which plays an item at its natural rate.
+     */
+    public var desiredPlaybackRate: Float {
+        set {
+            desiredPlaybackRateRelay.accept(newValue)
+        }
+        get {
+            return desiredPlaybackRateRelay.value
+        }
+    }
+
     let playIndexRelay = BehaviorRelay<Int>(value: 0)
     let queuedItemsRelay = BehaviorRelay<[RxMusicPlayerItem]>(value: [])
     let statusRelay = BehaviorRelay<Status>(value: .ready)
     let playerRelay = BehaviorRelay<AVPlayer?>(value: nil)
     let shuffleModeRelay = BehaviorRelay<ShuffleMode>(value: .off)
     let repeatModeRelay = BehaviorRelay<RepeatMode>(value: .none)
+    let desiredPlaybackRateRelay = BehaviorRelay<Float>(value: 1.0)
 
     private let scheduler = ConcurrentDispatchQueueScheduler(
         queue: DispatchQueue.global(qos: .background)
@@ -246,6 +260,9 @@ open class RxMusicPlayer: NSObject {
         let shuffle = shuffleItems()
             .subscribe()
 
+        let playbackRate = watchDesiredPlaybackRate()
+            .subscribe()
+
         let cmdRunner = Observable.merge(
             cmd.asObservable(),
             autoCmdRelay.asObservable(),
@@ -272,6 +289,7 @@ open class RxMusicPlayer: NSObject {
                 nowPlaying.dispose()
                 remoteControl.dispose()
                 shuffle.dispose()
+                playbackRate.dispose()
                 cmdRunner.dispose()
             }
         }
@@ -425,6 +443,7 @@ open class RxMusicPlayer: NSObject {
                 weakSelf.player!.automaticallyWaitsToMinimizeStalling =
                     weakSelf.config.automaticallyWaitsToMinimizeStalling
                 weakSelf.player!.play()
+                weakSelf.player!.rate = weakSelf.desiredPlaybackRate
                 weakSelf.playIndex = index
                 return weakSelf.preload(index: index)
             }
@@ -458,7 +477,7 @@ open class RxMusicPlayer: NSObject {
         player.seek(to: CMTimeMake(value: Int64(second), timescale: 1))
 
         if shouldPlay {
-            player.play()
+            player.playImmediately(atRate: desiredPlaybackRate)
             if status != .playing {
                 status = .playing
             }
@@ -473,7 +492,7 @@ open class RxMusicPlayer: NSObject {
     }
 
     private func resume() -> Observable<()> {
-        player?.play()
+        player?.playImmediately(atRate: desiredPlaybackRate)
         status = .playing
         return .just(())
     }
@@ -610,13 +629,10 @@ open class RxMusicPlayer: NSObject {
         return NotificationCenter.default.rx
             .notification(.AVPlayerItemPlaybackStalled)
             .map { [weak self] _ in
-                if self?.status == .some(.playing) {
-                    self?.player?.pause()
-                    if #available(iOS 10.0, *) {
-                        self?.player?.playImmediately(atRate: 1.0)
-                    } else {
-                        self?.player?.play()
-                    }
+                guard let weakSelf = self else { return }
+                if weakSelf.status == .some(.playing) {
+                    weakSelf.player?.pause()
+                    weakSelf.player?.playImmediately(atRate: weakSelf.desiredPlaybackRate)
                 }
             }
     }
@@ -677,14 +693,15 @@ open class RxMusicPlayer: NSObject {
         return Observable.combineLatest(
             statusRelay.asObservable(),
             rx.currentItemMeta().asObservable(),
-            forceUpdateNowPlayingInfo.asObservable().startWith(())
-        ) { [weak self] st, meta, _ in
+            forceUpdateNowPlayingInfo.asObservable().startWith(()),
+            desiredPlaybackRateRelay.asObservable()
+        ) { [weak self] st, meta, _, rate in
             let title = meta.title ?? ""
             let duration = meta.duration?.seconds ?? 0
             let elapsed = self?.player?.currentTime().seconds ?? 0
             let queueCount = self?.queuedItems.count ?? 0
             let queueIndex = self?.playIndex ?? 0
-            let playbackRate = st == .paused ? 0 : 1
+            let playbackRate = st == .paused ? 0 : rate
 
             var nowPlayingInfo: [String: Any] = [
                 MPMediaItemPropertyTitle: title,
@@ -729,5 +746,16 @@ open class RxMusicPlayer: NSObject {
                 }
             }
             .asObservable()
+    }
+
+    private func watchDesiredPlaybackRate() -> Observable<()> {
+        return desiredPlaybackRateRelay
+            .do(onNext: { [weak self] rate in
+                guard let weakSelf = self, let player = weakSelf.player else { return }
+                if player.rate != 0 {
+                    player.rate = rate
+                }
+            })
+            .map { _ in }
     }
 }

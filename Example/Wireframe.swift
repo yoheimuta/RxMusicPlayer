@@ -1,5 +1,5 @@
 //
-//  Utility.swift
+//  Wireframe.swift
 //  Example
 //
 //  Created by YOSHIMUTA YOHEI on 2019/09/13.
@@ -22,11 +22,17 @@ class Wireframe {
             .map { _ in }
     }
 
-    static func promptAlertFor<Action: CustomStringConvertible>(src: UIViewController,
-                                                                title: String?,
-                                                                message: String?,
-                                                                cancelAction: Action,
-                                                                actions: [Action]) -> Driver<Action> {
+    static func promptSimpleActionSheetFor<Action: CustomStringConvertible>(src: UIViewController,
+                                                                            cancelAction: Action,
+                                                                            actions: [Action]) -> Driver<Action> {
+        return promptFor(src, nil, nil, cancelAction, actions, .actionSheet)
+    }
+
+    private static func promptAlertFor<Action: CustomStringConvertible>(src: UIViewController,
+                                                                        title: String?,
+                                                                        message: String?,
+                                                                        cancelAction: Action,
+                                                                        actions: [Action]) -> Driver<Action> {
         return promptFor(src, title, message, cancelAction, actions, .alert)
     }
 
