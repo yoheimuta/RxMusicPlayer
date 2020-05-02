@@ -11,7 +11,7 @@ RxMusicPlayer is a wrapper of avplayer backed by RxSwift to make it easy for aud
 
 - Following [the Audio Guidelines for User-Controlled Playback and Recording Apps](https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioGuidelinesByAppType/AudioGuidelinesByAppType.html#//apple_ref/doc/uid/TP40007875-CH11-SW1).
 - Support for streaming both remote and local audio files.
-- Functions to `play`, `pause`, `stop`, `play next`, `play previous`, `prefetch metadata`, `repeat mode(repeat, repeat all)`, `shuffle mode` and `seek to a certain second`.
+- Functions to `play`, `pause`, `stop`, `play next`, `play previous`, `prefetch metadata`, `repeat mode(repeat, repeat all)`, `shuffle mode` `desired playback rate` and `seek to a certain second`.
 - Loading metadata, including `title`, `album`, `artist`, `artwork`, `duration`, and `lyrics`.
 - Background mode integration with MPNowPlayingInfoCenter.
 - Remote command control integration with MPRemoteCommandCenter.
@@ -67,9 +67,11 @@ class TableViewController: UITableViewController {
     @IBOutlet private var durationLabel: UILabel!
     @IBOutlet private var shuffleButton: UIButton!
     @IBOutlet private var repeatButton: UIButton!
+    @IBOutlet private var rateButton: UIButton!
 
     private let disposeBag = DisposeBag()
 
+    // swiftlint:disable cyclomatic_complexity
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -210,7 +212,12 @@ class TableViewController: UITableViewController {
                 }
                 .distinctUntilChanged()
         )
+        .startWith(.prefetch)
         .debug()
+
+        // You can remove the comment-out below to confirm changing the current index of music items.
+        // Default is 0.
+        // player.playIndex = 1
 
         player.run(cmd: cmd)
             .do(onNext: { status in
@@ -222,15 +229,15 @@ class TableViewController: UITableViewController {
                 switch status {
                 case let RxMusicPlayer.Status.failed(err: err):
                     print(err)
-                    return Utility.promptOKAlertFor(src: weakSelf,
-                                                    title: "Error",
-                                                    message: err.localizedDescription)
+                    return Wireframe.promptOKAlertFor(src: weakSelf,
+                                                      title: "Error",
+                                                      message: err.localizedDescription)
 
                 case let RxMusicPlayer.Status.critical(err: err):
                     print(err)
-                    return Utility.promptOKAlertFor(src: weakSelf,
-                                                    title: "Critical Error",
-                                                    message: err.localizedDescription)
+                    return Wireframe.promptOKAlertFor(src: weakSelf,
+                                                      title: "Critical Error",
+                                                      message: err.localizedDescription)
                 default:
                     print(status)
                 }
@@ -256,6 +263,25 @@ class TableViewController: UITableViewController {
                 case .all: player.repeatMode = .none
                 }
             })
+            .disposed(by: disposeBag)
+
+        rateButton.rx.tap.asDriver()
+            .flatMapLatest { [weak self] _ -> Driver<()> in
+                guard let weakSelf = self else { return .just(()) }
+
+                return Wireframe.promptSimpleActionSheetFor(src: weakSelf,
+                                                            cancelAction: "Close",
+                                                            actions: PlaybackRateAction.allCases
+                                                                .map { $0.rawValue })
+                    .do(onNext: { [weak self] action in
+                        if let rate = PlaybackRateAction(rawValue: action)?.toFloat {
+                            player.desiredPlaybackRate = rate
+                            self?.rateButton.setTitle(action, for: .normal)
+                        }
+                    })
+                    .map { _ in }
+            }
+            .drive()
             .disposed(by: disposeBag)
     }
 }
@@ -294,7 +320,7 @@ You can create it like the following steps.
 
 The code should not be intertwined but concise, straightforward, and naive.
 
-NOTE: If you can't prepare any reproducible code, you have to elaborate the detail precisely and clearly so that I can reproduce the problem. 
+NOTE: If you can't prepare any reproducible code, you have to elaborate the detail precisely and clearly so that I can reproduce the problem.
 
 ## License
 
