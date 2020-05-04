@@ -66,7 +66,7 @@ open class RxMusicPlayer: NSObject {
                 return true
             case let (.playAt(lindex), .playAt(index: rindex)):
                 return lindex == rindex
-            case let (.seek(lseconds), .seek(rseconds)):
+            case let (.seek(lseconds, _), .seek(rseconds, _)):
                 return lseconds == rseconds
             default:
                 return false
