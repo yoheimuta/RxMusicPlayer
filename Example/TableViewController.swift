@@ -226,10 +226,12 @@ class TableViewController: UITableViewController {
             .flatMapLatest { [weak self] _ -> Driver<()> in
                 guard let weakSelf = self else { return .just(()) }
 
-                return Wireframe.promptSimpleActionSheetFor(src: weakSelf,
-                                                            cancelAction: "Close",
-                                                            actions: PlaybackRateAction.allCases
-                                                                .map { $0.rawValue })
+                return Wireframe.promptSimpleActionSheetFor(
+                    src: weakSelf,
+                    cancelAction: "Close",
+                    actions: PlaybackRateAction.allCases.map {
+                        player.desiredPlaybackRate == $0.toFloat ? "\($0.rawValue)✓" : $0.rawValue
+                })
                     .do(onNext: { [weak self] action in
                         if let rate = PlaybackRateAction(rawValue: action)?.toFloat {
                             player.desiredPlaybackRate = rate
