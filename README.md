@@ -295,6 +295,7 @@ class TableViewController: UITableViewController {
 ## Contributing
 
 - Fork it
+- Run `make bootstrap`
 - Create your feature branch: git checkout -b your-new-feature
 - Commit changes: git commit -m 'Add your feature'
 - Push to the branch: git push origin your-new-feature
