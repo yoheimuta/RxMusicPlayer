@@ -24,6 +24,24 @@ open class RxMusicPlayerItem: NSObject {
         public private(set) var artwork: UIImage?
 
         let didAllSetRelay = BehaviorRelay<Bool>(value: false)
+        
+        public init() {
+            self.duration = nil
+            self.lyrics = nil
+            self.title = nil
+            self.album = nil
+            self.artist = nil
+            self.artwork = nil
+        }
+        
+        public init(duration: CMTime?, lyrics: String?, title: String?, album: String?, artist: String?, artwork: UIImage?) {
+            self.duration = duration
+            self.lyrics = lyrics
+            self.title = title
+            self.album = album
+            self.artist = artist
+            self.artwork = artwork
+        }
 
         fileprivate mutating func set(metaItem item: AVMetadataItem) {
             guard let commonKey = item.commonKey else { return }
@@ -55,17 +73,19 @@ open class RxMusicPlayerItem: NSObject {
 
     let url: Foundation.URL
 
-    fileprivate(set) var meta: Meta = Meta()
+    fileprivate(set) var meta: Meta
     fileprivate(set) var playerItem: AVPlayerItem?
 
     /**
      Create an instance with an URL and local title
 
      - parameter url: local or remote URL of the audio file
+     - parameter meta: prefetched metadata of the audio
 
      - returns: RxMusicPlayerItem instance
      */
-    public required init(url: Foundation.URL) {
+    public required init(url: Foundation.URL, meta: Meta = Meta()) {
+        self.meta = meta
         self.url = url
         super.init()
     }
