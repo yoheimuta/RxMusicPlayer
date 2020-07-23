@@ -24,23 +24,20 @@ open class RxMusicPlayerItem: NSObject {
         public private(set) var artwork: UIImage?
 
         let didAllSetRelay = BehaviorRelay<Bool>(value: false)
-        
-        public init() {
-            self.duration = nil
-            self.lyrics = nil
-            self.title = nil
-            self.album = nil
-            self.artist = nil
-            self.artwork = nil
-        }
-        
-        public init(duration: CMTime?, lyrics: String?, title: String?, album: String?, artist: String?, artwork: UIImage?) {
+
+        public init(duration: CMTime? = nil,
+                    lyrics: String? = nil,
+                    title: String? = nil,
+                    album: String? = nil,
+                    artist: String? = nil,
+                    artwork: UIImage? = nil) {
             self.duration = duration
             self.lyrics = lyrics
             self.title = title
             self.album = album
             self.artist = artist
             self.artwork = artwork
+            didAllSetRelay.accept(true)
         }
 
         fileprivate mutating func set(metaItem item: AVMetadataItem) {
@@ -92,7 +89,7 @@ open class RxMusicPlayerItem: NSObject {
 
     func loadPlayerItem() -> Single<RxMusicPlayerItem?> {
         if meta.didAllSetRelay.value {
-            playerItem = AVPlayerItem(asset: playerItem!.asset)
+            playerItem = AVPlayerItem(asset: playerItem?.asset ?? AVAsset(url: url))
             return .just(self)
         }
 
