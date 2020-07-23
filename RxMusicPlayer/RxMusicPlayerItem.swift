@@ -25,6 +25,10 @@ open class RxMusicPlayerItem: NSObject {
 
         let didAllSetRelay = BehaviorRelay<Bool>(value: false)
 
+        /**
+         Initialize Metadata with a prefetched one.
+         If one of the arguments is not nil, the player will skip downloading the metadata.
+         */
         public init(duration: CMTime? = nil,
                     lyrics: String? = nil,
                     title: String? = nil,
