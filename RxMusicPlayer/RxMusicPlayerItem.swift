@@ -37,7 +37,11 @@ open class RxMusicPlayerItem: NSObject {
             self.album = album
             self.artist = artist
             self.artwork = artwork
-            didAllSetRelay.accept(true)
+
+            if duration != nil || lyrics != nil || title != nil ||
+                album != nil || artist != nil || artist != nil {
+                didAllSetRelay.accept(true)
+            }
         }
 
         fileprivate mutating func set(metaItem item: AVMetadataItem) {
