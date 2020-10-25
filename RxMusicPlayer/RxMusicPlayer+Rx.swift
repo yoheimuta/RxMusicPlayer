@@ -160,7 +160,7 @@ extension Reactive where Base: RxMusicPlayer {
             .asObservable()
             .flatMapLatest { item in
                 item.rx.loadedTimeRanges
-                    .map { $0.last as? CMTimeRange }
+                    .map { $0.last?.timeRangeValue }
             }
             .asDriver(onErrorJustReturn: nil)
     }
