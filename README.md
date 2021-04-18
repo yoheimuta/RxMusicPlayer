@@ -303,6 +303,12 @@ class TableViewController: UITableViewController {
 - Push to the branch: git push origin your-new-feature
 - Submit a pull request
 
+### Release
+
+- Create a new release on GitHub
+- Publish a new podspec on Cocoapods
+  - `bundle exec pod trunk push RxMusicPlayer.podspec`
+
 ## Bug Report
 
 While any bug reports are helpful, it's sometimes unable to pinpoint the cause without a reproducible project.
