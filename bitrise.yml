@@ -25,7 +25,7 @@ workflows:
             set -x
 
             # write your script here
-            ./carthage.sh bootstrap --platform iOS --cache-builds
+            ./carthage.sh bootstrap --platform iOS --use-xcframeworks
     - xcode-test@2.4:
         inputs:
         - project_path: "$BITRISE_PROJECT_PATH"
