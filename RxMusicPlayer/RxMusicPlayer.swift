@@ -386,7 +386,7 @@ open class RxMusicPlayer: NSObject {
 
     private func runCommand(cmd: Command) -> Observable<()> {
         return rx.canSendCommand(cmd: cmd).asObservable().take(1)
-            .observeOn(scheduler)
+            .observe(on: scheduler)
             .flatMapLatest { [weak self] isEnabled -> Observable<()> in
                 guard let weakSelf = self else {
                     return .error(RxMusicPlayerError.notFoundWeakReference)
@@ -413,7 +413,7 @@ open class RxMusicPlayer: NSObject {
                     return weakSelf.prefetch()
                 }
             }
-            .catchError { [weak self] err in
+            .catch { [weak self] err in
                 self?.status = .failed(err: err)
                 return .just(())
             }
@@ -526,7 +526,7 @@ open class RxMusicPlayer: NSObject {
             items.map { $0.loadPlayerItem().asObservable() }
         )
         .map { _ in }
-        .catchErrorJustReturn(())
+        .catchAndReturn(())
     }
 
     private func watchPlayerStatus(player: AVPlayer?) -> Observable<()> {

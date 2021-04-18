@@ -138,7 +138,7 @@ open class RxMusicPlayerItem: NSObject {
                 single(.success(self))
             }
             .subscribe(onError: { err in
-                single(.error(RxMusicPlayerError.playerItemMetadataFailed(err: err)))
+                single(.failure(RxMusicPlayerError.playerItemMetadataFailed(err: err)))
             })
 
             return Disposables.create {
