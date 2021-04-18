@@ -3,11 +3,20 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		26BC08410487D678000C1FD8 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9F36DF15A393FC092613E9 /* Pods_Example.framework */; };
+		C23F042D262C40D4004686CE /* RxSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2A64DB9262C3EB40018641C /* RxSwift.xcframework */; };
+		C23F042E262C40D4004686CE /* RxSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2A64DB9262C3EB40018641C /* RxSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C23F043B262C4183004686CE /* RxSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2A64DB9262C3EB40018641C /* RxSwift.xcframework */; };
+		C23F0446262C4228004686CE /* RxCocoa.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0445262C4228004686CE /* RxCocoa.xcframework */; };
+		C23F0447262C4228004686CE /* RxCocoa.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0445262C4228004686CE /* RxCocoa.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C23F0452262C428F004686CE /* RxRelay.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0451262C428F004686CE /* RxRelay.xcframework */; };
+		C23F0453262C428F004686CE /* RxRelay.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0451262C428F004686CE /* RxRelay.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C23F0457262C4322004686CE /* RxRelay.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0451262C428F004686CE /* RxRelay.xcframework */; };
+		C23F045B262C4326004686CE /* RxCocoa.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0445262C4228004686CE /* RxCocoa.xcframework */; };
 		FF11FBC42329E2DE0043C29B /* RxMusicPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; };
 		FF11FBC92329E2DE0043C29B /* RxMusicPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBC82329E2DE0043C29B /* RxMusicPlayerTests.swift */; };
 		FF11FBCB2329E2DE0043C29B /* RxMusicPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -20,11 +29,9 @@
 		FF11FBFD2329EE770043C29B /* RxMusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBFC2329EE770043C29B /* RxMusicPlayer.swift */; };
 		FF11FBFF2329F3010043C29B /* RxMusicPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBFE2329F3010043C29B /* RxMusicPlayerItem.swift */; };
 		FF11FC032329F81F0043C29B /* RxMusicPlayerItem+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC022329F81F0043C29B /* RxMusicPlayerItem+Rx.swift */; };
-		FF11FC072329F8660043C29B /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FC052329F8660043C29B /* RxSwift.framework */; };
 		FF11FC09232A23FF0043C29B /* AVAsynchronousKeyValueLoading+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC08232A23FF0043C29B /* AVAsynchronousKeyValueLoading+Rx.swift */; };
 		FF11FC0B232A270D0043C29B /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FC0A232A270D0043C29B /* MediaPlayer.framework */; };
 		FF11FC11232A2A5E0043C29B /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC10232A2A5E0043C29B /* TableViewController.swift */; };
-		FF11FC14232A315B0043C29B /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FC052329F8660043C29B /* RxSwift.framework */; };
 		FF11FC16232A391F0043C29B /* RxMusicPlayerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FC15232A391F0043C29B /* RxMusicPlayerError.swift */; };
 		FF1EBBBC2331C9210049C1C6 /* Double+Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBBB2331C9210049C1C6 /* Double+Int.swift */; };
 		FF1EBBBE2331DECD0049C1C6 /* AVPlayer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1EBBBD2331DECD0049C1C6 /* AVPlayer+Rx.swift */; };
@@ -73,6 +80,9 @@
 			dstSubfolderSpec = 10;
 			files = (
 				FFC91B25232B92E200B3E89A /* RxMusicPlayer.framework in Embed Frameworks */,
+				C23F0453262C428F004686CE /* RxRelay.xcframework in Embed Frameworks */,
+				C23F042E262C40D4004686CE /* RxSwift.xcframework in Embed Frameworks */,
+				C23F0447262C4228004686CE /* RxCocoa.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -83,6 +93,9 @@
 		29F14102611888BD7A78FEDB /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
 		4B9F36DF15A393FC092613E9 /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2967B6D05CEF133682298D0 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
+		C23F0445262C4228004686CE /* RxCocoa.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RxCocoa.xcframework; path = Carthage/Build/RxCocoa.xcframework; sourceTree = "<group>"; };
+		C23F0451262C428F004686CE /* RxRelay.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RxRelay.xcframework; path = Carthage/Build/RxRelay.xcframework; sourceTree = "<group>"; };
+		C2A64DB9262C3EB40018641C /* RxSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RxSwift.xcframework; path = Carthage/Build/RxSwift.xcframework; sourceTree = "<group>"; };
 		FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxMusicPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RxMusicPlayer.h; sourceTree = "<group>"; };
 		FF11FBBE2329E2DE0043C29B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -125,7 +138,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF11FC072329F8660043C29B /* RxSwift.framework in Frameworks */,
+				C23F045B262C4326004686CE /* RxCocoa.xcframework in Frameworks */,
+				C23F0457262C4322004686CE /* RxRelay.xcframework in Frameworks */,
+				C23F043B262C4183004686CE /* RxSwift.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,8 +156,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF11FC14232A315B0043C29B /* RxSwift.framework in Frameworks */,
 				FF11FC0B232A270D0043C29B /* MediaPlayer.framework in Frameworks */,
+				C23F042D262C40D4004686CE /* RxSwift.xcframework in Frameworks */,
+				C23F0446262C4228004686CE /* RxCocoa.xcframework in Frameworks */,
+				C23F0452262C428F004686CE /* RxRelay.xcframework in Frameworks */,
 				FF11FBF92329E50E0043C29B /* RxMusicPlayer.framework in Frameworks */,
 				26BC08410487D678000C1FD8 /* Pods_Example.framework in Frameworks */,
 			);
@@ -251,6 +268,9 @@
 		FF11FBF82329E50E0043C29B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C23F0451262C428F004686CE /* RxRelay.xcframework */,
+				C23F0445262C4228004686CE /* RxCocoa.xcframework */,
+				C2A64DB9262C3EB40018641C /* RxSwift.xcframework */,
 				FF11FC0A232A270D0043C29B /* MediaPlayer.framework */,
 				FF11FC052329F8660043C29B /* RxSwift.framework */,
 				4B9F36DF15A393FC092613E9 /* Pods_Example.framework */,
@@ -281,7 +301,6 @@
 				FF11FBB72329E2DE0043C29B /* Frameworks */,
 				FF11FBB82329E2DE0043C29B /* Resources */,
 				FF11FBFB2329E8070043C29B /* Lint */,
-				FF11FC12232A2C5E0043C29B /* Copy Frameworks(Carthage) */,
 			);
 			buildRules = (
 			);
@@ -319,7 +338,6 @@
 				FF11FBD52329E3560043C29B /* Frameworks */,
 				FF11FBD62329E3560043C29B /* Resources */,
 				FF11FBFA2329E7D00043C29B /* Lint */,
-				FF11FC13232A312D0043C29B /* Copy Frameworks(Carthage) */,
 				FFC91B28232B92E300B3E89A /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -494,46 +512,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -exo pipefail\n\nPODS_ROOT=./Pods\n\nif [ -z \"$CI\" ]; then\n${PODS_ROOT}/SwiftLint/swiftlint autocorrect\n${PODS_ROOT}/SwiftLint/swiftlint\n\n${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat RxMusicPlayer\nelse\n${PODS_ROOT}/SwiftLint/swiftlint --strict\n${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat RxMusicPlayer --dryrun | tee /dev/stderr | grep 'swiftformat completed. 0'\nfi\n";
-		};
-		FF11FC12232A2C5E0043C29B /* Copy Frameworks(Carthage) */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$(SRCROOT)/input.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "Copy Frameworks(Carthage)";
-			outputFileListPaths = (
-				"$(SRCROOT)/output.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
-		FF11FC13232A312D0043C29B /* Copy Frameworks(Carthage) */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$(SRCROOT)/input.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "Copy Frameworks(Carthage)";
-			outputFileListPaths = (
-				"$(SRCROOT)/output.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
