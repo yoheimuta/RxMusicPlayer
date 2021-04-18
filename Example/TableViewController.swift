@@ -34,10 +34,12 @@ class TableViewController: UITableViewController {
 
         // 1) Create a player
         let items = [
-            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_1473200_1.mp3",
-            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_2160166.mp3",
-            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_4690995.mp3",
-            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_9179181.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/bensound-extremeaction.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/bensound-littleplanet.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_1473200_1.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_2160166.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_4690995.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_9179181.mp3",
         ]
         .map({ RxMusicPlayerItem(url: URL(string: $0)!) })
         let player = RxMusicPlayer(items: items)!

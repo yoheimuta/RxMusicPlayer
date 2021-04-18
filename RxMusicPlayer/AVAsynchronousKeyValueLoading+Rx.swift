@@ -20,7 +20,7 @@ extension Reactive where Base: AVAsynchronousKeyValueLoading {
                 case .loaded:
                     observer(.success(()))
                 default:
-                    observer(.error(error ?? NSError()))
+                    observer(.failure(error ?? NSError()))
                 }
             }
             return Disposables.create()
