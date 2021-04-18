@@ -6,7 +6,6 @@
 //  Copyright © 2019 YOSHIMUTA YOHEI. All rights reserved.
 //
 
-import RxCocoa
 import RxSwift
 import UIKit
 
