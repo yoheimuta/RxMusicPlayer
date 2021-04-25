@@ -25,6 +25,10 @@ RxMusicPlayer is a wrapper of avplayer backed by RxSwift to make it easy for aud
 
 ## Installation
 
+### Swift Package Manager
+
+With 2.0.1 and above.
+
 ### Carthage
 
 ```
