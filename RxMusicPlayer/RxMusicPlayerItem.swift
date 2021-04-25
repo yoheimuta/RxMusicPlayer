@@ -7,9 +7,9 @@
 //
 
 import AVFoundation
-import Foundation
 import RxCocoa
 import RxSwift
+import UIKit
 
 open class RxMusicPlayerItem: NSObject {
     /**
