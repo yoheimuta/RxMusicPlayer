@@ -24,6 +24,8 @@ public enum RxMusicPlayerError: Error, Equatable {
     case playerItemError(log: AVPlayerItemErrorLog)
     // Indicates an AVPlayerItemFailedToPlayToEndTimeError.
     case failedToPlayToEndTime(String)
+    // Indicates that you try to remove an item playing at the moment.
+    case invalidPlayingItemRemoval
 
     public static func == (lhs: RxMusicPlayerError, rhs: RxMusicPlayerError) -> Bool {
         switch (lhs, rhs) {
