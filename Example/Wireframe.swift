@@ -24,7 +24,8 @@ class Wireframe {
 
     static func promptSimpleActionSheetFor<Action: CustomStringConvertible>(src: UIViewController,
                                                                             cancelAction: Action,
-                                                                            actions: [Action]) -> Driver<Action> {
+                                                                            actions: [(Action, Bool)])
+        -> Driver<Action> {
         return promptFor(src, nil, nil, cancelAction, actions, .actionSheet)
     }
 
@@ -32,7 +33,7 @@ class Wireframe {
                                                                         title: String?,
                                                                         message: String?,
                                                                         cancelAction: Action,
-                                                                        actions: [Action]) -> Driver<Action> {
+                                                                        actions: [(Action, Bool)]) -> Driver<Action> {
         return promptFor(src, title, message, cancelAction, actions, .alert)
     }
 
@@ -40,7 +41,7 @@ class Wireframe {
                                                                    _ title: String?,
                                                                    _ message: String?,
                                                                    _ cancelAction: Action,
-                                                                   _ actions: [Action],
+                                                                   _ actions: [(Action, Bool)],
                                                                    _ style: UIAlertController.Style
     ) -> Driver<Action> {
         return ControlEvent(events: Observable.create { observer in
@@ -54,10 +55,12 @@ class Wireframe {
             })
 
             for action in actions {
-                alertController.addAction(UIAlertAction(title: action.description, style: .default) { _ in
-                    observer.on(.next(action))
+                let act = UIAlertAction(title: action.0.description, style: .default) { _ in
+                    observer.on(.next(action.0))
                     observer.on(.completed)
-                })
+                }
+                act.setValue(action.1, forKey: "checked")
+                alertController.addAction(act)
             }
 
             src.present(alertController, animated: true, completion: nil)
