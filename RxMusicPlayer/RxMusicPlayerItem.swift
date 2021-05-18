@@ -76,7 +76,7 @@ open class RxMusicPlayerItem: NSObject {
         }
     }
 
-    let url: Foundation.URL
+    public let url: Foundation.URL
 
     fileprivate(set) var meta: Meta
     fileprivate(set) var playerItem: AVPlayerItem?

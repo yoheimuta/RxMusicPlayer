@@ -312,6 +312,48 @@ open class RxMusicPlayer: NSObject {
         }
     }
 
+    /**
+     Insert an item at the position.
+     */
+    public func insert(_ newItem: RxMusicPlayerItem, at: Int) {
+        masterQueuedItems.insert(newItem, at: at)
+
+        switch shuffleMode {
+        case .off:
+            queuedItems = masterQueuedItems
+        case .songs:
+            var queue = queuedItemsRelay.value
+            queue.insert(newItem, at: at)
+            queuedItems = queue
+        }
+        if at <= playIndex {
+            playIndex += 1
+        }
+    }
+
+    /**
+     Remove an item at the position.
+     */
+    public func remove(at: Int) throws {
+        if playIndex == at {
+            throw RxMusicPlayerError.invalidPlayingItemRemoval
+        }
+
+        masterQueuedItems.remove(at: at)
+
+        switch shuffleMode {
+        case .off:
+            queuedItems = masterQueuedItems
+        case .songs:
+            var queue = queuedItemsRelay.value
+            queue.remove(at: at)
+            queuedItems = queue
+        }
+        if at < playIndex {
+            playIndex -= 1
+        }
+    }
+
     private func registerRemoteControl() -> Observable<()> {
         let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.playCommand.addTarget { [weak self] _ in
