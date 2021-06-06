@@ -12,7 +12,7 @@ RxMusicPlayer is a wrapper of avplayer backed by RxSwift to make it easy for aud
 
 - Following [the Audio Guidelines for User-Controlled Playback and Recording Apps](https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioGuidelinesByAppType/AudioGuidelinesByAppType.html#//apple_ref/doc/uid/TP40007875-CH11-SW1).
 - Support for streaming both remote and local audio files.
-- Functions to `play`, `pause`, `stop`, `play next`, `play previous`, `prefetch metadata`, `repeat mode(repeat, repeat all)`, `shuffle mode` `desired playback rate` and `seek to a certain second`.
+- Functions to `play`, `pause`, `stop`, `play next`, `play previous`, `prefetch metadata`, `repeat mode(repeat, repeat all)`, `shuffle mode` `desired playback rate`, `seek to a certain second`, and `append/insert/remove an item into the playlist`.
 - Loading metadata, including `title`, `album`, `artist`, `artwork`, `duration`, and `lyrics`.
 - Background mode integration with MPNowPlayingInfoCenter.
 - Remote command control integration with MPRemoteCommandCenter.
@@ -73,6 +73,8 @@ class TableViewController: UITableViewController {
     @IBOutlet private var shuffleButton: UIButton!
     @IBOutlet private var repeatButton: UIButton!
     @IBOutlet private var rateButton: UIButton!
+    @IBOutlet private var appendButton: UIButton!
+    @IBOutlet private var changeButton: UIButton!
 
     private let disposeBag = DisposeBag()
 
@@ -82,13 +84,15 @@ class TableViewController: UITableViewController {
 
         // 1) Create a player
         let items = [
-            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_1473200_1.mp3",
-            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_2160166.mp3",
-            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_4690995.mp3",
-            "https://storage.googleapis.com/maison-great-dev/oss/musicplayer/tagmp3_9179181.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_1473200_1.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_2160166.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_4690995.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_9179181.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/bensound-extremeaction.mp3",
+            "https://storage.googleapis.com/great-dev/oss/musicplayer/bensound-littleplanet.mp3",
         ]
         .map({ RxMusicPlayerItem(url: URL(string: $0)!) })
-        let player = RxMusicPlayer(items: items)!
+        let player = RxMusicPlayer(items: Array(items[0 ..< 4]))!
 
         // 2) Control views
         player.rx.canSendCommand(cmd: .play)
@@ -278,7 +282,7 @@ class TableViewController: UITableViewController {
                     src: weakSelf,
                     cancelAction: "Close",
                     actions: PlaybackRateAction.allCases.map {
-                        player.desiredPlaybackRate == $0.toFloat ? "\($0.rawValue)✓" : $0.rawValue
+                        ($0.rawValue, player.desiredPlaybackRate == $0.toFloat)
                 })
                     .do(onNext: { [weak self] action in
                         if let rate = PlaybackRateAction(rawValue: action)?.toFloat {
@@ -288,6 +292,52 @@ class TableViewController: UITableViewController {
                     })
                     .map { _ in }
             }
+            .drive()
+            .disposed(by: disposeBag)
+
+        appendButton.rx.tap.asDriver()
+            .do(onNext: {
+                let newItems = Array(items[4 ..< 6])
+                player.append(items: newItems)
+            })
+            .drive(onNext: { [weak self] _ in
+                self?.appendButton.isEnabled = false
+            })
+            .disposed(by: disposeBag)
+
+        changeButton.rx.tap.asObservable()
+            .flatMapLatest { [weak self] _ -> Driver<()> in
+                guard let weakSelf = self else { return .just(()) }
+
+                return Wireframe.promptSimpleActionSheetFor(
+                    src: weakSelf,
+                    cancelAction: "Close",
+                    actions: items.map {
+                        ($0.url.lastPathComponent, player.queuedItems.contains($0))
+                })
+                    .asObservable()
+                    .do(onNext: { action in
+                        if let idx = player.queuedItems.map({ $0.url.lastPathComponent }).firstIndex(of: action) {
+                            try player.remove(at: idx)
+                        } else if let idx = items.map({ $0.url.lastPathComponent }).firstIndex(of: action) {
+                            for i in (0 ... idx).reversed() {
+                                if let prev = player.queuedItems.firstIndex(of: items[i]) {
+                                    player.insert(items[idx], at: prev + 1)
+                                    break
+                                }
+                                if i == 0 {
+                                    player.insert(items[idx], at: 0)
+                                }
+                            }
+                        }
+
+                        self?.appendButton.isEnabled = !(player.queuedItems.contains(items[4])
+                            || player.queuedItems.contains(items[5]))
+                    })
+                    .asDriver(onErrorJustReturn: "")
+                    .map { _ in }
+            }
+            .asDriver(onErrorJustReturn: ())
             .drive()
             .disposed(by: disposeBag)
     }
