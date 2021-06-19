@@ -23,6 +23,12 @@
 		C26CE3D326781A1D00BA3C3F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C26CE3D226781A1D00BA3C3F /* Preview Assets.xcassets */; };
 		C26CE3DE26781A1D00BA3C3F /* ExampleSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE3DD26781A1D00BA3C3F /* ExampleSwiftUITests.swift */; };
 		C26CE3E926781A1E00BA3C3F /* ExampleSwiftUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE3E826781A1E00BA3C3F /* ExampleSwiftUIUITests.swift */; };
+		C26CE408267C1A9300BA3C3F /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FC0A232A270D0043C29B /* MediaPlayer.framework */; };
+		C26CE40F267C1AAD00BA3C3F /* RxMusicPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; };
+		C26CE410267C1AAD00BA3C3F /* RxMusicPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C26CE41A267C683B00BA3C3F /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE419267C683B00BA3C3F /* PlayerView.swift */; };
+		C26CE432267DF26400BA3C3F /* UIProgressSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE431267DF26400BA3C3F /* UIProgressSlider.swift */; };
+		C26CE439267DF28A00BA3C3F /* ProgressSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE438267DF28A00BA3C3F /* ProgressSliderView.swift */; };
 		FF11FBC42329E2DE0043C29B /* RxMusicPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; };
 		FF11FBC92329E2DE0043C29B /* RxMusicPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBC82329E2DE0043C29B /* RxMusicPlayerTests.swift */; };
 		FF11FBCB2329E2DE0043C29B /* RxMusicPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -69,6 +75,13 @@
 			remoteGlobalIDString = C26CE3C826781A1B00BA3C3F;
 			remoteInfo = ExampleSwiftUI;
 		};
+		C26CE411267C1AAD00BA3C3F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF11FBB12329E2DE0043C29B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FF11FBB92329E2DE0043C29B;
+			remoteInfo = RxMusicPlayer;
+		};
 		FF11FBC52329E2DE0043C29B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF11FBB12329E2DE0043C29B /* Project object */;
@@ -93,6 +106,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		C26CE413267C1AAD00BA3C3F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C26CE410267C1AAD00BA3C3F /* RxMusicPlayer.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FFC91B28232B92E300B3E89A /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -127,6 +151,9 @@
 		C26CE3E426781A1E00BA3C3F /* ExampleSwiftUIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleSwiftUIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C26CE3E826781A1E00BA3C3F /* ExampleSwiftUIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftUIUITests.swift; sourceTree = "<group>"; };
 		C26CE3EA26781A1E00BA3C3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C26CE419267C683B00BA3C3F /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		C26CE431267DF26400BA3C3F /* UIProgressSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIProgressSlider.swift; sourceTree = "<group>"; };
+		C26CE438267DF28A00BA3C3F /* ProgressSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressSliderView.swift; sourceTree = "<group>"; };
 		C2A64DB9262C3EB40018641C /* RxSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RxSwift.xcframework; path = Carthage/Build/RxSwift.xcframework; sourceTree = "<group>"; };
 		FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxMusicPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RxMusicPlayer.h; sourceTree = "<group>"; };
@@ -170,6 +197,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C26CE408267C1A9300BA3C3F /* MediaPlayer.framework in Frameworks */,
+				C26CE40F267C1AAD00BA3C3F /* RxMusicPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +274,9 @@
 				C26CE3CF26781A1D00BA3C3F /* Assets.xcassets */,
 				C26CE3D426781A1D00BA3C3F /* Info.plist */,
 				C26CE3D126781A1D00BA3C3F /* Preview Content */,
+				C26CE419267C683B00BA3C3F /* PlayerView.swift */,
+				C26CE438267DF28A00BA3C3F /* ProgressSliderView.swift */,
+				C26CE431267DF26400BA3C3F /* UIProgressSlider.swift */,
 			);
 			path = ExampleSwiftUI;
 			sourceTree = "<group>";
@@ -396,10 +428,12 @@
 				C26CE3C526781A1B00BA3C3F /* Sources */,
 				C26CE3C626781A1B00BA3C3F /* Frameworks */,
 				C26CE3C726781A1B00BA3C3F /* Resources */,
+				C26CE413267C1AAD00BA3C3F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C26CE412267C1AAD00BA3C3F /* PBXTargetDependency */,
 			);
 			name = ExampleSwiftUI;
 			productName = ExampleSwiftUI;
@@ -709,6 +743,9 @@
 			files = (
 				C26CE3CE26781A1B00BA3C3F /* ContentView.swift in Sources */,
 				C26CE3CC26781A1B00BA3C3F /* ExampleSwiftUIApp.swift in Sources */,
+				C26CE41A267C683B00BA3C3F /* PlayerView.swift in Sources */,
+				C26CE432267DF26400BA3C3F /* UIProgressSlider.swift in Sources */,
+				C26CE439267DF28A00BA3C3F /* ProgressSliderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -789,6 +826,11 @@
 			isa = PBXTargetDependency;
 			target = C26CE3C826781A1B00BA3C3F /* ExampleSwiftUI */;
 			targetProxy = C26CE3E526781A1E00BA3C3F /* PBXContainerItemProxy */;
+		};
+		C26CE412267C1AAD00BA3C3F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FF11FBB92329E2DE0043C29B /* RxMusicPlayer */;
+			targetProxy = C26CE411267C1AAD00BA3C3F /* PBXContainerItemProxy */;
 		};
 		FF11FBC62329E2DE0043C29B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
