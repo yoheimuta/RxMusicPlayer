@@ -17,6 +17,18 @@
 		C23F0453262C428F004686CE /* RxRelay.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0451262C428F004686CE /* RxRelay.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C23F0457262C4322004686CE /* RxRelay.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0451262C428F004686CE /* RxRelay.xcframework */; };
 		C23F045B262C4326004686CE /* RxCocoa.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0445262C4228004686CE /* RxCocoa.xcframework */; };
+		C26CE3CC26781A1B00BA3C3F /* ExampleSwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE3CB26781A1B00BA3C3F /* ExampleSwiftUIApp.swift */; };
+		C26CE3CE26781A1B00BA3C3F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE3CD26781A1B00BA3C3F /* ContentView.swift */; };
+		C26CE3D026781A1D00BA3C3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C26CE3CF26781A1D00BA3C3F /* Assets.xcassets */; };
+		C26CE3D326781A1D00BA3C3F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C26CE3D226781A1D00BA3C3F /* Preview Assets.xcassets */; };
+		C26CE3DE26781A1D00BA3C3F /* ExampleSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE3DD26781A1D00BA3C3F /* ExampleSwiftUITests.swift */; };
+		C26CE3E926781A1E00BA3C3F /* ExampleSwiftUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE3E826781A1E00BA3C3F /* ExampleSwiftUIUITests.swift */; };
+		C26CE408267C1A9300BA3C3F /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FC0A232A270D0043C29B /* MediaPlayer.framework */; };
+		C26CE40F267C1AAD00BA3C3F /* RxMusicPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; };
+		C26CE410267C1AAD00BA3C3F /* RxMusicPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C26CE41A267C683B00BA3C3F /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE419267C683B00BA3C3F /* PlayerView.swift */; };
+		C26CE432267DF26400BA3C3F /* UIProgressSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE431267DF26400BA3C3F /* UIProgressSlider.swift */; };
+		C26CE439267DF28A00BA3C3F /* ProgressSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE438267DF28A00BA3C3F /* ProgressSliderView.swift */; };
 		FF11FBC42329E2DE0043C29B /* RxMusicPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; };
 		FF11FBC92329E2DE0043C29B /* RxMusicPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBC82329E2DE0043C29B /* RxMusicPlayerTests.swift */; };
 		FF11FBCB2329E2DE0043C29B /* RxMusicPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -49,6 +61,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C26CE3DA26781A1D00BA3C3F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF11FBB12329E2DE0043C29B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C26CE3C826781A1B00BA3C3F;
+			remoteInfo = ExampleSwiftUI;
+		};
+		C26CE3E526781A1E00BA3C3F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF11FBB12329E2DE0043C29B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C26CE3C826781A1B00BA3C3F;
+			remoteInfo = ExampleSwiftUI;
+		};
+		C26CE411267C1AAD00BA3C3F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF11FBB12329E2DE0043C29B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FF11FBB92329E2DE0043C29B;
+			remoteInfo = RxMusicPlayer;
+		};
 		FF11FBC52329E2DE0043C29B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF11FBB12329E2DE0043C29B /* Project object */;
@@ -73,6 +106,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		C26CE413267C1AAD00BA3C3F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C26CE410267C1AAD00BA3C3F /* RxMusicPlayer.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FFC91B28232B92E300B3E89A /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -95,6 +139,21 @@
 		A2967B6D05CEF133682298D0 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		C23F0445262C4228004686CE /* RxCocoa.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RxCocoa.xcframework; path = Carthage/Build/RxCocoa.xcframework; sourceTree = "<group>"; };
 		C23F0451262C428F004686CE /* RxRelay.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RxRelay.xcframework; path = Carthage/Build/RxRelay.xcframework; sourceTree = "<group>"; };
+		C26CE3C926781A1B00BA3C3F /* ExampleSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C26CE3CB26781A1B00BA3C3F /* ExampleSwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftUIApp.swift; sourceTree = "<group>"; };
+		C26CE3CD26781A1B00BA3C3F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C26CE3CF26781A1D00BA3C3F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C26CE3D226781A1D00BA3C3F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C26CE3D426781A1D00BA3C3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C26CE3D926781A1D00BA3C3F /* ExampleSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C26CE3DD26781A1D00BA3C3F /* ExampleSwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftUITests.swift; sourceTree = "<group>"; };
+		C26CE3DF26781A1E00BA3C3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C26CE3E426781A1E00BA3C3F /* ExampleSwiftUIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleSwiftUIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C26CE3E826781A1E00BA3C3F /* ExampleSwiftUIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftUIUITests.swift; sourceTree = "<group>"; };
+		C26CE3EA26781A1E00BA3C3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C26CE419267C683B00BA3C3F /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		C26CE431267DF26400BA3C3F /* UIProgressSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIProgressSlider.swift; sourceTree = "<group>"; };
+		C26CE438267DF28A00BA3C3F /* ProgressSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressSliderView.swift; sourceTree = "<group>"; };
 		C2A64DB9262C3EB40018641C /* RxSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RxSwift.xcframework; path = Carthage/Build/RxSwift.xcframework; sourceTree = "<group>"; };
 		FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxMusicPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RxMusicPlayer.h; sourceTree = "<group>"; };
@@ -134,6 +193,29 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C26CE3C626781A1B00BA3C3F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C26CE408267C1A9300BA3C3F /* MediaPlayer.framework in Frameworks */,
+				C26CE40F267C1AAD00BA3C3F /* RxMusicPlayer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C26CE3D626781A1D00BA3C3F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C26CE3E126781A1E00BA3C3F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FF11FBB72329E2DE0043C29B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -184,6 +266,47 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		C26CE3CA26781A1B00BA3C3F /* ExampleSwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				C26CE3CB26781A1B00BA3C3F /* ExampleSwiftUIApp.swift */,
+				C26CE3CD26781A1B00BA3C3F /* ContentView.swift */,
+				C26CE3CF26781A1D00BA3C3F /* Assets.xcassets */,
+				C26CE3D426781A1D00BA3C3F /* Info.plist */,
+				C26CE3D126781A1D00BA3C3F /* Preview Content */,
+				C26CE419267C683B00BA3C3F /* PlayerView.swift */,
+				C26CE438267DF28A00BA3C3F /* ProgressSliderView.swift */,
+				C26CE431267DF26400BA3C3F /* UIProgressSlider.swift */,
+			);
+			path = ExampleSwiftUI;
+			sourceTree = "<group>";
+		};
+		C26CE3D126781A1D00BA3C3F /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				C26CE3D226781A1D00BA3C3F /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C26CE3DC26781A1D00BA3C3F /* ExampleSwiftUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C26CE3DD26781A1D00BA3C3F /* ExampleSwiftUITests.swift */,
+				C26CE3DF26781A1E00BA3C3F /* Info.plist */,
+			);
+			path = ExampleSwiftUITests;
+			sourceTree = "<group>";
+		};
+		C26CE3E726781A1E00BA3C3F /* ExampleSwiftUIUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C26CE3E826781A1E00BA3C3F /* ExampleSwiftUIUITests.swift */,
+				C26CE3EA26781A1E00BA3C3F /* Info.plist */,
+			);
+			path = ExampleSwiftUIUITests;
+			sourceTree = "<group>";
+		};
 		FF11FBB02329E2DE0043C29B = {
 			isa = PBXGroup;
 			children = (
@@ -191,6 +314,9 @@
 				FF11FBC72329E2DE0043C29B /* RxMusicPlayerTests */,
 				FF11FBD92329E3560043C29B /* Example */,
 				FF11FBEE2329E35A0043C29B /* ExampleTests */,
+				C26CE3CA26781A1B00BA3C3F /* ExampleSwiftUI */,
+				C26CE3DC26781A1D00BA3C3F /* ExampleSwiftUITests */,
+				C26CE3E726781A1E00BA3C3F /* ExampleSwiftUIUITests */,
 				FF11FBBB2329E2DE0043C29B /* Products */,
 				FF11FBF82329E50E0043C29B /* Frameworks */,
 				1528B0E698024AB876C414FA /* Pods */,
@@ -204,6 +330,9 @@
 				FF11FBC32329E2DE0043C29B /* RxMusicPlayerTests.xctest */,
 				FF11FBD82329E3560043C29B /* Example.app */,
 				FF11FBEB2329E35A0043C29B /* ExampleTests.xctest */,
+				C26CE3C926781A1B00BA3C3F /* ExampleSwiftUI.app */,
+				C26CE3D926781A1D00BA3C3F /* ExampleSwiftUITests.xctest */,
+				C26CE3E426781A1E00BA3C3F /* ExampleSwiftUIUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -292,6 +421,61 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		C26CE3C826781A1B00BA3C3F /* ExampleSwiftUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C26CE3F126781A1E00BA3C3F /* Build configuration list for PBXNativeTarget "ExampleSwiftUI" */;
+			buildPhases = (
+				C26CE3C526781A1B00BA3C3F /* Sources */,
+				C26CE3C626781A1B00BA3C3F /* Frameworks */,
+				C26CE3C726781A1B00BA3C3F /* Resources */,
+				C26CE413267C1AAD00BA3C3F /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C26CE412267C1AAD00BA3C3F /* PBXTargetDependency */,
+			);
+			name = ExampleSwiftUI;
+			productName = ExampleSwiftUI;
+			productReference = C26CE3C926781A1B00BA3C3F /* ExampleSwiftUI.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C26CE3D826781A1D00BA3C3F /* ExampleSwiftUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C26CE3F226781A1E00BA3C3F /* Build configuration list for PBXNativeTarget "ExampleSwiftUITests" */;
+			buildPhases = (
+				C26CE3D526781A1D00BA3C3F /* Sources */,
+				C26CE3D626781A1D00BA3C3F /* Frameworks */,
+				C26CE3D726781A1D00BA3C3F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C26CE3DB26781A1D00BA3C3F /* PBXTargetDependency */,
+			);
+			name = ExampleSwiftUITests;
+			productName = ExampleSwiftUITests;
+			productReference = C26CE3D926781A1D00BA3C3F /* ExampleSwiftUITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C26CE3E326781A1E00BA3C3F /* ExampleSwiftUIUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C26CE3F326781A1E00BA3C3F /* Build configuration list for PBXNativeTarget "ExampleSwiftUIUITests" */;
+			buildPhases = (
+				C26CE3E026781A1E00BA3C3F /* Sources */,
+				C26CE3E126781A1E00BA3C3F /* Frameworks */,
+				C26CE3E226781A1E00BA3C3F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C26CE3E626781A1E00BA3C3F /* PBXTargetDependency */,
+			);
+			name = ExampleSwiftUIUITests;
+			productName = ExampleSwiftUIUITests;
+			productReference = C26CE3E426781A1E00BA3C3F /* ExampleSwiftUIUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		FF11FBB92329E2DE0043C29B /* RxMusicPlayer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FF11FBCE2329E2DE0043C29B /* Build configuration list for PBXNativeTarget "RxMusicPlayer" */;
@@ -374,10 +558,21 @@
 		FF11FBB12329E2DE0043C29B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1020;
+				LastSwiftUpdateCheck = 1210;
 				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "YOSHIMUTA YOHEI";
 				TargetAttributes = {
+					C26CE3C826781A1B00BA3C3F = {
+						CreatedOnToolsVersion = 12.1;
+					};
+					C26CE3D826781A1D00BA3C3F = {
+						CreatedOnToolsVersion = 12.1;
+						TestTargetID = C26CE3C826781A1B00BA3C3F;
+					};
+					C26CE3E326781A1E00BA3C3F = {
+						CreatedOnToolsVersion = 12.1;
+						TestTargetID = C26CE3C826781A1B00BA3C3F;
+					};
 					FF11FBB92329E2DE0043C29B = {
 						CreatedOnToolsVersion = 10.2;
 						LastSwiftMigration = 1020;
@@ -416,11 +611,37 @@
 				FF11FBC22329E2DE0043C29B /* RxMusicPlayerTests */,
 				FF11FBD72329E3560043C29B /* Example */,
 				FF11FBEA2329E35A0043C29B /* ExampleTests */,
+				C26CE3C826781A1B00BA3C3F /* ExampleSwiftUI */,
+				C26CE3D826781A1D00BA3C3F /* ExampleSwiftUITests */,
+				C26CE3E326781A1E00BA3C3F /* ExampleSwiftUIUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C26CE3C726781A1B00BA3C3F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C26CE3D326781A1D00BA3C3F /* Preview Assets.xcassets in Resources */,
+				C26CE3D026781A1D00BA3C3F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C26CE3D726781A1D00BA3C3F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C26CE3E226781A1E00BA3C3F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FF11FBB82329E2DE0043C29B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -516,6 +737,34 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C26CE3C526781A1B00BA3C3F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C26CE3CE26781A1B00BA3C3F /* ContentView.swift in Sources */,
+				C26CE3CC26781A1B00BA3C3F /* ExampleSwiftUIApp.swift in Sources */,
+				C26CE41A267C683B00BA3C3F /* PlayerView.swift in Sources */,
+				C26CE432267DF26400BA3C3F /* UIProgressSlider.swift in Sources */,
+				C26CE439267DF28A00BA3C3F /* ProgressSliderView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C26CE3D526781A1D00BA3C3F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C26CE3DE26781A1D00BA3C3F /* ExampleSwiftUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C26CE3E026781A1E00BA3C3F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C26CE3E926781A1E00BA3C3F /* ExampleSwiftUIUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FF11FBB62329E2DE0043C29B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -568,6 +817,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C26CE3DB26781A1D00BA3C3F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C26CE3C826781A1B00BA3C3F /* ExampleSwiftUI */;
+			targetProxy = C26CE3DA26781A1D00BA3C3F /* PBXContainerItemProxy */;
+		};
+		C26CE3E626781A1E00BA3C3F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C26CE3C826781A1B00BA3C3F /* ExampleSwiftUI */;
+			targetProxy = C26CE3E526781A1E00BA3C3F /* PBXContainerItemProxy */;
+		};
+		C26CE412267C1AAD00BA3C3F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FF11FBB92329E2DE0043C29B /* RxMusicPlayer */;
+			targetProxy = C26CE411267C1AAD00BA3C3F /* PBXContainerItemProxy */;
+		};
 		FF11FBC62329E2DE0043C29B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FF11FBB92329E2DE0043C29B /* RxMusicPlayer */;
@@ -605,6 +869,136 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		C26CE3EB26781A1E00BA3C3F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"ExampleSwiftUI/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = ExampleSwiftUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = yoheimuta.ExampleSwiftUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C26CE3EC26781A1E00BA3C3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"ExampleSwiftUI/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = ExampleSwiftUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = yoheimuta.ExampleSwiftUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C26CE3ED26781A1E00BA3C3F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = ExampleSwiftUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = yoheimuta.ExampleSwiftUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExampleSwiftUI.app/ExampleSwiftUI";
+			};
+			name = Debug;
+		};
+		C26CE3EE26781A1E00BA3C3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = ExampleSwiftUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = yoheimuta.ExampleSwiftUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExampleSwiftUI.app/ExampleSwiftUI";
+			};
+			name = Release;
+		};
+		C26CE3EF26781A1E00BA3C3F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = ExampleSwiftUIUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = yoheimuta.ExampleSwiftUIUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ExampleSwiftUI;
+			};
+			name = Debug;
+		};
+		C26CE3F026781A1E00BA3C3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = ExampleSwiftUIUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = yoheimuta.ExampleSwiftUIUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ExampleSwiftUI;
+			};
+			name = Release;
+		};
 		FF11FBCC2329E2DE0043C29B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -927,6 +1321,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C26CE3F126781A1E00BA3C3F /* Build configuration list for PBXNativeTarget "ExampleSwiftUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C26CE3EB26781A1E00BA3C3F /* Debug */,
+				C26CE3EC26781A1E00BA3C3F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C26CE3F226781A1E00BA3C3F /* Build configuration list for PBXNativeTarget "ExampleSwiftUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C26CE3ED26781A1E00BA3C3F /* Debug */,
+				C26CE3EE26781A1E00BA3C3F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C26CE3F326781A1E00BA3C3F /* Build configuration list for PBXNativeTarget "ExampleSwiftUIUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C26CE3EF26781A1E00BA3C3F /* Debug */,
+				C26CE3F026781A1E00BA3C3F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		FF11FBB42329E2DE0043C29B /* Build configuration list for PBXProject "RxMusicPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
