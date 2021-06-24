@@ -39,12 +39,12 @@ final class PlayerModel: ObservableObject {
     init() {
         // 1) Create a player
         let items = [
-            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_1473200_1.mp3",
-            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_2160166.mp3",
-            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_4690995.mp3",
-            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_9179181.mp3"
+            URL(string: "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_1473200_1.mp3")!,
+            URL(string: "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_2160166.mp3")!,
+            URL(string: "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_4690995.mp3")!,
+            Bundle.main.url(forResource: "tagmp3_9179181", withExtension: "mp3")!
         ]
-        .map({ RxMusicPlayerItem(url: URL(string: $0)!) })
+        .map({ RxMusicPlayerItem(url: $0) })
         player = RxMusicPlayer(items: items)!
 
         // 2) Control views
