@@ -5,6 +5,7 @@
 //  Created by YOSHIMUTA YOHEI on 2019/09/12.
 //  Copyright © 2019 YOSHIMUTA YOHEI. All rights reserved.
 //
+// swiftlint:disable line_length
 
 import RxCocoa
 import RxMusicPlayer
@@ -35,15 +36,24 @@ class TableViewController: UITableViewController {
         super.viewDidLoad()
 
         // 1) Create a player
-        let items = [
+        var items = [
             "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_1473200_1.mp3",
             "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_2160166.mp3",
             "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_4690995.mp3",
             "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_9179181.mp3",
-            "https://storage.googleapis.com/great-dev/oss/musicplayer/bensound-extremeaction.mp3",
-            "https://storage.googleapis.com/great-dev/oss/musicplayer/bensound-littleplanet.mp3",
         ]
         .map({ RxMusicPlayerItem(url: URL(string: $0)!) })
+        // The default metadata is ignored since this item's original metadata are set already.
+        items.append(RxMusicPlayerItem(url: URL(string: "https://storage.googleapis.com/great-dev/oss/musicplayer/bensound-extremeaction.mp3")!,
+                                       meta: RxMusicPlayerItem.Meta(title: "defaultTitle",
+                                                                    album: "defaultAlbum",
+                                                                    artist: "defaultArtist",
+                                                                    skipDownloading: false)))
+        // The default metadata is used since this item's original metadata are empty.
+        items.append(RxMusicPlayerItem(url: URL(string: "https://storage.googleapis.com/great-dev/oss/musicplayer/bensound-littleplanet.mp3")!,
+                                       meta: RxMusicPlayerItem.Meta(title: "defaultTitle",
+                                                                    album: "defaultAlbum",
+                                                                    artist: "defaultArtist")))
         let player = RxMusicPlayer(items: Array(items[0 ..< 4]))!
 
         // 2) Control views
