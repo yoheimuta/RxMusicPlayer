@@ -27,14 +27,16 @@ open class RxMusicPlayerItem: NSObject {
 
         /**
          Initialize Metadata with a prefetched one.
-         If one of the arguments is not nil, the player will skip downloading the metadata.
+         If skipDownloading is true, the player will use the given parameters, instead of downloading the metadata.
+         Otherwise, the player will download the metadata, and then use the given parameters as default values.
          */
         public init(duration: CMTime? = nil,
                     lyrics: String? = nil,
                     title: String? = nil,
                     album: String? = nil,
                     artist: String? = nil,
-                    artwork: UIImage? = nil) {
+                    artwork: UIImage? = nil,
+                    skipDownloading: Bool = false) {
             self.duration = duration
             self.lyrics = lyrics
             self.title = title
@@ -42,8 +44,7 @@ open class RxMusicPlayerItem: NSObject {
             self.artist = artist
             self.artwork = artwork
 
-            if duration != nil || lyrics != nil || title != nil ||
-                album != nil || artist != nil || artist != nil {
+            if skipDownloading {
                 didAllSetRelay.accept(true)
             }
         }
