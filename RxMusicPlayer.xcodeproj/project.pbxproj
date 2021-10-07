@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		26BC08410487D678000C1FD8 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9F36DF15A393FC092613E9 /* Pods_Example.framework */; };
 		C23F042D262C40D4004686CE /* RxSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2A64DB9262C3EB40018641C /* RxSwift.xcframework */; };
 		C23F042E262C40D4004686CE /* RxSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2A64DB9262C3EB40018641C /* RxSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C23F043B262C4183004686CE /* RxSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2A64DB9262C3EB40018641C /* RxSwift.xcframework */; };
@@ -245,7 +244,6 @@
 				C23F0446262C4228004686CE /* RxCocoa.xcframework in Frameworks */,
 				C23F0452262C428F004686CE /* RxRelay.xcframework in Frameworks */,
 				FF11FBF92329E50E0043C29B /* RxMusicPlayer.framework in Frameworks */,
-				26BC08410487D678000C1FD8 /* Pods_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
