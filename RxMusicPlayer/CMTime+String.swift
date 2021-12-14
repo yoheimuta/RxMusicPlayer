@@ -11,7 +11,10 @@ import AVFoundation
 extension CMTime {
     public var displayTime: String? {
         guard let sec = seconds?.rounded().toInt() else { return nil }
-        return String(format: "%d:%02d", sec / 60, sec % 60)
+        if sec < 60 * 60 {
+            return String(format: "%02d:%02d", sec / 60, sec % 60)
+        }
+        return String(format: "%02d:%02d:%02d", sec / (60 * 60), sec % 60 * 60, sec % 60)
     }
 
     public var seconds: Double? {
