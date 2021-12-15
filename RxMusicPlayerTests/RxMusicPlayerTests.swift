@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import AVFoundation
 @testable import RxMusicPlayer
 
 class RxMusicPlayerTests: XCTestCase {
@@ -17,6 +18,16 @@ class RxMusicPlayerTests: XCTestCase {
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+
+    func testCMTime_displayName() {
+        XCTAssertEqual(CMTimeMake(value: 1, timescale: 1).displayTime, "00:01", "convert an integer second")
+        XCTAssertEqual(CMTimeMake(value: 1, timescale: 10).displayTime, "00:00", "convert a non-integer second near 0")
+        XCTAssertEqual(CMTimeMake(value: 6, timescale: 10).displayTime, "00:01", "convert a non-integer second near 1")
+        XCTAssertEqual(CMTimeMake(value: 60, timescale: 1).displayTime, "01:00", "convert a minute")
+        XCTAssertEqual(CMTimeMake(value: 601, timescale: 1).displayTime, "10:01", "convert ten minutes")
+        XCTAssertEqual(CMTimeMake(value: 3600, timescale: 1).displayTime, "01:00:00", "convert an hour")
+        XCTAssertEqual(CMTimeMake(value: 86400, timescale: 1).displayTime, "24:00:00", "convert a day")
     }
 
     func testExample() {
