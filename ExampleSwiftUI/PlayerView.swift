@@ -21,12 +21,15 @@ final class PlayerModel: ObservableObject {
     @Published var canPlay = true
     @Published var canPlayNext = true
     @Published var canPlayPrevious = true
+    @Published var canSkipForward = true
+    @Published var canSkipBackward = true
     @Published var title = "Not Playing"
     @Published var artwork: UIImage?
     @Published var restDuration = "--:--"
     @Published var duration = "--:--"
     @Published var shuffleMode = RxMusicPlayer.ShuffleMode.off
     @Published var repeatMode = RxMusicPlayer.RepeatMode.none
+    @Published var remoteControl = RxMusicPlayer.RemoteControl.moveTrack
 
     @Published var sliderValue = Float(0)
     @Published var sliderMaximumValue = Float(0)
@@ -72,6 +75,20 @@ final class PlayerModel: ObservableObject {
         player.rx.canSendCommand(cmd: .seek(seconds: 0, shouldPlay: false))
             .do(onNext: { [weak self] canSeek in
                 self?.sliderIsUserInteractionEnabled = canSeek
+            })
+            .drive()
+            .disposed(by: disposeBag)
+
+        player.rx.canSendCommand(cmd: .skip(seconds: 15))
+            .do(onNext: { [weak self] canSkip in
+                self?.canSkipForward = canSkip
+            })
+            .drive()
+            .disposed(by: disposeBag)
+
+        player.rx.canSendCommand(cmd: .skip(seconds: -15))
+            .do(onNext: { [weak self] canSkip in
+                self?.canSkipBackward = canSkip
             })
             .drive()
             .disposed(by: disposeBag)
@@ -143,6 +160,13 @@ final class PlayerModel: ObservableObject {
             .drive()
             .disposed(by: disposeBag)
 
+        player.rx.remoteControl()
+            .do(onNext: { [weak self] control in
+                self?.remoteControl = control
+            })
+            .drive()
+            .disposed(by: disposeBag)
+
         // 3) Process the user's input
         player.run(cmd: commandRelay.asDriver(onErrorDriveWith: .empty()))
             .flatMap { status -> Driver<()> in
@@ -173,6 +197,10 @@ final class PlayerModel: ObservableObject {
         commandRelay.accept(.seek(seconds: Int(value ?? 0), shouldPlay: false))
     }
 
+    func skip(second: Int) {
+        commandRelay.accept(.skip(seconds: second))
+    }
+
     func shuffle() {
         switch player.shuffleMode {
         case .off: player.shuffleMode = .songs
@@ -201,6 +229,15 @@ final class PlayerModel: ObservableObject {
         case .none: player.repeatMode = .one
         case .one: player.repeatMode = .all
         case .all: player.repeatMode = .none
+        }
+    }
+
+    func toggleRemoteControl() {
+        switch remoteControl {
+        case .moveTrack:
+            player.remoteControl = .skip(second: 15)
+        case .skip:
+            player.remoteControl = .moveTrack
         }
     }
 }
@@ -284,6 +321,41 @@ struct PlayerView: View {
                             case .all: return "No Repeat"
                             }
                         }() as String)
+                    }
+                }
+
+                Group {
+                    Spacer()
+                        .frame(width: 1, height: 17)
+
+                    HStack(spacing: 20.0) {
+                        Button(action: {
+                            model.skip(second: -15)
+                        }) {
+                            Text("SkipBackward")
+                        }
+                        .disabled(!model.canSkipBackward)
+
+                        Button(action: {
+                            model.skip(second: 15)
+                        }) {
+                            Text("SkipForward")
+                        }
+                        .disabled(!model.canSkipForward)
+                    }
+                }
+
+                Group {
+                    Spacer()
+                        .frame(width: 1, height: 17)
+
+                    HStack(spacing: 20.0) {
+                        Button(action: {
+                            model.toggleRemoteControl()
+                        }) {
+                            let control = model.remoteControl == .moveTrack ? "moveTrack" : "skip"
+                            Text("RemoteControl: \(control)")
+                        }
                     }
                 }
             }

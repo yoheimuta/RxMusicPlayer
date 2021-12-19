@@ -12,7 +12,7 @@ RxMusicPlayer is a wrapper of avplayer backed by RxSwift to make it easy for aud
 
 - Following [the Audio Guidelines for User-Controlled Playback and Recording Apps](https://developer.apple.com/library/archive/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/AudioGuidelinesByAppType/AudioGuidelinesByAppType.html#//apple_ref/doc/uid/TP40007875-CH11-SW1).
 - Support for streaming both remote and local audio files.
-- Functions to `play`, `pause`, `stop`, `play next`, `play previous`, `prefetch metadata`, `repeat mode(repeat, repeat all)`, `shuffle mode` `desired playback rate`, `seek to a certain second`, and `append/insert/remove an item into the playlist`.
+- Functions to `play`, `pause`, `stop`, `play next`, `play previous`, `skip forward/backward`, `prefetch metadata`, `repeat mode(repeat, repeat all)`, `shuffle mode` `desired playback rate`, `seek to a certain second`, and `append/insert/remove an item into the playlist`.
 - Loading metadata, including `title`, `album`, `artist`, `artwork`, `duration`, and `lyrics`.
 - Background mode integration with MPNowPlayingInfoCenter.
 - Remote command control integration with MPRemoteCommandCenter.
@@ -70,12 +70,15 @@ final class PlayerModel: ObservableObject {
     @Published var canPlay = true
     @Published var canPlayNext = true
     @Published var canPlayPrevious = true
+    @Published var canSkipForward = true
+    @Published var canSkipBackward = true
     @Published var title = "Not Playing"
     @Published var artwork: UIImage?
     @Published var restDuration = "--:--"
     @Published var duration = "--:--"
     @Published var shuffleMode = RxMusicPlayer.ShuffleMode.off
     @Published var repeatMode = RxMusicPlayer.RepeatMode.none
+    @Published var remoteControl = RxMusicPlayer.RemoteControl.moveTrack
 
     @Published var sliderValue = Float(0)
     @Published var sliderMaximumValue = Float(0)
@@ -88,12 +91,12 @@ final class PlayerModel: ObservableObject {
     init() {
         // 1) Create a player
         let items = [
-            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_1473200_1.mp3",
-            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_2160166.mp3",
-            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_4690995.mp3",
-            "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_9179181.mp3"
+            URL(string: "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_1473200_1.mp3")!,
+            URL(string: "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_2160166.mp3")!,
+            URL(string: "https://storage.googleapis.com/great-dev/oss/musicplayer/tagmp3_4690995.mp3")!,
+            Bundle.main.url(forResource: "tagmp3_9179181", withExtension: "mp3")!
         ]
-        .map({ RxMusicPlayerItem(url: URL(string: $0)!) })
+        .map({ RxMusicPlayerItem(url: $0) })
         player = RxMusicPlayer(items: items)!
 
         // 2) Control views
@@ -121,6 +124,20 @@ final class PlayerModel: ObservableObject {
         player.rx.canSendCommand(cmd: .seek(seconds: 0, shouldPlay: false))
             .do(onNext: { [weak self] canSeek in
                 self?.sliderIsUserInteractionEnabled = canSeek
+            })
+            .drive()
+            .disposed(by: disposeBag)
+
+        player.rx.canSendCommand(cmd: .skip(seconds: 15))
+            .do(onNext: { [weak self] canSkip in
+                self?.canSkipForward = canSkip
+            })
+            .drive()
+            .disposed(by: disposeBag)
+
+        player.rx.canSendCommand(cmd: .skip(seconds: -15))
+            .do(onNext: { [weak self] canSkip in
+                self?.canSkipBackward = canSkip
             })
             .drive()
             .disposed(by: disposeBag)
@@ -192,6 +209,13 @@ final class PlayerModel: ObservableObject {
             .drive()
             .disposed(by: disposeBag)
 
+        player.rx.remoteControl()
+            .do(onNext: { [weak self] control in
+                self?.remoteControl = control
+            })
+            .drive()
+            .disposed(by: disposeBag)
+
         // 3) Process the user's input
         player.run(cmd: commandRelay.asDriver(onErrorDriveWith: .empty()))
             .flatMap { status -> Driver<()> in
@@ -222,6 +246,10 @@ final class PlayerModel: ObservableObject {
         commandRelay.accept(.seek(seconds: Int(value ?? 0), shouldPlay: false))
     }
 
+    func skip(second: Int) {
+        commandRelay.accept(.skip(seconds: second))
+    }
+
     func shuffle() {
         switch player.shuffleMode {
         case .off: player.shuffleMode = .songs
@@ -250,6 +278,15 @@ final class PlayerModel: ObservableObject {
         case .none: player.repeatMode = .one
         case .one: player.repeatMode = .all
         case .all: player.repeatMode = .none
+        }
+    }
+
+    func toggleRemoteControl() {
+        switch remoteControl {
+        case .moveTrack:
+            player.remoteControl = .skip(second: 15)
+        case .skip:
+            player.remoteControl = .moveTrack
         }
     }
 }
@@ -333,6 +370,41 @@ struct PlayerView: View {
                             case .all: return "No Repeat"
                             }
                         }() as String)
+                    }
+                }
+
+                Group {
+                    Spacer()
+                        .frame(width: 1, height: 17)
+
+                    HStack(spacing: 20.0) {
+                        Button(action: {
+                            model.skip(second: -15)
+                        }) {
+                            Text("SkipBackward")
+                        }
+                        .disabled(!model.canSkipBackward)
+
+                        Button(action: {
+                            model.skip(second: 15)
+                        }) {
+                            Text("SkipForward")
+                        }
+                        .disabled(!model.canSkipForward)
+                    }
+                }
+
+                Group {
+                    Spacer()
+                        .frame(width: 1, height: 17)
+
+                    HStack(spacing: 20.0) {
+                        Button(action: {
+                            model.toggleRemoteControl()
+                        }) {
+                            let control = model.remoteControl == .moveTrack ? "moveTrack" : "skip"
+                            Text("RemoteControl: \(control)")
+                        }
                     }
                 }
             }
