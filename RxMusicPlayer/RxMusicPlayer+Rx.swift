@@ -29,6 +29,8 @@ extension Reactive where Base: RxMusicPlayer {
             return .just(true)
         case .seek:
             return canSeek()
+        case let .skip(seconds: s):
+            return canSkip(seconds: s)
         case .prefetch:
             return canPrefetch()
         }
@@ -223,6 +225,13 @@ extension Reactive where Base: RxMusicPlayer {
     }
 
     /**
+     Get the remote control.
+     */
+    public func remoteControl() -> Driver<RxMusicPlayer.RemoteControl> {
+        return base.remoteControlRelay.asDriver()
+    }
+
+    /**
      Get the player index.
      */
     public func playerIndex() -> Driver<Int> {
@@ -288,6 +297,24 @@ extension Reactive where Base: RxMusicPlayer {
                 .playing,
                 .paused,
             ] as [RxMusicPlayer.Status]).contains(status)
+        }
+    }
+
+    private func canSkip(seconds: Int) -> Driver<Bool> {
+        return Driver.combineLatest(
+            currentItemDuration(),
+            currentItemTime()
+        ).flatMapLatest { [weak base] duration, currentTime in
+            guard let weakBase = base,
+                let durationSecond = duration?.seconds,
+                let currentSecond = currentTime?.seconds else { return .just(false) }
+            let newSecond = currentSecond + Double(seconds)
+            if durationSecond <= newSecond {
+                return weakBase.rx.canNext()
+            } else if newSecond <= 0 {
+                return weakBase.rx.canPrevious()
+            }
+            return weakBase.rx.canSeek()
         }
     }
 

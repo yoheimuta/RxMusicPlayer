@@ -52,6 +52,7 @@ open class RxMusicPlayer: NSObject {
         case pause
         case stop
         case seek(seconds: Int, shouldPlay: Bool)
+        case skip(seconds: Int)
         /// fetch the metadata of the item with the current index without playing.
         case prefetch
 
@@ -67,6 +68,8 @@ open class RxMusicPlayer: NSObject {
             case let (.playAt(lindex), .playAt(index: rindex)):
                 return lindex == rindex
             case let (.seek(lseconds, _), .seek(rseconds, _)):
+                return lseconds == rseconds
+            case let (.skip(lseconds), .skip(rseconds)):
                 return lseconds == rseconds
             default:
                 return false
@@ -103,6 +106,14 @@ open class RxMusicPlayer: NSObject {
 
         /// default is a default configuration.
         public static let `default` = ExternalConfig()
+    }
+
+    /**
+     Remote commands that will be added to MPRemoteCommandCenter.shared().
+     */
+    public enum RemoteControl: Equatable {
+        case moveTrack
+        case skip(second: UInt)
     }
 
     /**
@@ -167,6 +178,19 @@ open class RxMusicPlayer: NSObject {
         }
     }
 
+    /**
+     The remote commands to be responded to remote control events sent by external accessories and system controls.
+     Default is moveTrack, which enables nextTrackCommand and previousTrackCommand.
+     */
+    public var remoteControl: RemoteControl {
+        set {
+            remoteControlRelay.accept(newValue)
+        }
+        get {
+            return remoteControlRelay.value
+        }
+    }
+
     let playIndexRelay = BehaviorRelay<Int>(value: 0)
     let queuedItemsRelay = BehaviorRelay<[RxMusicPlayerItem]>(value: [])
     let statusRelay = BehaviorRelay<Status>(value: .ready)
@@ -174,6 +198,7 @@ open class RxMusicPlayer: NSObject {
     let shuffleModeRelay = BehaviorRelay<ShuffleMode>(value: .off)
     let repeatModeRelay = BehaviorRelay<RepeatMode>(value: .none)
     let desiredPlaybackRateRelay = BehaviorRelay<Float>(value: 1.0)
+    let remoteControlRelay = BehaviorRelay<RemoteControl>(value: .moveTrack)
 
     private let scheduler = ConcurrentDispatchQueueScheduler(
         queue: DispatchQueue.global(qos: .background)
@@ -354,6 +379,7 @@ open class RxMusicPlayer: NSObject {
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
     private func registerRemoteControl() -> Observable<()> {
         let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.playCommand.addTarget { [weak self] _ in
@@ -362,14 +388,6 @@ open class RxMusicPlayer: NSObject {
         }
         commandCenter.pauseCommand.addTarget { [weak self] _ in
             self?.remoteCmdRelay.accept(.pause)
-            return .success
-        }
-        commandCenter.nextTrackCommand.addTarget { [weak self] _ in
-            self?.remoteCmdRelay.accept(.next)
-            return .success
-        }
-        commandCenter.previousTrackCommand.addTarget { [weak self] _ in
-            self?.remoteCmdRelay.accept(.previous)
             return .success
         }
         commandCenter.togglePlayPauseCommand.addTarget { [weak self] _ in
@@ -390,6 +408,40 @@ open class RxMusicPlayer: NSObject {
 
         return Observable.create { [weak self] _ in
             guard let weakSelf = self else { return Disposables.create() }
+
+            let addCommandTarget = weakSelf.remoteControlRelay
+                .do(onNext: { control in
+                    switch control {
+                    case .moveTrack:
+                        commandCenter.skipBackwardCommand.removeTarget(nil)
+                        commandCenter.skipForwardCommand.removeTarget(nil)
+
+                        commandCenter.nextTrackCommand.addTarget { [weak self] _ in
+                            self?.remoteCmdRelay.accept(.next)
+                            return .success
+                        }
+                        commandCenter.previousTrackCommand.addTarget { [weak self] _ in
+                            self?.remoteCmdRelay.accept(.previous)
+                            return .success
+                        }
+                    case let .skip(second: second):
+                        commandCenter.nextTrackCommand.removeTarget(nil)
+                        commandCenter.previousTrackCommand.removeTarget(nil)
+
+                        commandCenter.skipForwardCommand.addTarget { [weak self] _ in
+                            self?.remoteCmdRelay.accept(.skip(seconds: Int(second)))
+                            return .success
+                        }
+                        commandCenter.skipForwardCommand.preferredIntervals = [NSNumber(value: second)]
+                        commandCenter.skipBackwardCommand.addTarget { [weak self] _ in
+                            self?.remoteCmdRelay.accept(.skip(seconds: Int(second) * -1))
+                            return .success
+                        }
+                        commandCenter.skipBackwardCommand.preferredIntervals = [NSNumber(value: second)]
+                    }
+                })
+                .subscribe()
+
             let disablePlay = weakSelf.rx.canSendCommand(cmd: .play)
                 .do(onNext: {
                     commandCenter.playCommand.isEnabled = $0
@@ -415,17 +467,51 @@ open class RxMusicPlayer: NSObject {
                     commandCenter.changePlaybackPositionCommand.isEnabled = $0
                 })
                 .drive()
+            let disableSkipForward = weakSelf.remoteControlRelay
+                .flatMapLatest { [weak self] control -> Observable<Bool> in
+                    guard let weakSelf = self else { return .just(false) }
+                    switch control {
+                    case let .skip(second: second):
+                        return weakSelf.rx.canSendCommand(cmd: .skip(seconds: Int(second)))
+                            .do(onNext: {
+                                commandCenter.skipForwardCommand.isEnabled = $0
+                            })
+                            .asObservable()
+                    default:
+                        return .just(false)
+                    }
+                }
+                .subscribe()
+            let disableSkipBackward = weakSelf.remoteControlRelay
+                .flatMapLatest { [weak self] control -> Observable<Bool> in
+                    guard let weakSelf = self else { return .just(false) }
+                    switch control {
+                    case let .skip(second: second):
+                        return weakSelf.rx.canSendCommand(cmd: .skip(seconds: Int(second) * -1))
+                            .do(onNext: {
+                                commandCenter.skipBackwardCommand.isEnabled = $0
+                            })
+                            .asObservable()
+                    default:
+                        return .just(false)
+                    }
+                }
+                .subscribe()
 
             return Disposables.create {
+                addCommandTarget.dispose()
                 disablePlay.dispose()
                 disablePause.dispose()
                 disableNext.dispose()
                 disablePrevious.dispose()
                 disableSeek.dispose()
+                disableSkipForward.dispose()
+                disableSkipBackward.dispose()
             }
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
     private func runCommand(cmd: Command) -> Observable<()> {
         return rx.canSendCommand(cmd: cmd).asObservable().take(1)
             .observe(on: scheduler)
@@ -451,6 +537,8 @@ open class RxMusicPlayer: NSObject {
                     return weakSelf.stop()
                 case let .seek(seconds: sec, shouldPlay: play):
                     return weakSelf.seek(toSecond: sec, shouldPlay: play)
+                case let .skip(seconds: sec):
+                    return weakSelf.skip(bySecond: sec)
                 case .prefetch:
                     return weakSelf.prefetch()
                 }
@@ -525,6 +613,27 @@ open class RxMusicPlayer: NSObject {
             }
         }
         return .just(())
+    }
+
+    private func skip(bySecond second: Int) -> Observable<()> {
+        return Driver.combineLatest(
+            rx.currentItemDuration(),
+            rx.currentItemTime()
+        ).asObservable().take(1)
+            .flatMapLatest { [weak self] duration, currentTime -> Observable<()> in
+                guard let weakSelf = self,
+                    let durationSecond = duration?.seconds,
+                    let currentSecond = currentTime?.seconds else { return .just(()) }
+                let newSecond = currentSecond + Double(second)
+                if durationSecond <= newSecond {
+                    weakSelf.autoCmdRelay.accept(.next)
+                    return .just(())
+                } else if newSecond <= 0 {
+                    weakSelf.autoCmdRelay.accept(.previous)
+                    return .just(())
+                }
+                return weakSelf.seek(toSecond: Int(newSecond))
+            }
     }
 
     private func pause() -> Observable<()> {
