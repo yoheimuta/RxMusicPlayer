@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "RxMusicPlayer"
-  spec.version      = "2.2.0"
+  spec.version      = "2.3.0"
   spec.summary      = "A reactive library to make it easy for audio playbacks using RxSwift."
 
   # This description is used to generate tags and improve search results.
