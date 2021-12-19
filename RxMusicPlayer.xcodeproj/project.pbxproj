@@ -16,6 +16,12 @@
 		C23F0453262C428F004686CE /* RxRelay.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0451262C428F004686CE /* RxRelay.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C23F0457262C4322004686CE /* RxRelay.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0451262C428F004686CE /* RxRelay.xcframework */; };
 		C23F045B262C4326004686CE /* RxCocoa.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0445262C4228004686CE /* RxCocoa.xcframework */; };
+		C263715C276823430029CDCB /* RxCocoa.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0445262C4228004686CE /* RxCocoa.xcframework */; };
+		C263715D276823430029CDCB /* RxCocoa.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0445262C4228004686CE /* RxCocoa.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C263715E276823430029CDCB /* RxRelay.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0451262C428F004686CE /* RxRelay.xcframework */; };
+		C263715F276823430029CDCB /* RxRelay.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C23F0451262C428F004686CE /* RxRelay.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2637160276823430029CDCB /* RxSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2A64DB9262C3EB40018641C /* RxSwift.xcframework */; };
+		C2637161276823430029CDCB /* RxSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2A64DB9262C3EB40018641C /* RxSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C26CE3CC26781A1B00BA3C3F /* ExampleSwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE3CB26781A1B00BA3C3F /* ExampleSwiftUIApp.swift */; };
 		C26CE3CE26781A1B00BA3C3F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE3CD26781A1B00BA3C3F /* ContentView.swift */; };
 		C26CE3D026781A1D00BA3C3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C26CE3CF26781A1D00BA3C3F /* Assets.xcassets */; };
@@ -112,7 +118,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				C263715F276823430029CDCB /* RxRelay.xcframework in Embed Frameworks */,
+				C2637161276823430029CDCB /* RxSwift.xcframework in Embed Frameworks */,
 				C26CE410267C1AAD00BA3C3F /* RxMusicPlayer.framework in Embed Frameworks */,
+				C263715D276823430029CDCB /* RxCocoa.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -198,8 +207,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2637160276823430029CDCB /* RxSwift.xcframework in Frameworks */,
 				C26CE408267C1A9300BA3C3F /* MediaPlayer.framework in Frameworks */,
+				C263715E276823430029CDCB /* RxRelay.xcframework in Frameworks */,
 				C26CE40F267C1AAD00BA3C3F /* RxMusicPlayer.framework in Frameworks */,
+				C263715C276823430029CDCB /* RxCocoa.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -879,6 +891,7 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"ExampleSwiftUI/Preview Content\"";
+				DEVELOPMENT_TEAM = NUGP6A3A8X;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = ExampleSwiftUI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -901,6 +914,7 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"ExampleSwiftUI/Preview Content\"";
+				DEVELOPMENT_TEAM = NUGP6A3A8X;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = ExampleSwiftUI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
