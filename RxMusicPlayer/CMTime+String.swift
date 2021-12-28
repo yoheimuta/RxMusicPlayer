@@ -10,11 +10,17 @@ import AVFoundation
 
 extension CMTime {
     public var displayTime: String? {
-        guard let sec = seconds?.rounded().toInt() else { return nil }
+        guard let sec = seconds?.rounded() else { return nil }
+
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
         if sec < 60 * 60 {
-            return String(format: "%02d:%02d", sec / 60, sec % 60)
+            formatter.allowedUnits = [.minute, .second]
+        } else {
+            formatter.allowedUnits = [.hour, .minute, .second]
         }
-        return String(format: "%02d:%02d:%02d", sec / (60 * 60), sec % 60 * 60, sec % 60)
+        return formatter.string(from: sec) ?? nil
     }
 
     public var seconds: Double? {
