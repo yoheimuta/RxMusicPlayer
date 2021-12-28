@@ -27,6 +27,7 @@ class RxMusicPlayerTests: XCTestCase {
         XCTAssertEqual(CMTimeMake(value: 60, timescale: 1).displayTime, "01:00", "convert a minute")
         XCTAssertEqual(CMTimeMake(value: 601, timescale: 1).displayTime, "10:01", "convert ten minutes")
         XCTAssertEqual(CMTimeMake(value: 3600, timescale: 1).displayTime, "01:00:00", "convert an hour")
+        XCTAssertEqual(CMTimeMake(value: 5430, timescale: 1).displayTime, "01:30:30", "convert an hour")
         XCTAssertEqual(CMTimeMake(value: 86400, timescale: 1).displayTime, "24:00:00", "convert a day")
     }
 
