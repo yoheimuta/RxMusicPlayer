@@ -35,6 +35,7 @@
 		C26CE432267DF26400BA3C3F /* UIProgressSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE431267DF26400BA3C3F /* UIProgressSlider.swift */; };
 		C26CE439267DF28A00BA3C3F /* ProgressSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26CE438267DF28A00BA3C3F /* ProgressSliderView.swift */; };
 		C2772B672682B91200D2450A /* tagmp3_9179181.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C2772B662682B91200D2450A /* tagmp3_9179181.mp3 */; };
+		C2B4CE8A28548BE000D524F9 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B4CE8928548BE000D524F9 /* ListView.swift */; };
 		FF11FBC42329E2DE0043C29B /* RxMusicPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */; };
 		FF11FBC92329E2DE0043C29B /* RxMusicPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF11FBC82329E2DE0043C29B /* RxMusicPlayerTests.swift */; };
 		FF11FBCB2329E2DE0043C29B /* RxMusicPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -165,6 +166,7 @@
 		C26CE438267DF28A00BA3C3F /* ProgressSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressSliderView.swift; sourceTree = "<group>"; };
 		C2772B662682B91200D2450A /* tagmp3_9179181.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tagmp3_9179181.mp3; sourceTree = "<group>"; };
 		C2A64DB9262C3EB40018641C /* RxSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RxSwift.xcframework; path = Carthage/Build/RxSwift.xcframework; sourceTree = "<group>"; };
+		C2B4CE8928548BE000D524F9 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		FF11FBBA2329E2DE0043C29B /* RxMusicPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxMusicPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF11FBBD2329E2DE0043C29B /* RxMusicPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RxMusicPlayer.h; sourceTree = "<group>"; };
 		FF11FBBE2329E2DE0043C29B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 				C26CE3CF26781A1D00BA3C3F /* Assets.xcassets */,
 				C26CE3D426781A1D00BA3C3F /* Info.plist */,
 				C26CE3D126781A1D00BA3C3F /* Preview Content */,
+				C2B4CE8928548BE000D524F9 /* ListView.swift */,
 				C26CE419267C683B00BA3C3F /* PlayerView.swift */,
 				C26CE438267DF28A00BA3C3F /* ProgressSliderView.swift */,
 				C26CE431267DF26400BA3C3F /* UIProgressSlider.swift */,
@@ -757,6 +760,7 @@
 			files = (
 				C26CE3CE26781A1B00BA3C3F /* ContentView.swift in Sources */,
 				C26CE3CC26781A1B00BA3C3F /* ExampleSwiftUIApp.swift in Sources */,
+				C2B4CE8A28548BE000D524F9 /* ListView.swift in Sources */,
 				C26CE41A267C683B00BA3C3F /* PlayerView.swift in Sources */,
 				C26CE432267DF26400BA3C3F /* UIProgressSlider.swift in Sources */,
 				C26CE439267DF28A00BA3C3F /* ProgressSliderView.swift in Sources */,
