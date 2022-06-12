@@ -243,6 +243,10 @@ open class RxMusicPlayer: NSObject {
         super.init()
     }
 
+    deinit {
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+    }
+
     /**
      Run each command.
      */
