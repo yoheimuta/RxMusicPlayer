@@ -200,8 +200,8 @@ open class RxMusicPlayer: NSObject {
     let desiredPlaybackRateRelay = BehaviorRelay<Float>(value: 1.0)
     let remoteControlRelay = BehaviorRelay<RemoteControl>(value: .moveTrack)
 
-    private let scheduler = ConcurrentDispatchQueueScheduler(
-        queue: DispatchQueue.global(qos: .background)
+    private let scheduler = SerialDispatchQueueScheduler(
+        queue: DispatchQueue.global(qos: .background), internalSerialQueueName: "RxMusicPlayerSerialQueue"
     )
     public private(set) var player: AVPlayer? {
         set {
